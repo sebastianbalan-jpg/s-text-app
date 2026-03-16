@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#f1f3f4" id="meta-theme-color">
-    <title>S-Text</title>
+    <title>S-Text Editor</title>
     
     <!-- App Icon (Favicon) -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%233b82f6'/%3E%3Cpath d='M5 13.5V5a2 2 0 0 1 2-2h7.5L19 7.5V19a2 2 0 0 1-2 2h-4.5' fill='none' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpolyline points='14 3 14 8 19 8' fill='none' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M10.42 12.61a2.1 2.1 0 1 1 2.97 2.97L7.95 21 4 22l.99-3.95 5.43-5.44Z' fill='none' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
@@ -15,7 +15,7 @@
         (function() {
             const iconSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%233b82f6'/%3E%3Cpath d='M5 13.5V5a2 2 0 0 1 2-2h7.5L19 7.5V19a2 2 0 0 1-2 2h-4.5' fill='none' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpolyline points='14 3 14 8 19 8' fill='none' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M10.42 12.61a2.1 2.1 0 1 1 2.97 2.97L7.95 21 4 22l.99-3.95 5.43-5.44Z' fill='none' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E";
             const manifest = {
-                name: "S-Text",
+                name: "S-Text Editor",
                 short_name: "S-Text",
                 start_url: ".",
                 display: "standalone",
@@ -31,8 +31,8 @@
         })();
     </script>
 
-    <!-- Tailwind CSS for ChromeOS-like Styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS for ChromeOS-like Styling & Typography for Markdown -->
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -66,6 +66,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/markdown/markdown.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/clike/clike.min.js"></script>
 
+    <!-- Feature 3: Search & Replace Addons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/dialog/dialog.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/search/matchesonscrollbar.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/dialog/dialog.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/search/searchcursor.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/search/search.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/scroll/annotatescrollbar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/search/matchesonscrollbar.min.js"></script>
+
+    <!-- Feature 6: Developer Comforts Addons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/closebrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/selection/active-line.min.js"></script>
+
+    <!-- Feature 7: Live Markdown Preview Addon -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -81,6 +97,74 @@
             border-right: 1px solid transparent;
             background-color: transparent;
         }
+        
+        /* Customizing CodeMirror Dialog for App Theme */
+        .CodeMirror-dialog {
+            background-color: #f3f4f6;
+            color: #1f2937;
+            border-bottom: 1px solid #d1d5db;
+            font-family: 'Roboto', sans-serif;
+            padding: 8px 12px;
+        }
+        .dark .CodeMirror-dialog {
+            background-color: #292a2d;
+            color: #e5e7eb;
+            border-bottom: 1px solid #374151;
+        }
+        .CodeMirror-dialog input {
+            background: #ffffff;
+            border: 1px solid #d1d5db;
+            color: #1f2937;
+            border-radius: 4px;
+            padding: 2px 8px;
+            outline: none;
+            margin: 0 4px;
+        }
+        .dark .CodeMirror-dialog input {
+            background: #202124;
+            border-color: #4b5563;
+            color: #e5e7eb;
+        }
+        .CodeMirror-dialog input:focus {
+            border-color: #8ab4f8;
+        }
+        .CodeMirror-dialog button {
+            background: #e5e7eb;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 10px;
+            cursor: pointer;
+            color: #374151;
+            margin: 0 2px;
+            font-size: 12px;
+        }
+        .dark .CodeMirror-dialog button {
+            background: #374151;
+            color: #e5e7eb;
+        }
+        .CodeMirror-dialog button:hover {
+            background: #d1d5db;
+        }
+        .dark .CodeMirror-dialog button:hover {
+            background: #4b5563;
+        }
+        
+        /* Feature 6: Active Line Styling */
+        .CodeMirror-activeline-background {
+            background: rgba(0, 0, 0, 0.04) !important;
+        }
+        .dark .CodeMirror-activeline-background {
+            background: rgba(255, 255, 255, 0.05) !important;
+        }
+
+        /* Tab Bar Hide Scrollbar */
+        #tab-bar::-webkit-scrollbar {
+            display: none;
+        }
+        #tab-bar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
 </head>
 <body class="bg-cros-headerLight dark:bg-cros-headerDark h-screen flex flex-col overflow-hidden text-gray-800 dark:text-gray-200 transition-colors duration-200">
@@ -91,13 +175,7 @@
             <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-white shadow-sm">
                 <i data-lucide="file-edit" class="w-5 h-5"></i>
             </div>
-            <span class="font-medium text-lg tracking-wide hidden sm:inline-block">S-Text</span>
-            <span class="text-gray-400 hidden sm:inline-block">|</span>
-            <span id="filename" class="text-sm font-medium px-2 py-1 bg-white dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-600 truncate max-w-[200px] cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" title="Click to rename">Untitled.txt</span>
-            <span id="unsaved-indicator" class="text-xs text-blue-500 font-bold hidden">*</span>
-            <button id="btn-info" class="p-1 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors ml-1" title="File Info">
-                <i data-lucide="info" class="w-4 h-4 text-gray-500 dark:text-gray-400"></i>
-            </button>
+            <span class="font-medium text-lg tracking-wide hidden sm:inline-block">S-Text Editor</span>
         </div>
 
         <div class="flex items-center space-x-1 sm:space-x-2">
@@ -116,19 +194,61 @@
             
             <div class="w-px h-6 bg-gray-400 dark:bg-gray-600 mx-1 sm:mx-2"></div>
             
-            <button id="btn-theme" class="p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors" title="Toggle Light/Dark Theme">
-                <i data-lucide="moon" class="w-5 h-5" id="theme-icon"></i>
-            </button>
+            <div class="relative">
+                <button id="btn-menu-toggle" class="p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors" title="More Options">
+                    <i data-lucide="more-vertical" class="w-5 h-5"></i>
+                </button>
+                <div id="dropdown-menu" class="hidden absolute right-0 mt-2 w-56 bg-white dark:bg-[#292a2d] border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-50 py-1 text-sm text-gray-700 dark:text-gray-200">
+                    <button id="btn-search" class="w-full flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
+                        <i data-lucide="search" class="w-4 h-4 mr-3"></i> Find/Replace
+                    </button>
+                    <button id="btn-wrap" class="w-full flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
+                        <i data-lucide="wrap-text" class="w-4 h-4 mr-3" id="wrap-icon"></i> Word Wrap
+                    </button>
+                    <button id="btn-preview" class="w-full flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white transition-colors hidden">
+                        <i data-lucide="eye" class="w-4 h-4 mr-3" id="preview-icon"></i> Markdown Preview
+                    </button>
+                    <div class="border-t border-gray-200 dark:border-gray-700 my-1"></div>
+                    <button id="btn-zoomin" class="w-full flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
+                        <i data-lucide="zoom-in" class="w-4 h-4 mr-3"></i> Zoom In
+                    </button>
+                    <button id="btn-zoomout" class="w-full flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
+                        <i data-lucide="zoom-out" class="w-4 h-4 mr-3"></i> Zoom Out
+                    </button>
+                    <div class="border-t border-gray-200 dark:border-gray-700 my-1"></div>
+                    <button id="btn-theme" class="w-full flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
+                        <i data-lucide="moon" class="w-4 h-4 mr-3" id="theme-icon"></i> Toggle Theme
+                    </button>
+                    <button id="btn-rename" class="w-full flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
+                        <i data-lucide="edit-3" class="w-4 h-4 mr-3"></i> Rename File
+                    </button>
+                    <button id="btn-info" class="w-full flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
+                        <i data-lucide="info" class="w-4 h-4 mr-3"></i> File Info
+                    </button>
+                </div>
+            </div>
         </div>
     </header>
 
+    <!-- Tab Bar -->
+    <div id="tab-bar" class="flex overflow-x-auto bg-gray-100 dark:bg-[#202124] border-b border-gray-300 dark:border-gray-700 h-10 flex-shrink-0"></div>
+
     <!-- Main Editor Area -->
-    <main class="flex-grow relative overflow-hidden">
-        <textarea id="editor"></textarea>
+    <main class="flex-grow relative overflow-hidden flex">
+        <div id="editor-wrapper" class="w-full h-full relative transition-all duration-300">
+            <textarea id="editor"></textarea>
+        </div>
+        <div id="markdown-preview" class="hidden w-1/2 h-full border-l border-gray-300 dark:border-gray-700 bg-white dark:bg-[#202124] p-6 overflow-y-auto prose prose-sm sm:prose-base dark:prose-invert max-w-none transition-all duration-300 text-gray-800 dark:text-gray-200"></div>
     </main>
 
+    <!-- Feature 2: Status Bar -->
+    <footer class="bg-gray-100 dark:bg-[#292a2d] border-t border-gray-300 dark:border-gray-700 h-7 flex items-center justify-between px-4 text-xs text-gray-600 dark:text-gray-400 flex-shrink-0 select-none transition-colors duration-200 font-mono">
+        <div id="document-stats">Words: 0 | Chars: 0</div>
+        <div id="cursor-position">Ln 1, Col 1</div>
+    </footer>
+
     <!-- Message Toast -->
-    <div id="toast" class="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full shadow-lg opacity-0 transition-opacity duration-300 pointer-events-none z-50">
+    <div id="toast" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full shadow-lg opacity-0 transition-opacity duration-300 pointer-events-none z-50">
         Message
     </div>
 
@@ -136,34 +256,118 @@
         // Initialize Icons
         lucide.createIcons();
 
-        // App State
-        let fileHandle = null;
+        // --- App & Tab State ---
+        let tabs = [];
+        let activeTabId = null;
+        let tabCounter = 0;
+        let untitledCount = 0;
         let isDark = false;
-        let hasUnsavedChanges = false;
+        let isRestoringSession = false;
+
+        // --- Session Persistence Logic ---
+        let sessionSaveTimeout;
+        function saveSession() {
+            if (isRestoringSession) return;
+            // Use a slight delay (debounce) so it doesn't try to save on every single millisecond of typing
+            clearTimeout(sessionSaveTimeout);
+            sessionSaveTimeout = setTimeout(() => {
+                const sessionData = {
+                    activeTabId,
+                    tabCounter,
+                    untitledCount,
+                    tabs: tabs.map(t => ({
+                        id: t.id,
+                        name: t.name,
+                        content: t.doc.getValue(),
+                        isUnsaved: t.isUnsaved,
+                        isRenamed: t.isRenamed
+                    }))
+                };
+                localStorage.setItem('stext-session', JSON.stringify(sessionData));
+            }, 500);
+        }
+
+        function restoreSession() {
+            const dataStr = localStorage.getItem('stext-session');
+            if (dataStr) {
+                try {
+                    isRestoringSession = true;
+                    const data = JSON.parse(dataStr);
+                    tabCounter = data.tabCounter || 0;
+                    untitledCount = data.untitledCount || 0;
+                    
+                    if (data.tabs && data.tabs.length > 0) {
+                        data.tabs.forEach(tData => {
+                            const mode = getModeFromExtension(tData.name);
+                            const doc = CodeMirror.Doc(tData.content, mode);
+                            
+                            // If the document wasn't unsaved when we closed the app, mark it clean
+                            if (!tData.isUnsaved && !tData.isRenamed) {
+                                doc.markClean();
+                            }
+                            
+                            tabs.push({
+                                id: tData.id,
+                                name: tData.name,
+                                handle: null, // OS File handles require re-authorization per session
+                                doc: doc,
+                                isUnsaved: tData.isUnsaved,
+                                isRenamed: tData.isRenamed
+                            });
+                        });
+                        
+                        isRestoringSession = false;
+                        const targetTabId = data.activeTabId && tabs.some(t => t.id === data.activeTabId) 
+                            ? data.activeTabId 
+                            : tabs[0].id;
+                            
+                        switchTab(targetTabId);
+                        return; // Successfully restored
+                    }
+                } catch (e) {
+                    console.error("Failed to restore session", e);
+                } finally {
+                    isRestoringSession = false;
+                }
+            }
+            // Fallback if no session exists or parsing failed
+            createTab();
+        }
 
         // Initialize CodeMirror
         const editorTextArea = document.getElementById('editor');
         const editor = CodeMirror.fromTextArea(editorTextArea, {
             lineNumbers: true,
-            mode: "null", // Plain text by default
+            mode: "null", 
             theme: "default",
             indentUnit: 4,
-            matchBrackets: true
+            matchBrackets: true,
+            autoCloseBrackets: true,
+            styleActiveLine: true
         });
 
         // DOM Elements
-        const filenameDisplay = document.getElementById('filename');
-        const unsavedIndicator = document.getElementById('unsaved-indicator');
         const themeIcon = document.getElementById('theme-icon');
         const metaThemeColor = document.getElementById('meta-theme-color');
         const htmlElement = document.documentElement;
 
         // Editor Change Event
-        editor.on('change', () => {
-            if (!hasUnsavedChanges) {
-                hasUnsavedChanges = true;
-                unsavedIndicator.classList.remove('hidden');
+        editor.on('change', (cm, changeObj) => {
+            // Only flag as unsaved if it's a real user edit, not a swapDoc event
+            if (changeObj.origin !== 'setValue') {
+                const tab = getActiveTab();
+                if (tab) {
+                    // Check if the current state matches the saved "clean" history state
+                    const currentlyUnsaved = !tab.doc.isClean() || tab.isRenamed;
+                    if (tab.isUnsaved !== currentlyUnsaved) {
+                        tab.isUnsaved = currentlyUnsaved;
+                        renderTabs();
+                    }
+                }
             }
+            updateDocumentStats();
+            updateMarkdownPreview();
+            saveSession(); // Save the text content changes to memory
         });
 
         // Toast Notification Function
@@ -176,11 +380,13 @@
             }, 3000);
         }
 
-        // Syntax Highlighting Detection based on File Extension
-        function applySyntaxHighlighting(filename) {
-            const ext = filename.split('.').pop().toLowerCase();
-            let mode = "null"; // Default plain text
+        // --- Tab Management Logic ---
+        function getActiveTab() {
+            return tabs.find(t => t.id === activeTabId);
+        }
 
+        function getModeFromExtension(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
             const modeMap = {
                 'js': 'javascript', 'json': 'javascript',
                 'html': 'htmlmixed', 'htm': 'htmlmixed',
@@ -190,16 +396,140 @@
                 'xml': 'xml', 'svg': 'xml',
                 'c': 'clike', 'cpp': 'clike', 'java': 'clike', 'cs': 'clike'
             };
+            return modeMap[ext] || "null";
+        }
 
-            if (modeMap[ext]) {
-                mode = modeMap[ext];
+        function updatePreviewVisibility(mode) {
+            const btnPreview = document.getElementById('btn-preview');
+            if (mode === 'markdown') {
+                btnPreview.classList.remove('hidden');
+            } else {
+                btnPreview.classList.add('hidden');
+                if (typeof isPreviewActive !== 'undefined' && isPreviewActive) {
+                    togglePreview();
+                }
+            }
+        }
+
+        function createTab(name = null, content = '', handle = null) {
+            if (!name) {
+                untitledCount++;
+                name = untitledCount === 1 ? 'Untitled.txt' : `Untitled-${untitledCount}.txt`;
+            }
+            tabCounter++;
+            const id = 'tab-' + tabCounter;
+            const mode = getModeFromExtension(name);
+            const doc = CodeMirror.Doc(content, mode);
+            doc.markClean(); // Mark the starting state as clean
+            
+            const tab = { id, name, handle, doc, isUnsaved: false, isRenamed: false };
+            tabs.push(tab);
+            switchTab(id);
+        }
+
+        function switchTab(id) {
+            activeTabId = id;
+            const tab = getActiveTab();
+            if (tab) {
+                editor.swapDoc(tab.doc);
+                const mode = getModeFromExtension(tab.name);
+                updatePreviewVisibility(mode);
+                updateCursorPosition();
+                updateDocumentStats();
+                updateMarkdownPreview();
+                renderTabs();
+            }
+        }
+
+        function closeTab(id) {
+            const tabIndex = tabs.findIndex(t => t.id === id);
+            const tab = tabs[tabIndex];
+            
+            if (tab.isUnsaved) {
+                if (!confirm(`Save changes to "${tab.name}" before closing?\nClick OK to close and discard changes.`)) {
+                    return;
+                }
             }
             
-            editor.setOption("mode", mode);
+            tabs.splice(tabIndex, 1);
+            
+            if (tabs.length === 0) {
+                createTab(); // Always keep at least one tab open
+            } else if (activeTabId === id) {
+                const newActiveIndex = Math.max(0, tabIndex - 1);
+                switchTab(tabs[newActiveIndex].id);
+            } else {
+                renderTabs();
+            }
+        }
+
+        function renderTabs() {
+            const tabBar = document.getElementById('tab-bar');
+            tabBar.innerHTML = '';
+            tabs.forEach(tab => {
+                const isActive = tab.id === activeTabId;
+                const tabEl = document.createElement('div');
+                
+                // Color formatting: Bright red if unsaved, otherwise standard blue/gray
+                const colorClass = tab.isUnsaved ? 'text-red-500 font-bold' : (isActive ? 'text-blue-600 dark:text-blue-400 font-medium' : 'text-gray-600 dark:text-gray-400');
+                const bgClass = isActive ? 'bg-white dark:bg-[#292a2d] border-b-2 border-b-blue-500' : 'bg-gray-100 dark:bg-[#202124] hover:bg-gray-200 dark:hover:bg-gray-700 border-b-2 border-transparent';
+                
+                tabEl.className = `group flex items-center px-4 py-2 border-r border-gray-300 dark:border-gray-700 cursor-pointer min-w-max select-none transition-colors ${bgClass}`;
+                tabEl.onclick = () => switchTab(tab.id);
+
+                const nameSpan = document.createElement('span');
+                nameSpan.className = `text-sm mr-2 transition-colors ${colorClass}`;
+                nameSpan.textContent = tab.name;
+                nameSpan.title = "Double-click to rename";
+                nameSpan.ondblclick = (e) => {
+                    e.stopPropagation();
+                    if(!isActive) switchTab(tab.id);
+                    renameActiveTab();
+                };
+
+                const unsavedMark = document.createElement('span');
+                unsavedMark.className = `text-lg leading-none mr-2 transition-colors ${tab.isUnsaved ? 'text-red-500' : 'opacity-0 w-0 mr-0 overflow-hidden'}`;
+                unsavedMark.innerHTML = '&ast;';
+
+                const closeBtn = document.createElement('button');
+                closeBtn.className = `p-1 rounded flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-500 dark:text-gray-400 transition-colors opacity-0 group-hover:opacity-100 ${isActive ? 'opacity-100' : ''}`;
+                closeBtn.innerHTML = '<i data-lucide="x" class="w-3 h-3"></i>';
+                closeBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    closeTab(tab.id);
+                };
+
+                tabEl.appendChild(nameSpan);
+                tabEl.appendChild(unsavedMark);
+                tabEl.appendChild(closeBtn);
+                tabBar.appendChild(tabEl);
+            });
+            lucide.createIcons();
+            
+            // Any time the UI tabs change (open, close, rename), update memory
+            saveSession();
+        }
+
+        function renameActiveTab() {
+            const tab = getActiveTab();
+            if(!tab) return;
+            const newName = prompt("Enter new file name (including extension):", tab.name);
+            if (newName && newName.trim() !== "" && newName !== tab.name) {
+                if (confirm(`Are you sure you want to change the file name to "${newName}"?\n\nBecause of browser security, this will require you to choose a save location again the next time you save so the file can be created with the new name.`)) {
+                    tab.name = newName.trim();
+                    const mode = getModeFromExtension(tab.name);
+                    editor.setOption("mode", mode);
+                    updatePreviewVisibility(mode);
+                    tab.handle = null;
+                    tab.isRenamed = true; // Ensure it stays unsaved until properly saved
+                    tab.isUnsaved = true;
+                    renderTabs();
+                    showToast(`File renamed to ${tab.name}`);
+                }
+            }
         }
 
         // --- Fallback Methods for iFrame / Canvas Environments ---
-        // These run if the Native File System API is blocked by a cross-origin SecurityError
         function fallbackOpenFile() {
             const input = document.createElement('input');
             input.type = 'file';
@@ -209,12 +539,21 @@
                 if (!file) return;
                 const reader = new FileReader();
                 reader.onload = (event) => {
-                    editor.setValue(event.target.result);
-                    filenameDisplay.textContent = file.name;
-                    applySyntaxHighlighting(file.name);
-                    hasUnsavedChanges = false;
-                    unsavedIndicator.classList.add('hidden');
-                    fileHandle = null; // Reset handle in fallback mode
+                    const contents = event.target.result;
+                    const currentTab = getActiveTab();
+                    if (currentTab && currentTab.name.startsWith('Untitled') && !currentTab.isUnsaved && currentTab.doc.getValue() === '') {
+                        currentTab.handle = null;
+                        currentTab.name = file.name;
+                        currentTab.doc = CodeMirror.Doc(contents, getModeFromExtension(file.name));
+                        currentTab.doc.markClean(); // Set new clean baseline
+                        currentTab.isRenamed = false;
+                        editor.swapDoc(currentTab.doc);
+                        updatePreviewVisibility(getModeFromExtension(file.name));
+                        renderTabs();
+                    } else {
+                        createTab(file.name, contents, null);
+                    }
+                    showToast(`Opened ${file.name}`);
                 };
                 reader.readAsText(file);
             };
@@ -222,9 +561,8 @@
         }
 
         function fallbackSaveFile(content, defaultFilename) {
-            // Prompt the user for a name so the app knows what to display
             const filename = prompt("Enter file name to save:", defaultFilename);
-            if (!filename) return; // User cancelled the prompt
+            if (!filename) return; 
 
             const blob = new Blob([content], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
@@ -234,32 +572,28 @@
             a.click();
             URL.revokeObjectURL(url);
             
-            // Update the UI with the chosen filename
-            filenameDisplay.textContent = filename;
-            applySyntaxHighlighting(filename);
+            const tab = getActiveTab();
+            if (tab) {
+                tab.name = filename;
+                tab.isUnsaved = false;
+                tab.isRenamed = false;
+                tab.doc.markClean(); // Set new clean baseline
+                const mode = getModeFromExtension(filename);
+                editor.setOption("mode", mode);
+                updatePreviewVisibility(mode);
+                renderTabs();
+            }
             showToast("File downloaded (Fallback mode)");
         }
 
         // --- File System Actions ---
         async function newFile() {
-            if (hasUnsavedChanges) {
-                if (!confirm("You have unsaved changes. Create new file anyway?")) return;
-            }
-            fileHandle = null;
-            editor.setValue('');
-            filenameDisplay.textContent = 'Untitled.txt';
-            applySyntaxHighlighting('Untitled.txt');
-            hasUnsavedChanges = false;
-            unsavedIndicator.classList.add('hidden');
-            showToast("New file created");
+            createTab();
+            showToast("New tab created");
         }
 
         async function openFile() {
-            if (hasUnsavedChanges) {
-                if (!confirm("You have unsaved changes. Open another file anyway?")) return;
-            }
             try {
-                // Use File System Access API
                 const [handle] = await window.showOpenFilePicker({
                     types: [{
                         description: 'Text/Code Files',
@@ -268,19 +602,25 @@
                     excludeAcceptAllOption: false,
                 });
                 
-                fileHandle = handle;
-                const file = await fileHandle.getFile();
+                const file = await handle.getFile();
                 const contents = await file.text();
                 
-                editor.setValue(contents);
-                filenameDisplay.textContent = file.name;
-                applySyntaxHighlighting(file.name);
-                
-                hasUnsavedChanges = false;
-                unsavedIndicator.classList.add('hidden');
+                const currentTab = getActiveTab();
+                // If opening a file while looking at an empty unsaved "Untitled" tab, overwrite it instead of opening a second tab
+                if (currentTab && currentTab.name.startsWith('Untitled') && !currentTab.isUnsaved && currentTab.doc.getValue() === '') {
+                    currentTab.handle = handle;
+                    currentTab.name = file.name;
+                    currentTab.doc = CodeMirror.Doc(contents, getModeFromExtension(file.name));
+                    currentTab.doc.markClean(); // Set new clean baseline
+                    currentTab.isRenamed = false;
+                    editor.swapDoc(currentTab.doc);
+                    updatePreviewVisibility(getModeFromExtension(file.name));
+                    renderTabs();
+                } else {
+                    createTab(file.name, contents, handle);
+                }
                 showToast(`Opened ${file.name}`);
             } catch (err) {
-                // Handle Cross-Origin block in the Canvas viewer elegantly
                 if (err.name === 'SecurityError' || err.message.includes('cross origin')) {
                     fallbackOpenFile();
                 } else if (err.name !== 'AbortError') {
@@ -291,16 +631,20 @@
         }
 
         async function saveFile() {
-            if (!fileHandle) {
+            const tab = getActiveTab();
+            if (!tab) return;
+            if (!tab.handle) {
                 return saveFileAs();
             }
             try {
-                const writable = await fileHandle.createWritable();
-                await writable.write(editor.getValue());
+                const writable = await tab.handle.createWritable();
+                await writable.write(tab.doc.getValue());
                 await writable.close();
                 
-                hasUnsavedChanges = false;
-                unsavedIndicator.classList.add('hidden');
+                tab.isUnsaved = false;
+                tab.isRenamed = false;
+                tab.doc.markClean(); // Set new clean baseline
+                renderTabs();
                 showToast("File saved!");
             } catch (err) {
                 console.error(err);
@@ -309,34 +653,35 @@
         }
 
         async function saveFileAs() {
+            const tab = getActiveTab();
+            if (!tab) return;
             try {
-                const currentName = filenameDisplay.textContent || 'Untitled.txt';
                 const handle = await window.showSaveFilePicker({
-                    suggestedName: currentName,
+                    suggestedName: tab.name,
                     types: [{
                         description: 'Text/Code File',
                         accept: {'text/plain': ['.txt', '.html', '.css', '.js', '.json', '.py', '.md']}
                     }],
                 });
-                fileHandle = handle;
                 
-                const writable = await fileHandle.createWritable();
-                await writable.write(editor.getValue());
+                const writable = await handle.createWritable();
+                await writable.write(tab.doc.getValue());
                 await writable.close();
                 
-                const file = await fileHandle.getFile();
-                filenameDisplay.textContent = file.name;
-                applySyntaxHighlighting(file.name);
-                
-                hasUnsavedChanges = false;
-                unsavedIndicator.classList.add('hidden');
+                const file = await handle.getFile();
+                tab.handle = handle;
+                tab.name = file.name;
+                const mode = getModeFromExtension(file.name);
+                editor.setOption("mode", mode);
+                updatePreviewVisibility(mode);
+                tab.isUnsaved = false;
+                tab.isRenamed = false;
+                tab.doc.markClean(); // Set new clean baseline
+                renderTabs();
                 showToast("File saved!");
             } catch (err) {
-                // Handle Cross-Origin block in the Canvas viewer elegantly
                 if (err.name === 'SecurityError' || err.message.includes('cross origin')) {
-                    fallbackSaveFile(editor.getValue(), filenameDisplay.textContent || 'Untitled.txt');
-                    hasUnsavedChanges = false;
-                    unsavedIndicator.classList.add('hidden');
+                    fallbackSaveFile(tab.doc.getValue(), tab.name);
                 } else if (err.name !== 'AbortError') {
                     console.error(err);
                     showToast("Failed to save file");
@@ -361,40 +706,106 @@
             lucide.createIcons();
         }
 
+        // Word Wrap Toggle
+        let isWordWrap = false;
+        function toggleWordWrap() {
+            isWordWrap = !isWordWrap;
+            editor.setOption("lineWrapping", isWordWrap);
+            const wrapIcon = document.getElementById('wrap-icon');
+            if (isWordWrap) {
+                wrapIcon.classList.add('text-blue-500');
+            } else {
+                wrapIcon.classList.remove('text-blue-500');
+            }
+            showToast(isWordWrap ? "Word Wrap: ON" : "Word Wrap: OFF");
+        }
+
         // Event Listeners
         document.getElementById('btn-new').addEventListener('click', newFile);
         document.getElementById('btn-open').addEventListener('click', openFile);
         document.getElementById('btn-save').addEventListener('click', saveFile);
         document.getElementById('btn-saveas').addEventListener('click', saveFileAs);
         document.getElementById('btn-theme').addEventListener('click', toggleTheme);
+        document.getElementById('btn-wrap').addEventListener('click', toggleWordWrap);
+        document.getElementById('btn-search').addEventListener('click', () => {
+            editor.execCommand('find');
+        });
         
-        // File Info Button Listener
-        document.getElementById('btn-info').addEventListener('click', () => {
-            const currentName = filenameDisplay.textContent;
-            alert(`File Name: ${currentName}\n\nNote: Modern web browsers strictly prevent web applications from seeing your full computer folder path for privacy and security reasons. Your file is saved in the location you selected in your device's file manager.`);
-        });
+        // --- Feature 5: Zoom / Font Size Logic ---
+        let currentFontSize = 15;
+        const minFontSize = 8;
+        const maxFontSize = 40;
 
-        // Inline File Rename Listener
-        filenameDisplay.addEventListener('click', () => {
-            const currentName = filenameDisplay.textContent;
-            const newName = prompt("Enter new file name (including extension):", currentName);
-            
-            if (newName && newName.trim() !== "" && newName !== currentName) {
-                if (confirm(`Are you sure you want to change the file name to "${newName}"?\n\nBecause of browser security, this will require you to choose a save location again the next time you save so the file can be created with the new name.`)) {
-                    filenameDisplay.textContent = newName.trim();
-                    applySyntaxHighlighting(newName.trim());
-                    
-                    // Detach from the current file handle so it doesn't overwrite the old file silently
-                    fileHandle = null;
-                    
-                    // Mark as having unsaved changes
-                    hasUnsavedChanges = true;
-                    unsavedIndicator.classList.remove('hidden');
-                    
-                    showToast(`File renamed to ${newName}`);
-                }
+        function updateFontSize() {
+            const cmElement = document.querySelector('.CodeMirror');
+            if (cmElement) {
+                cmElement.style.fontSize = `${currentFontSize}px`;
+                editor.refresh(); 
             }
+            showToast(`Zoom: ${currentFontSize}px`);
+        }
+
+        function zoomIn() {
+            if (currentFontSize < maxFontSize) {
+                currentFontSize += 1;
+                updateFontSize();
+            }
+        }
+
+        function zoomOut() {
+            if (currentFontSize > minFontSize) {
+                currentFontSize -= 1;
+                updateFontSize();
+            }
+        }
+
+        function resetZoom() {
+            currentFontSize = 15;
+            updateFontSize();
+        }
+
+        document.getElementById('btn-zoomin').addEventListener('click', zoomIn);
+        document.getElementById('btn-zoomout').addEventListener('click', zoomOut);
+
+        // --- Feature 7: Markdown Preview Logic ---
+        let isPreviewActive = false;
+        const editorWrapper = document.getElementById('editor-wrapper');
+        const markdownPreview = document.getElementById('markdown-preview');
+        const previewIcon = document.getElementById('preview-icon');
+
+        function togglePreview() {
+            isPreviewActive = !isPreviewActive;
+            if (isPreviewActive) {
+                editorWrapper.classList.remove('w-full');
+                editorWrapper.classList.add('w-1/2');
+                markdownPreview.classList.remove('hidden');
+                previewIcon.classList.add('text-blue-500');
+                updateMarkdownPreview();
+            } else {
+                editorWrapper.classList.add('w-full');
+                editorWrapper.classList.remove('w-1/2');
+                markdownPreview.classList.add('hidden');
+                previewIcon.classList.remove('text-blue-500');
+            }
+            setTimeout(() => editor.refresh(), 300);
+            showToast(isPreviewActive ? "Preview: ON" : "Preview: OFF");
+        }
+
+        function updateMarkdownPreview() {
+            if (isPreviewActive && typeof marked !== 'undefined') {
+                markdownPreview.innerHTML = marked.parse(editor.getValue());
+            }
+        }
+
+        document.getElementById('btn-preview').addEventListener('click', togglePreview);
+
+        // Dropdown Actions
+        document.getElementById('btn-info').addEventListener('click', () => {
+            const tab = getActiveTab();
+            if(!tab) return;
+            alert(`File Name: ${tab.name}\n\nNote: Modern web browsers strictly prevent web applications from seeing your full computer folder path for privacy and security reasons. Your file is saved in the location you selected in your device's file manager.`);
         });
+        document.getElementById('btn-rename').addEventListener('click', renameActiveTab);
 
         // Keyboard Shortcuts
         window.addEventListener('keydown', (e) => {
@@ -409,10 +820,32 @@
                         e.preventDefault();
                         openFile();
                         break;
-                    case 'm': // Using M for new to avoid overriding Chrome's new window (Ctrl+N)
+                    case 'm':
                         e.preventDefault();
                         newFile();
                         break;
+                    case '=': 
+                    case '+':
+                        e.preventDefault();
+                        zoomIn();
+                        break;
+                    case '-':
+                        e.preventDefault();
+                        zoomOut();
+                        break;
+                    case '0':
+                        e.preventDefault();
+                        resetZoom();
+                        break;
+                }
+            } else if (e.altKey && e.key.toLowerCase() === 'z') {
+                e.preventDefault();
+                toggleWordWrap();
+            } else if (e.altKey && e.key.toLowerCase() === 'p') {
+                e.preventDefault();
+                const btnPreview = document.getElementById('btn-preview');
+                if (!btnPreview.classList.contains('hidden')) {
+                    togglePreview();
                 }
             }
         });
@@ -421,6 +854,115 @@
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             toggleTheme();
         }
+
+        // --- Feature 1: Drag & Drop File Opening ---
+        document.body.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            e.dataTransfer.dropEffect = 'copy';
+            document.body.classList.add('opacity-75', 'transition-opacity');
+        });
+
+        document.body.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            document.body.classList.remove('opacity-75', 'transition-opacity');
+        });
+
+        document.body.addEventListener('drop', async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            document.body.classList.remove('opacity-75', 'transition-opacity');
+
+            if (e.dataTransfer.items && e.dataTransfer.items.length > 0) {
+                const item = e.dataTransfer.items[0];
+                if (item.kind === 'file') {
+                    try {
+                        const file = item.getAsFile();
+                        if (!file) return;
+
+                        let handle = null;
+                        if ('getAsFileSystemHandle' in item) {
+                            const tempHandle = await item.getAsFileSystemHandle();
+                            if (tempHandle && tempHandle.kind === 'file') {
+                                handle = tempHandle;
+                            }
+                        }
+
+                        const contents = await file.text();
+                        
+                        const currentTab = getActiveTab();
+                        if (currentTab && currentTab.name.startsWith('Untitled') && !currentTab.isUnsaved && currentTab.doc.getValue() === '') {
+                            currentTab.handle = handle;
+                            currentTab.name = file.name;
+                            currentTab.doc = CodeMirror.Doc(contents, getModeFromExtension(file.name));
+                            currentTab.doc.markClean(); // Set new clean baseline
+                            currentTab.isRenamed = false;
+                            editor.swapDoc(currentTab.doc);
+                            updatePreviewVisibility(getModeFromExtension(file.name));
+                            renderTabs();
+                        } else {
+                            createTab(file.name, contents, handle);
+                        }
+                        showToast(`Opened ${file.name}`);
+                    } catch (err) {
+                        console.error("Error opening dropped file:", err);
+                        showToast("Failed to open dropped file");
+                    }
+                }
+            }
+        });
+
+        // --- Feature 2: Status Bar Logic ---
+        const cursorPositionEl = document.getElementById('cursor-position');
+        const documentStatsEl = document.getElementById('document-stats');
+
+        function updateCursorPosition() {
+            const pos = editor.getCursor();
+            cursorPositionEl.textContent = `Ln ${pos.line + 1}, Col ${pos.ch + 1}`;
+        }
+
+        function updateDocumentStats() {
+            const text = editor.getValue();
+            const chars = text.length;
+            const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+            documentStatsEl.textContent = `Words: ${words} | Chars: ${chars}`;
+        }
+
+        editor.on('cursorActivity', updateCursorPosition);
+        
+        // --- Unsaved Changes Warning on Close ---
+        window.addEventListener('beforeunload', (e) => {
+            if (tabs.some(t => t.isUnsaved)) {
+                e.preventDefault();
+                e.returnValue = ''; 
+            }
+        });
+        
+        // --- Dropdown Menu Logic ---
+        const menuToggle = document.getElementById('btn-menu-toggle');
+        const dropdownMenu = document.getElementById('dropdown-menu');
+        
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!dropdownMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+                dropdownMenu.classList.add('hidden');
+            }
+        });
+
+        dropdownMenu.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                dropdownMenu.classList.add('hidden');
+            });
+        });
+
+        // Initialize First Tab or Restore Session
+        restoreSession();
+        
     </script>
 </body>
 </html>
