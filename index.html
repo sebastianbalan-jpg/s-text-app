@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f1f3f4" id="meta-theme-color">
+    <title>S-Text</title>
+    
+    <!-- Tailwind CSS for ChromeOS-like Styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cros: {
+                            light: '#f1f3f4',
+                            dark: '#202124',
+                            headerLight: '#ffffff',
+                            headerDark: '#292a2d',
+                            accent: '#8ab4f8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- CodeMirror for Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/material-darker.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+    
+    <!-- CodeMirror Language Modes -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/htmlmixed/htmlmixed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/markdown/markdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/clike/clike.min.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body { font-family: 'Roboto', 'Google Sans', sans-serif; }
+        /* Make the editor fill the screen properly */
+        .CodeMirror { 
+            height: 100%; 
+            font-family: 'Fira Code', 'Courier New', monospace; 
+            font-size: 15px; 
+        }
+        .CodeMirror-gutters {
+            border-right: 1px solid transparent;
+            background-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-cros-headerLight dark:bg-cros-headerDark h-screen flex flex-col overflow-hidden text-gray-800 dark:text-gray-200 transition-colors duration-200">
+    
+    <!-- ChromeOS Style Title/Action Bar -->
+    <header class="bg-cros-light dark:bg-cros-dark h-14 border-b border-gray-300 dark:border-gray-700 flex items-center justify-between px-4 flex-shrink-0 select-none">
+        <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-white shadow-sm">
+                <i data-lucide="file-edit" class="w-5 h-5"></i>
+            </div>
+            <span class="font-medium text-lg tracking-wide hidden sm:inline-block">S-Text</span>
+            <span class="text-gray-400 hidden sm:inline-block">|</span>
+            <span id="filename" class="text-sm font-medium px-2 py-1 bg-white dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-600 truncate max-w-[200px] cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" title="Click to rename">Untitled.txt</span>
+            <span id="unsaved-indicator" class="text-xs text-blue-500 font-bold hidden">*</span>
+            <button id="btn-info" class="p-1 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors ml-1" title="File Info">
+                <i data-lucide="info" class="w-4 h-4 text-gray-500 dark:text-gray-400"></i>
+            </button>
+        </div>
+
+        <div class="flex items-center space-x-1 sm:space-x-2">
+            <button id="btn-new" class="p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors" title="New File (Ctrl+M)">
+                <i data-lucide="file-plus" class="w-5 h-5"></i>
+            </button>
+            <button id="btn-open" class="p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors" title="Open File (Ctrl+O)">
+                <i data-lucide="folder-open" class="w-5 h-5"></i>
+            </button>
+            <button id="btn-save" class="p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors" title="Save (Ctrl+S)">
+                <i data-lucide="save" class="w-5 h-5"></i>
+            </button>
+            <button id="btn-saveas" class="p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors" title="Save As (Ctrl+Shift+S)">
+                <i data-lucide="download" class="w-5 h-5"></i>
+            </button>
+            
+            <div class="w-px h-6 bg-gray-400 dark:bg-gray-600 mx-1 sm:mx-2"></div>
+            
+            <button id="btn-theme" class="p-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors" title="Toggle Light/Dark Theme">
+                <i data-lucide="moon" class="w-5 h-5" id="theme-icon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Editor Area -->
+    <main class="flex-grow relative overflow-hidden">
+        <textarea id="editor"></textarea>
+    </main>
+
+    <!-- Message Toast -->
+    <div id="toast" class="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full shadow-lg opacity-0 transition-opacity duration-300 pointer-events-none z-50">
+        Message
+    </div>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // App State
+        let fileHandle = null;
+        let isDark = false;
+        let hasUnsavedChanges = false;
+
+        // Initialize CodeMirror
+        const editorTextArea = document.getElementById('editor');
+        const editor = CodeMirror.fromTextArea(editorTextArea, {
+            lineNumbers: true,
+            mode: "null", // Plain text by default
+            theme: "default",
+            indentUnit: 4,
+            matchBrackets: true
+        });
+
+        // DOM Elements
+        const filenameDisplay = document.getElementById('filename');
+        const unsavedIndicator = document.getElementById('unsaved-indicator');
+        const themeIcon = document.getElementById('theme-icon');
+        const metaThemeColor = document.getElementById('meta-theme-color');
+        const htmlElement = document.documentElement;
+
+        // Editor Change Event
+        editor.on('change', () => {
+            if (!hasUnsavedChanges) {
+                hasUnsavedChanges = true;
+                unsavedIndicator.classList.remove('hidden');
+            }
+        });
+
+        // Toast Notification Function
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.remove('opacity-0');
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+            }, 3000);
+        }
+
+        // Syntax Highlighting Detection based on File Extension
+        function applySyntaxHighlighting(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            let mode = "null"; // Default plain text
+
+            const modeMap = {
+                'js': 'javascript', 'json': 'javascript',
+                'html': 'htmlmixed', 'htm': 'htmlmixed',
+                'css': 'css',
+                'py': 'python',
+                'md': 'markdown',
+                'xml': 'xml', 'svg': 'xml',
+                'c': 'clike', 'cpp': 'clike', 'java': 'clike', 'cs': 'clike'
+            };
+
+            if (modeMap[ext]) {
+                mode = modeMap[ext];
+            }
+            
+            editor.setOption("mode", mode);
+        }
+
+        // --- Fallback Methods for iFrame / Canvas Environments ---
+        // These run if the Native File System API is blocked by a cross-origin SecurityError
+        function fallbackOpenFile() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.txt,.html,.css,.js,.json,.py,.md,.csv,.xml,.c,.cpp,.java';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    editor.setValue(event.target.result);
+                    filenameDisplay.textContent = file.name;
+                    applySyntaxHighlighting(file.name);
+                    hasUnsavedChanges = false;
+                    unsavedIndicator.classList.add('hidden');
+                    fileHandle = null; // Reset handle in fallback mode
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        function fallbackSaveFile(content, defaultFilename) {
+            // Prompt the user for a name so the app knows what to display
+            const filename = prompt("Enter file name to save:", defaultFilename);
+            if (!filename) return; // User cancelled the prompt
+
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            // Update the UI with the chosen filename
+            filenameDisplay.textContent = filename;
+            applySyntaxHighlighting(filename);
+            showToast("File downloaded (Fallback mode)");
+        }
+
+        // --- File System Actions ---
+        async function newFile() {
+            if (hasUnsavedChanges) {
+                if (!confirm("You have unsaved changes. Create new file anyway?")) return;
+            }
+            fileHandle = null;
+            editor.setValue('');
+            filenameDisplay.textContent = 'Untitled.txt';
+            applySyntaxHighlighting('Untitled.txt');
+            hasUnsavedChanges = false;
+            unsavedIndicator.classList.add('hidden');
+            showToast("New file created");
+        }
+
+        async function openFile() {
+            if (hasUnsavedChanges) {
+                if (!confirm("You have unsaved changes. Open another file anyway?")) return;
+            }
+            try {
+                // Use File System Access API
+                const [handle] = await window.showOpenFilePicker({
+                    types: [{
+                        description: 'Text/Code Files',
+                        accept: {'text/*': ['.txt', '.html', '.css', '.js', '.json', '.py', '.md', '.csv', '.xml', '.c', '.cpp', '.java']}
+                    }],
+                    excludeAcceptAllOption: false,
+                });
+                
+                fileHandle = handle;
+                const file = await fileHandle.getFile();
+                const contents = await file.text();
+                
+                editor.setValue(contents);
+                filenameDisplay.textContent = file.name;
+                applySyntaxHighlighting(file.name);
+                
+                hasUnsavedChanges = false;
+                unsavedIndicator.classList.add('hidden');
+                showToast(`Opened ${file.name}`);
+            } catch (err) {
+                // Handle Cross-Origin block in the Canvas viewer elegantly
+                if (err.name === 'SecurityError' || err.message.includes('cross origin')) {
+                    fallbackOpenFile();
+                } else if (err.name !== 'AbortError') {
+                    console.error(err);
+                    showToast("Failed to open file");
+                }
+            }
+        }
+
+        async function saveFile() {
+            if (!fileHandle) {
+                return saveFileAs();
+            }
+            try {
+                const writable = await fileHandle.createWritable();
+                await writable.write(editor.getValue());
+                await writable.close();
+                
+                hasUnsavedChanges = false;
+                unsavedIndicator.classList.add('hidden');
+                showToast("File saved!");
+            } catch (err) {
+                console.error(err);
+                showToast("Failed to save file");
+            }
+        }
+
+        async function saveFileAs() {
+            try {
+                const currentName = filenameDisplay.textContent || 'Untitled.txt';
+                const handle = await window.showSaveFilePicker({
+                    suggestedName: currentName,
+                    types: [{
+                        description: 'Text/Code File',
+                        accept: {'text/plain': ['.txt', '.html', '.css', '.js', '.json', '.py', '.md']}
+                    }],
+                });
+                fileHandle = handle;
+                
+                const writable = await fileHandle.createWritable();
+                await writable.write(editor.getValue());
+                await writable.close();
+                
+                const file = await fileHandle.getFile();
+                filenameDisplay.textContent = file.name;
+                applySyntaxHighlighting(file.name);
+                
+                hasUnsavedChanges = false;
+                unsavedIndicator.classList.add('hidden');
+                showToast("File saved!");
+            } catch (err) {
+                // Handle Cross-Origin block in the Canvas viewer elegantly
+                if (err.name === 'SecurityError' || err.message.includes('cross origin')) {
+                    fallbackSaveFile(editor.getValue(), filenameDisplay.textContent || 'Untitled.txt');
+                    hasUnsavedChanges = false;
+                    unsavedIndicator.classList.add('hidden');
+                } else if (err.name !== 'AbortError') {
+                    console.error(err);
+                    showToast("Failed to save file");
+                }
+            }
+        }
+
+        // Theme Toggle
+        function toggleTheme() {
+            isDark = !isDark;
+            if (isDark) {
+                htmlElement.classList.add('dark');
+                editor.setOption("theme", "material-darker");
+                themeIcon.setAttribute('data-lucide', 'sun');
+                metaThemeColor.setAttribute('content', '#202124');
+            } else {
+                htmlElement.classList.remove('dark');
+                editor.setOption("theme", "default");
+                themeIcon.setAttribute('data-lucide', 'moon');
+                metaThemeColor.setAttribute('content', '#f1f3f4');
+            }
+            lucide.createIcons();
+        }
+
+        // Event Listeners
+        document.getElementById('btn-new').addEventListener('click', newFile);
+        document.getElementById('btn-open').addEventListener('click', openFile);
+        document.getElementById('btn-save').addEventListener('click', saveFile);
+        document.getElementById('btn-saveas').addEventListener('click', saveFileAs);
+        document.getElementById('btn-theme').addEventListener('click', toggleTheme);
+        
+        // File Info Button Listener
+        document.getElementById('btn-info').addEventListener('click', () => {
+            const currentName = filenameDisplay.textContent;
+            alert(`File Name: ${currentName}\n\nNote: Modern web browsers strictly prevent web applications from seeing your full computer folder path for privacy and security reasons. Your file is saved in the location you selected in your device's file manager.`);
+        });
+
+        // Inline File Rename Listener
+        filenameDisplay.addEventListener('click', () => {
+            const currentName = filenameDisplay.textContent;
+            const newName = prompt("Enter new file name (including extension):", currentName);
+            
+            if (newName && newName.trim() !== "" && newName !== currentName) {
+                if (confirm(`Are you sure you want to change the file name to "${newName}"?\n\nBecause of browser security, this will require you to choose a save location again the next time you save so the file can be created with the new name.`)) {
+                    filenameDisplay.textContent = newName.trim();
+                    applySyntaxHighlighting(newName.trim());
+                    
+                    // Detach from the current file handle so it doesn't overwrite the old file silently
+                    fileHandle = null;
+                    
+                    // Mark as having unsaved changes
+                    hasUnsavedChanges = true;
+                    unsavedIndicator.classList.remove('hidden');
+                    
+                    showToast(`File renamed to ${newName}`);
+                }
+            }
+        });
+
+        // Keyboard Shortcuts
+        window.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                switch (e.key.toLowerCase()) {
+                    case 's':
+                        e.preventDefault();
+                        if (e.shiftKey) saveFileAs();
+                        else saveFile();
+                        break;
+                    case 'o':
+                        e.preventDefault();
+                        openFile();
+                        break;
+                    case 'm': // Using M for new to avoid overriding Chrome's new window (Ctrl+N)
+                        e.preventDefault();
+                        newFile();
+                        break;
+                }
+            }
+        });
+
+        // Initialize user preference for theme
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            toggleTheme();
+        }
+    </script>
+</body>
+</html>
