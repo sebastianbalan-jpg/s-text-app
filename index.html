@@ -206,7 +206,7 @@
                 <button id="btn-menu-toggle" class="p-2.5 rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors" title="More Options">
                     <i data-lucide="more-vertical" class="w-[20px] h-[20px]"></i>
                 </button>
-                <div id="dropdown-menu" class="hidden absolute right-0 mt-1 w-64 bg-white dark:bg-google-bgElevatedDark border border-transparent dark:border-google-borderDark rounded-lg shadow-lg py-2 text-[14px] text-google-textLight dark:text-google-textDark z-50">
+                <div id="dropdown-menu" class="hidden absolute right-0 mt-1 w-[280px] bg-white dark:bg-google-bgElevatedDark border border-transparent dark:border-google-borderDark rounded-lg shadow-lg py-2 text-[14px] text-google-textLight dark:text-google-textDark z-50">
                     <button id="btn-install" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors hidden">
                         <i data-lucide="monitor-down" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i> Install app
                     </button>
@@ -220,14 +220,32 @@
                     <button id="btn-preview" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors hidden">
                         <i data-lucide="eye" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark" id="preview-icon"></i> Markdown preview
                     </button>
+                    
                     <div class="border-t border-google-borderLight dark:border-google-borderDark my-1.5"></div>
-                    <button id="btn-zoomin" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
-                        <i data-lucide="zoom-in" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i> Zoom in
-                    </button>
-                    <button id="btn-zoomout" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
-                        <i data-lucide="zoom-out" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i> Zoom out
-                    </button>
+                    
+                    <!-- Chrome-Style Zoom Row -->
+                    <div class="flex items-center justify-between px-4 py-1.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
+                        <div class="flex items-center text-google-textLight dark:text-google-textDark cursor-default select-none">
+                            <i data-lucide="zoom-in" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i>
+                            <span>Zoom</span>
+                        </div>
+                        <div class="flex items-center">
+                            <button id="btn-zoom-out" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-google-textLight dark:text-google-textDark" title="Zoom out">
+                                <i data-lucide="minus" class="w-4 h-4 pointer-events-none"></i>
+                            </button>
+                            <span id="zoom-level-text" class="w-12 text-center text-[13px] font-medium text-google-textLight dark:text-google-textDark cursor-default select-none">100%</span>
+                            <button id="btn-zoom-in" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-google-textLight dark:text-google-textDark" title="Zoom in">
+                                <i data-lucide="plus" class="w-4 h-4 pointer-events-none"></i>
+                            </button>
+                            <div class="w-px h-4 bg-google-borderLight dark:bg-google-borderDark mx-1.5"></div>
+                            <button id="btn-fullscreen" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-google-textLight dark:text-google-textDark" title="Full screen">
+                                <i data-lucide="maximize" class="w-3.5 h-3.5 pointer-events-none" id="fullscreen-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+
                     <div class="border-t border-google-borderLight dark:border-google-borderDark my-1.5"></div>
+                    
                     <button id="btn-theme" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
                         <i data-lucide="moon" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark" id="theme-icon"></i> Toggle dark mode
                     </button>
@@ -255,7 +273,7 @@
                 <!-- Find Row -->
                 <div class="flex items-center p-2 space-x-1">
                     <button id="btn-toggle-replace" class="p-1.5 rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors" title="Toggle Replace">
-                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        <i data-lucide="chevron-right" class="w-4 h-4 pointer-events-none"></i>
                     </button>
                     <div class="flex-grow flex items-center bg-google-bgGray dark:bg-google-bgDark border border-google-borderLight dark:border-google-borderDark rounded px-3 h-9 focus-within:border-google-blue focus-within:ring-1 focus-within:ring-google-blue transition-all">
                         <input type="text" id="find-input" class="w-full bg-transparent outline-none dark:text-google-textDark placeholder-google-textMuted dark:placeholder-google-textMutedDark text-[14px]" placeholder="Find in document">
@@ -841,11 +859,39 @@
         let currentFontSize = 14;
         function updateFontSize() {
             const cmElement = document.querySelector('.CodeMirror');
-            if (cmElement) { cmElement.style.fontSize = `${currentFontSize}px`; editor.refresh(); }
-            showToast(`Zoom: ${Math.round((currentFontSize/14)*100)}%`);
+            const percentage = Math.round((currentFontSize / 14) * 100);
+            
+            if (cmElement) { 
+                cmElement.style.fontSize = `${currentFontSize}px`; 
+                editor.refresh(); 
+            }
+            
+            // Update the text in the new Chrome zoom row
+            document.getElementById('zoom-level-text').textContent = `${percentage}%`;
         }
+        
         function zoomIn() { if (currentFontSize < 40) { currentFontSize++; updateFontSize(); } }
         function zoomOut() { if (currentFontSize > 8) { currentFontSize--; updateFontSize(); } }
+
+        // Fullscreen Logic
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => console.log(err));
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
+
+        document.addEventListener('fullscreenchange', () => {
+            const icon = document.getElementById('fullscreen-icon');
+            if (document.fullscreenElement) {
+                icon.setAttribute('data-lucide', 'minimize');
+                document.getElementById('dropdown-menu').classList.add('hidden'); // Close menu on enter
+            } else {
+                icon.setAttribute('data-lucide', 'maximize');
+            }
+            lucide.createIcons();
+        });
 
         let isPreviewActive = false;
         function togglePreview() {
@@ -877,8 +923,12 @@
         document.getElementById('btn-theme').addEventListener('click', toggleTheme);
         document.getElementById('btn-wrap').addEventListener('click', toggleWordWrap);
         document.getElementById('btn-search').addEventListener('click', () => openSearchPanel());
-        document.getElementById('btn-zoomin').addEventListener('click', zoomIn);
-        document.getElementById('btn-zoomout').addEventListener('click', zoomOut);
+        
+        // Setup Zoom & Fullscreen Event Listeners
+        document.getElementById('btn-zoom-in').addEventListener('click', (e) => { e.stopPropagation(); zoomIn(); });
+        document.getElementById('btn-zoom-out').addEventListener('click', (e) => { e.stopPropagation(); zoomOut(); });
+        document.getElementById('btn-fullscreen').addEventListener('click', (e) => { e.stopPropagation(); toggleFullscreen(); });
+        
         document.getElementById('btn-preview').addEventListener('click', togglePreview);
         document.getElementById('btn-info').addEventListener('click', () => {
             const t = getActiveTab();
@@ -907,9 +957,24 @@
         // Setup Dropdown Menu
         const menuToggle = document.getElementById('btn-menu-toggle');
         const dropdownMenu = document.getElementById('dropdown-menu');
-        menuToggle.addEventListener('click', (e) => { e.stopPropagation(); dropdownMenu.classList.toggle('hidden'); });
-        document.addEventListener('click', (e) => { if (!dropdownMenu.contains(e.target) && !menuToggle.contains(e.target)) dropdownMenu.classList.add('hidden'); });
-        dropdownMenu.querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => dropdownMenu.classList.add('hidden')));
+        
+        menuToggle.addEventListener('click', (e) => { 
+            e.stopPropagation(); 
+            dropdownMenu.classList.toggle('hidden'); 
+        });
+        
+        document.addEventListener('click', (e) => { 
+            if (!dropdownMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+                dropdownMenu.classList.add('hidden'); 
+            }
+        });
+        
+        // ONLY close the dropdown if the clicked button IS NOT a zoom control
+        dropdownMenu.querySelectorAll('button').forEach(btn => {
+            if (!['btn-zoom-in', 'btn-zoom-out', 'btn-fullscreen'].includes(btn.id)) {
+                btn.addEventListener('click', () => dropdownMenu.classList.add('hidden'));
+            }
+        });
 
         // Status Bar
         function updateCursorPosition() {
