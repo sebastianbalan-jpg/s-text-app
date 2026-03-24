@@ -279,39 +279,48 @@
             <textarea id="editor"></textarea>
             
             <!-- Custom Google-style Find/Replace Panel -->
-            <div id="search-panel" class="hidden absolute top-4 right-6 w-[360px] bg-white dark:bg-google-bgElevatedDark shadow-[0_4px_6px_rgba(0,0,0,0.1),0_1px_3px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_6px_rgba(0,0,0,0.3)] rounded-lg border border-google-borderLight dark:border-google-borderDark z-40 flex flex-col text-[13px] transition-colors overflow-hidden">
+            <div id="search-panel" class="hidden absolute top-4 right-6 w-[390px] bg-white dark:bg-google-bgElevatedDark shadow-[0_4px_6px_rgba(0,0,0,0.1),0_1px_3px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_6px_rgba(0,0,0,0.3)] rounded-lg border border-google-borderLight dark:border-google-borderDark z-40 flex flex-col text-[13px] transition-colors overflow-hidden p-2 space-y-2">
+                
                 <!-- Find Row -->
-                <div class="flex items-center p-2 space-x-1">
-                    <button id="btn-toggle-replace" class="p-1.5 rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors" title="Toggle Replace">
-                        <i data-lucide="chevron-right" class="w-4 h-4 pointer-events-none"></i>
-                    </button>
-                    <div class="flex-grow flex items-center bg-google-bgGray dark:bg-google-bgDark border border-google-borderLight dark:border-google-borderDark rounded px-3 h-9 focus-within:border-google-blue focus-within:ring-1 focus-within:ring-google-blue transition-all">
-                        <input type="text" id="find-input" class="w-full bg-transparent outline-none dark:text-google-textDark placeholder-google-textMuted dark:placeholder-google-textMutedDark text-[14px]" placeholder="Find in document">
+                <div class="flex items-center space-x-2">
+                    <div class="w-6 flex flex-shrink-0 items-center justify-center">
+                        <button id="btn-toggle-replace" class="p-1 rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors" title="Toggle Replace">
+                            <i data-lucide="chevron-right" class="w-4 h-4 pointer-events-none"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="flex-grow flex items-center bg-google-bgGray dark:bg-google-bgDark border border-google-borderLight dark:border-google-borderDark rounded px-3 h-8 focus-within:border-google-blue focus-within:ring-1 focus-within:ring-google-blue transition-all">
+                        <input type="text" id="find-input" class="w-full bg-transparent outline-none dark:text-google-textDark placeholder-google-textMuted dark:placeholder-google-textMutedDark text-[13px]" placeholder="Find in document">
                         <span id="search-count" class="text-xs text-google-textMuted dark:text-google-textMutedDark whitespace-nowrap ml-2 pointer-events-none font-mono">0/0</span>
                     </div>
-                    <div class="flex items-center space-x-0.5 ml-1">
-                        <button id="btn-find-prev" class="p-1.5 rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark disabled:opacity-30 disabled:hover:bg-transparent transition-colors" title="Previous match (Shift+Enter)">
+                    
+                    <div class="w-[110px] flex items-center justify-end space-x-0.5 flex-shrink-0">
+                        <button id="btn-find-prev" class="w-7 h-7 flex items-center justify-center rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark disabled:opacity-30 disabled:hover:bg-transparent transition-colors" title="Previous match (Shift+Enter)">
                             <i data-lucide="chevron-up" class="w-4 h-4"></i>
                         </button>
-                        <button id="btn-find-next" class="p-1.5 rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark disabled:opacity-30 disabled:hover:bg-transparent transition-colors" title="Next match (Enter)">
+                        <button id="btn-find-next" class="w-7 h-7 flex items-center justify-center rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark disabled:opacity-30 disabled:hover:bg-transparent transition-colors" title="Next match (Enter)">
                             <i data-lucide="chevron-down" class="w-4 h-4"></i>
                         </button>
-                        <div class="w-px h-5 bg-google-borderLight dark:bg-google-borderDark mx-1"></div>
-                        <button id="btn-close-search" class="p-1.5 rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors" title="Close (Esc)">
+                        <div class="w-px h-4 bg-google-borderLight dark:bg-google-borderDark mx-1"></div>
+                        <button id="btn-close-search" class="w-7 h-7 flex items-center justify-center rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors" title="Close (Esc)">
                             <i data-lucide="x" class="w-4 h-4"></i>
                         </button>
                     </div>
                 </div>
+                
                 <!-- Replace Row -->
-                <div id="replace-row" class="hidden flex items-center p-2 pt-0 space-x-2 pl-9 pb-3">
-                    <div class="flex-grow flex items-center bg-google-bgGray dark:bg-google-bgDark border border-google-borderLight dark:border-google-borderDark rounded px-3 h-9 focus-within:border-google-blue focus-within:ring-1 focus-within:ring-google-blue transition-all">
-                        <input type="text" id="replace-input" class="w-full bg-transparent outline-none dark:text-google-textDark placeholder-google-textMuted dark:placeholder-google-textMutedDark text-[14px]" placeholder="Replace with">
+                <div id="replace-row" class="hidden flex items-center space-x-2">
+                    <div class="w-6 flex flex-shrink-0"></div>
+                    
+                    <div class="flex-grow flex items-center bg-google-bgGray dark:bg-google-bgDark border border-google-borderLight dark:border-google-borderDark rounded px-3 h-8 focus-within:border-google-blue focus-within:ring-1 focus-within:ring-google-blue transition-all">
+                        <input type="text" id="replace-input" class="w-full bg-transparent outline-none dark:text-google-textDark placeholder-google-textMuted dark:placeholder-google-textMutedDark text-[13px]" placeholder="Replace with">
                     </div>
-                    <div class="flex items-center space-x-1.5">
-                        <button id="btn-replace" class="h-9 px-3 text-[13px] font-medium text-google-blue dark:text-google-blueDark hover:bg-google-blueHover dark:hover:bg-[rgba(138,180,248,0.08)] rounded transition-colors" title="Replace current">
+                    
+                    <div class="w-[110px] flex items-center justify-start space-x-1.5 flex-shrink-0 pl-1">
+                        <button id="btn-replace" class="h-7 px-2.5 text-[12px] font-medium bg-transparent text-google-textLight dark:text-google-textDark border border-google-borderLight dark:border-google-borderDark rounded hover:bg-google-bgGrayHover dark:hover:bg-[rgba(255,255,255,0.05)] transition-colors" title="Replace current">
                             Replace
                         </button>
-                        <button id="btn-replace-all" class="h-9 px-3 text-[13px] font-medium text-google-blue dark:text-google-blueDark hover:bg-google-blueHover dark:hover:bg-[rgba(138,180,248,0.08)] rounded transition-colors" title="Replace all instances">
+                        <button id="btn-replace-all" class="h-7 px-2.5 text-[12px] font-medium bg-transparent text-google-textLight dark:text-google-textDark border border-google-borderLight dark:border-google-borderDark rounded hover:bg-google-bgGrayHover dark:hover:bg-[rgba(255,255,255,0.05)] transition-colors" title="Replace all instances">
                             All
                         </button>
                     </div>
