@@ -207,6 +207,16 @@
                     <i data-lucide="more-vertical" class="w-[20px] h-[20px]"></i>
                 </button>
                 <div id="dropdown-menu" class="hidden absolute right-0 mt-1 w-[280px] bg-white dark:bg-google-bgElevatedDark border border-transparent dark:border-google-borderDark rounded-lg shadow-lg py-2 text-[14px] text-google-textLight dark:text-google-textDark z-50">
+                    <!-- Update Available Button (Hidden by default) -->
+                    <button id="btn-update-app" class="w-full flex items-center px-4 py-2 hover:bg-google-blueHover dark:hover:bg-[rgba(138,180,248,0.08)] transition-colors hidden">
+                        <i data-lucide="refresh-cw" class="w-[18px] h-[18px] mr-4 text-google-blue dark:text-google-blueDark"></i> 
+                        <div class="flex flex-col items-start leading-tight">
+                            <span class="font-medium text-google-blue dark:text-google-blueDark">Update available</span>
+                            <span class="text-[11px] text-google-textMuted dark:text-google-textMutedDark mt-0.5">Click to reload app</span>
+                        </div>
+                    </button>
+                    <div id="update-divider" class="border-t border-google-borderLight dark:border-google-borderDark my-1.5 hidden"></div>
+
                     <button id="btn-install" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors hidden">
                         <i data-lucide="monitor-down" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i> Install app
                     </button>
@@ -1028,8 +1038,36 @@
         // Register Service Worker for Offline Support & Reliable PWA Installability
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').catch(err => {
+                navigator.serviceWorker.register('sw.js').then(registration => {
+                    // Force the browser to check for updates on load
+                    registration.update();
+
+                    // Detect when a new service worker is fetched and installing
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            // If installed AND there's an existing controller, it's a version update (not first install)
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                document.getElementById('btn-update-app').classList.remove('hidden');
+                                document.getElementById('update-divider').classList.remove('hidden');
+                                showToast("New version available. Open menu to reload.");
+                            }
+                        });
+                    });
+                }).catch(err => {
                     console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+
+            // Handle the manual update click
+            document.getElementById('btn-update-app').addEventListener('click', () => {
+                // Unregister the old service worker to force a clean network fetch
+                navigator.serviceWorker.getRegistrations().then(registrations => {
+                    for(let registration of registrations) {
+                        registration.unregister();
+                    }
+                    // Hard reload to pull new files from GitHub Pages
+                    window.location.reload(true);
                 });
             });
         }
