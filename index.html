@@ -207,6 +207,7 @@
                     <i data-lucide="more-vertical" class="w-[20px] h-[20px]"></i>
                 </button>
                 <div id="dropdown-menu" class="hidden absolute right-0 mt-1 w-[280px] bg-white dark:bg-google-bgElevatedDark border border-transparent dark:border-google-borderDark rounded-lg shadow-lg py-2 text-[14px] text-google-textLight dark:text-google-textDark z-50">
+                    
                     <!-- Update Available Button (Hidden by default) -->
                     <button id="btn-update-app" class="w-full flex items-center px-4 py-2 hover:bg-google-blueHover dark:hover:bg-[rgba(138,180,248,0.08)] transition-colors hidden">
                         <i data-lucide="refresh-cw" class="w-[18px] h-[18px] mr-4 text-google-blue dark:text-google-blueDark"></i> 
@@ -221,6 +222,7 @@
                         <i data-lucide="monitor-down" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i> Install app
                     </button>
                     <div id="install-divider" class="border-t border-google-borderLight dark:border-google-borderDark my-1.5 hidden"></div>
+                    
                     <button id="btn-search" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
                         <i data-lucide="search" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i> Find and replace
                     </button>
@@ -233,6 +235,20 @@
                     
                     <div class="border-t border-google-borderLight dark:border-google-borderDark my-1.5"></div>
                     
+                    <!-- Recently Closed Files Accordion -->
+                    <button id="btn-recent-toggle" class="w-full flex items-center justify-between px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
+                        <div class="flex items-center text-google-textLight dark:text-google-textDark">
+                            <i data-lucide="history" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i>
+                            <span>Recently closed</span>
+                        </div>
+                        <i data-lucide="chevron-down" id="recent-chevron" class="w-4 h-4 text-google-textMuted dark:text-google-textMutedDark transition-transform"></i>
+                    </button>
+                    <div id="recent-files-container" class="hidden max-h-[170px] overflow-y-auto bg-gray-50 dark:bg-[#1a1b1e] shadow-inner">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+
+                    <div class="border-t border-google-borderLight dark:border-google-borderDark my-1.5"></div>
+
                     <!-- Chrome-Style Zoom Row -->
                     <div class="flex items-center justify-between px-4 py-1.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
                         <div class="flex items-center text-google-textLight dark:text-google-textDark cursor-default select-none">
@@ -353,6 +369,43 @@
         let untitledCount = 0;
         let isDark = false;
         let isRestoringSession = false;
+        let draggedTabId = null;
+        let recentlyClosed = [];
+
+        // --- IndexedDB for Persistent Recently Closed Files ---
+        const dbPromise = new Promise((resolve, reject) => {
+            const request = indexedDB.open("STextDB", 1);
+            request.onupgradeneeded = (e) => {
+                const db = e.target.result;
+                if (!db.objectStoreNames.contains("handles")) {
+                    db.createObjectStore("handles", { keyPath: "id" });
+                }
+            };
+            request.onsuccess = (e) => resolve(e.target.result);
+            request.onerror = (e) => reject(e.target.error);
+        });
+
+        async function saveRecentToDB() {
+            try {
+                const db = await dbPromise;
+                const tx = db.transaction("handles", "readwrite");
+                tx.objectStore("handles").put({ id: "recentFiles", list: recentlyClosed });
+            } catch(e) { console.warn("Could not save recent files to DB", e); }
+        }
+
+        async function loadRecentFromDB() {
+            try {
+                const db = await dbPromise;
+                const tx = db.transaction("handles", "readonly");
+                const request = tx.objectStore("handles").get("recentFiles");
+                request.onsuccess = () => {
+                    if (request.result && request.result.list) {
+                        recentlyClosed = request.result.list;
+                    }
+                    updateRecentFilesMenu();
+                };
+            } catch(e) { console.warn("Could not load recent files from DB", e); }
+        }
 
         // --- Session Persistence Logic ---
         let sessionSaveTimeout;
@@ -372,12 +425,12 @@
                         isRenamed: t.isRenamed
                     }))
                 };
-                localStorage.setItem('stext-session-v3', JSON.stringify(sessionData));
+                localStorage.setItem('stext-session-v4', JSON.stringify(sessionData));
             }, 500);
         }
 
         function restoreSession() {
-            const dataStr = localStorage.getItem('stext-session-v3');
+            const dataStr = localStorage.getItem('stext-session-v4');
             if (dataStr) {
                 try {
                     isRestoringSession = true;
@@ -527,6 +580,20 @@
             const tabIndex = tabs.findIndex(t => t.id === id);
             const tab = tabs[tabIndex];
             if (tab.isUnsaved && !confirm(`Save changes to "${tab.name}" before closing?\nClick OK to close and discard changes.`)) return;
+            
+            // Log to recently closed if it contains real data or has a handle
+            if (!tab.name.startsWith('Untitled') || tab.doc.getValue().trim() !== '') {
+                recentlyClosed = recentlyClosed.filter(f => f.name !== tab.name);
+                recentlyClosed.unshift({
+                    name: tab.name,
+                    handle: tab.handle,
+                    content: tab.handle ? null : tab.doc.getValue()
+                });
+                if (recentlyClosed.length > 20) recentlyClosed.pop();
+                updateRecentFilesMenu();
+                saveRecentToDB();
+            }
+
             tabs.splice(tabIndex, 1);
             if (tabs.length === 0) createTab();
             else if (activeTabId === id) switchTab(tabs[Math.max(0, tabIndex - 1)].id);
@@ -545,6 +612,53 @@
                 
                 tabEl.className = `group flex items-center px-3 py-1.5 cursor-pointer min-w-max select-none transition-colors relative ${bgClass}`;
                 tabEl.onclick = () => switchTab(tab.id);
+
+                // --- Drag and Drop Tab Reordering Logic ---
+                tabEl.draggable = true;
+                
+                tabEl.addEventListener('dragstart', (e) => {
+                    draggedTabId = tab.id;
+                    e.dataTransfer.effectAllowed = 'move';
+                    // Timeout ensures the drag visual "ghost" looks normal before fading the original
+                    setTimeout(() => tabEl.classList.add('opacity-40'), 0);
+                });
+
+                tabEl.addEventListener('dragover', (e) => {
+                    e.preventDefault(); // Necessary to allow a drop
+                    if (draggedTabId && draggedTabId !== tab.id) {
+                        // Adds a nice Google-blue outline when hovering over a target tab
+                        tabEl.classList.add('ring-2', 'ring-google-blue', 'ring-inset', 'rounded-t-lg');
+                    }
+                });
+
+                tabEl.addEventListener('dragleave', () => {
+                    tabEl.classList.remove('ring-2', 'ring-google-blue', 'ring-inset', 'rounded-t-lg');
+                });
+
+                tabEl.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    tabEl.classList.remove('ring-2', 'ring-google-blue', 'ring-inset', 'rounded-t-lg');
+                    
+                    if (draggedTabId && draggedTabId !== tab.id) {
+                        const fromIndex = tabs.findIndex(t => t.id === draggedTabId);
+                        const toIndex = tabs.findIndex(t => t.id === tab.id);
+                        
+                        if (fromIndex !== -1 && toIndex !== -1) {
+                            // Extract the tab from the old position and insert it at the new position
+                            const [movedTab] = tabs.splice(fromIndex, 1);
+                            tabs.splice(toIndex, 0, movedTab);
+                            renderTabs(); // Re-render visually updates and saves session
+                        }
+                    }
+                    draggedTabId = null;
+                });
+
+                tabEl.addEventListener('dragend', () => {
+                    tabEl.classList.remove('opacity-40');
+                    draggedTabId = null;
+                });
+                // ------------------------------------------
 
                 const nameSpan = document.createElement('span');
                 nameSpan.className = `text-[13px] mr-2 transition-colors ${colorClass}`;
@@ -663,7 +777,7 @@
                 await writable.write(tab.doc.getValue());
                 await writable.close();
                 tab.isUnsaved = false; tab.isRenamed = false; tab.doc.markClean();
-                renderTabs(); showToast("File saved to Drive"); // Google workspace flair wording
+                renderTabs(); showToast("File saved to Drive");
             } catch (err) { console.error(err); showToast("Failed to save file"); }
         }
 
@@ -934,6 +1048,84 @@
             }
         }
 
+        // --- Recently Closed Menu Helpers ---
+        function updateRecentFilesMenu() {
+            const container = document.getElementById('recent-files-container');
+            container.innerHTML = '';
+            
+            if (recentlyClosed.length === 0) {
+                const emptyEl = document.createElement('div');
+                emptyEl.className = 'px-4 py-3 text-[12px] text-google-textMuted dark:text-google-textMutedDark italic text-center';
+                emptyEl.textContent = 'No recently closed files';
+                container.appendChild(emptyEl);
+                return;
+            }
+
+            recentlyClosed.forEach((file, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full text-left px-4 py-2.5 text-[13px] text-google-textLight dark:text-google-textDark hover:bg-google-bgGrayHover dark:hover:bg-[rgba(255,255,255,0.05)] transition-colors truncate flex items-center';
+                
+                const iconHTML = `<i data-lucide="file-text" class="w-3.5 h-3.5 mr-3 text-google-textMuted dark:text-google-textMutedDark flex-shrink-0"></i>`;
+                btn.innerHTML = `${iconHTML} <span class="truncate">${file.name}</span>`;
+                
+                btn.onclick = async (e) => {
+                    e.stopPropagation();
+                    await restoreRecentFile(index);
+                    document.getElementById('dropdown-menu').classList.add('hidden');
+                    document.getElementById('recent-chevron').classList.remove('rotate-180');
+                    document.getElementById('recent-files-container').classList.add('hidden');
+                };
+                container.appendChild(btn);
+            });
+            lucide.createIcons();
+        }
+
+        async function restoreRecentFile(index) {
+            const file = recentlyClosed[index];
+            recentlyClosed.splice(index, 1); 
+            updateRecentFilesMenu();
+            saveRecentToDB();
+
+            try {
+                if (file.handle) {
+                    const opts = { mode: 'read' };
+                    if ((await file.handle.queryPermission(opts)) !== 'granted') {
+                        const permission = await file.handle.requestPermission(opts);
+                        if (permission !== 'granted') throw new Error("Permission denied by user");
+                    }
+                    const f = await file.handle.getFile();
+                    const contents = await f.text();
+                    
+                    const activeTab = getActiveTab();
+                    if (activeTab && activeTab.name.startsWith('Untitled') && !activeTab.isUnsaved && activeTab.doc.getValue() === '') {
+                        activeTab.handle = file.handle; activeTab.name = f.name;
+                        activeTab.doc = CodeMirror.Doc(contents, getModeFromExtension(f.name));
+                        activeTab.doc.markClean(); activeTab.isRenamed = false;
+                        editor.swapDoc(activeTab.doc); updatePreviewVisibility(getModeFromExtension(f.name)); renderTabs();
+                    } else createTab(f.name, contents, file.handle);
+                    
+                    showToast(`Restored ${f.name}`);
+                } else {
+                    const activeTab = getActiveTab();
+                    if (activeTab && activeTab.name.startsWith('Untitled') && !activeTab.isUnsaved && activeTab.doc.getValue() === '') {
+                        activeTab.name = file.name;
+                        activeTab.doc = CodeMirror.Doc(file.content || '', getModeFromExtension(file.name));
+                        activeTab.doc.markClean(); editor.swapDoc(activeTab.doc);
+                        updatePreviewVisibility(getModeFromExtension(file.name)); renderTabs();
+                    } else createTab(file.name, file.content || '');
+                    
+                    showToast(`Restored ${file.name}`);
+                }
+            } catch (err) {
+                console.error("Restore failed:", err);
+                showToast("Failed to restore file.");
+                recentlyClosed.unshift(file);
+                updateRecentFilesMenu();
+                saveRecentToDB();
+            }
+        }
+
+
         // Global Event Listeners
         document.getElementById('btn-new').addEventListener('click', () => createTab());
         document.getElementById('btn-open').addEventListener('click', openFile);
@@ -981,6 +1173,18 @@
             e.stopPropagation(); 
             dropdownMenu.classList.toggle('hidden'); 
         });
+
+        // Toggle Recent Files Accordion
+        document.getElementById('btn-recent-toggle').addEventListener('click', (e) => {
+            e.stopPropagation();
+            const container = document.getElementById('recent-files-container');
+            const chevron = document.getElementById('recent-chevron');
+            container.classList.toggle('hidden');
+            container.classList.toggle('flex');
+            
+            if (container.classList.contains('hidden')) chevron.classList.remove('rotate-180');
+            else chevron.classList.add('rotate-180');
+        });
         
         document.addEventListener('click', (e) => { 
             if (!dropdownMenu.contains(e.target) && !menuToggle.contains(e.target)) {
@@ -988,9 +1192,9 @@
             }
         });
         
-        // ONLY close the dropdown if the clicked button IS NOT a zoom control
+        // ONLY close the dropdown if the clicked button IS NOT a zoom control or the recent toggle
         dropdownMenu.querySelectorAll('button').forEach(btn => {
-            if (!['btn-zoom-in', 'btn-zoom-out', 'btn-fullscreen'].includes(btn.id)) {
+            if (!['btn-zoom-in', 'btn-zoom-out', 'btn-fullscreen', 'btn-recent-toggle'].includes(btn.id) && !btn.closest('#recent-files-container')) {
                 btn.addEventListener('click', () => dropdownMenu.classList.add('hidden'));
             }
         });
@@ -1083,7 +1287,47 @@
 
         // Initialize Preference & Start
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) toggleTheme();
+        
+        // Restore Session & DB History
         restoreSession();
+        loadRecentFromDB();
+
+        // --- PWA File Handling Logic ---
+        // This intercepts files when a user double-clicks them in their OS file explorer
+        if ('launchQueue' in window) {
+            window.launchQueue.setConsumer(async (launchParams) => {
+                if (!launchParams.files || !launchParams.files.length) return;
+                
+                for (const handle of launchParams.files) {
+                    if (handle.kind === 'file') {
+                        try {
+                            const file = await handle.getFile();
+                            const contents = await file.text();
+                            
+                            // Check if the current tab is an empty "Untitled" document we can overwrite
+                            const activeTab = getActiveTab();
+                            if (activeTab && activeTab.name.startsWith('Untitled') && !activeTab.isUnsaved && activeTab.doc.getValue() === '') {
+                                activeTab.handle = handle;
+                                activeTab.name = file.name;
+                                activeTab.doc = CodeMirror.Doc(contents, getModeFromExtension(file.name));
+                                activeTab.doc.markClean();
+                                activeTab.isRenamed = false;
+                                editor.swapDoc(activeTab.doc);
+                                updatePreviewVisibility(getModeFromExtension(file.name));
+                                renderTabs();
+                            } else {
+                                // Open in a new tab
+                                createTab(file.name, contents, handle);
+                            }
+                            showToast(`Opened ${file.name}`);
+                        } catch (err) {
+                            console.error("Error opening file from OS:", err);
+                            showToast("Failed to open file from OS");
+                        }
+                    }
+                }
+            });
+        }
     </script>
 </body>
 </html>
