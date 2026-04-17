@@ -69,6 +69,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/python/python.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/markdown/markdown.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/clike/clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/properties/properties.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/shell/shell.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/yaml/yaml.min.js"></script>
 
     <!-- Search Addons for CodeMirror -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/search/searchcursor.min.js"></script>
@@ -537,7 +540,10 @@
             const modeMap = {
                 'js': 'javascript', 'json': 'javascript', 'html': 'htmlmixed', 'htm': 'htmlmixed',
                 'css': 'css', 'py': 'python', 'md': 'markdown', 'xml': 'xml', 'svg': 'xml',
-                'c': 'clike', 'cpp': 'clike', 'java': 'clike', 'cs': 'clike'
+                'c': 'clike', 'cpp': 'clike', 'java': 'clike', 'cs': 'clike',
+                'conf': 'properties', 'ini': 'properties', 'properties': 'properties',
+                'sh': 'shell', 'bash': 'shell',
+                'yaml': 'yaml', 'yml': 'yaml'
             };
             return modeMap[ext] || "null";
         }
@@ -703,7 +709,7 @@
         function fallbackOpenFile() {
             const input = document.createElement('input');
             input.type = 'file';
-            input.accept = '.txt,.html,.css,.js,.json,.py,.md,.csv,.xml,.c,.cpp,.java';
+            input.accept = '.txt,.html,.css,.js,.json,.py,.md,.csv,.xml,.c,.cpp,.java,.conf,.ini,.sh,.yaml,.yml';
             input.onchange = (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
@@ -749,7 +755,7 @@
         async function openFile() {
             try {
                 const [handle] = await window.showOpenFilePicker({
-                    types: [{ description: 'Text/Code Files', accept: {'text/*': ['.txt', '.html', '.css', '.js', '.json', '.py', '.md', '.csv', '.xml', '.c', '.cpp', '.java']} }]
+                    types: [{ description: 'Text/Code Files', accept: {'text/*': ['.txt', '.html', '.css', '.js', '.json', '.py', '.md', '.csv', '.xml', '.c', '.cpp', '.java', '.conf', '.ini', '.sh', '.yaml', '.yml']} }]
                 });
                 const file = await handle.getFile();
                 const contents = await file.text();
@@ -785,7 +791,7 @@
             const tab = getActiveTab();
             if (!tab) return;
             try {
-                const handle = await window.showSaveFilePicker({ suggestedName: tab.name, types: [{ description: 'Text/Code File', accept: {'text/plain': ['.txt', '.html', '.css', '.js', '.json', '.py', '.md']} }] });
+                const handle = await window.showSaveFilePicker({ suggestedName: tab.name, types: [{ description: 'Text/Code File', accept: {'text/plain': ['.txt', '.html', '.css', '.js', '.json', '.py', '.md', '.conf', '.ini', '.sh', '.yaml', '.yml']} }] });
                 const writable = await handle.createWritable();
                 await writable.write(tab.doc.getValue());
                 await writable.close();
