@@ -56,7 +56,7 @@
         }
     </script>
 
-    <!-- CodeMirror Core -->
+    <!-- CodeMirror Core & Theme -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/material-darker.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
@@ -83,10 +83,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/markdown-fold.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/comment-fold.min.js"></script>
 
-    <!-- Search Addons for CodeMirror -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/search/searchcursor.min.js"></script>
+    <!-- CodeMirror Linter Addons (JSON Linting) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsonlint/1.6.0/jsonlint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/json-lint.min.js"></script>
 
     <!-- Developer Comforts Addons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/search/searchcursor.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/closebrackets.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/selection/active-line.min.js"></script>
 
@@ -113,118 +117,47 @@
         }
         
         /* Code Folding Gutter Customization */
-        .CodeMirror-foldgutter {
-            width: 16px;
-            background: transparent;
-        }
+        .CodeMirror-foldgutter { width: 16px; background: transparent; }
         .CodeMirror-foldgutter-open,
         .CodeMirror-foldgutter-folded {
-            color: #5f6368;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
+            color: #5f6368; cursor: pointer; display: flex; align-items: center; justify-content: center; height: 100%;
         }
-        .dark .CodeMirror-foldgutter-open,
-        .dark .CodeMirror-foldgutter-folded {
-            color: #9aa0a6;
-        }
-        .CodeMirror-foldgutter-open:after {
-            content: "\2212"; /* Minus sign */
-            font-weight: 500;
-            font-size: 14px;
-        }
-        .CodeMirror-foldgutter-folded:after {
-            content: "\002B"; /* Plus sign */
-            font-weight: 500;
-            font-size: 14px;
-        }
+        .dark .CodeMirror-foldgutter-open, .dark .CodeMirror-foldgutter-folded { color: #9aa0a6; }
+        .CodeMirror-foldgutter-open:after { content: "\2212"; font-weight: 500; font-size: 14px; }
+        .CodeMirror-foldgutter-folded:after { content: "\002B"; font-weight: 500; font-size: 14px; }
         .CodeMirror-foldmarker {
-            color: #1a73e8;
-            text-shadow: none;
-            font-family: 'Roboto', sans-serif;
-            background: rgba(26, 115, 232, 0.1);
-            border: 1px solid rgba(26, 115, 232, 0.3);
-            border-radius: 4px;
-            padding: 0 4px;
-            margin: 0 2px;
-            cursor: pointer;
+            color: #1a73e8; text-shadow: none; font-family: 'Roboto', sans-serif; background: rgba(26, 115, 232, 0.1); border: 1px solid rgba(26, 115, 232, 0.3); border-radius: 4px; padding: 0 4px; margin: 0 2px; cursor: pointer;
         }
-        .dark .CodeMirror-foldmarker {
-            color: #8ab4f8;
-            background: rgba(138, 180, 248, 0.15);
-            border-color: rgba(138, 180, 248, 0.3);
-        }
+        .dark .CodeMirror-foldmarker { color: #8ab4f8; background: rgba(138, 180, 248, 0.15); border-color: rgba(138, 180, 248, 0.3); }
 
+        /* Linter UI Customization */
+        .CodeMirror-lint-marker-error, .CodeMirror-lint-marker-warning { background-image: none; display: flex; align-items: center; justify-content: center; }
+        .CodeMirror-lint-marker-error:after { content: "\2715"; color: #ea4335; font-size: 12px; font-weight: bold; }
+        
         /* Active Line Styling */
-        .CodeMirror-activeline-background {
-            background: rgba(0, 0, 0, 0.04) !important;
-        }
-        .dark .CodeMirror-activeline-background {
-            background: rgba(255, 255, 255, 0.05) !important;
-        }
+        .CodeMirror-activeline-background { background: rgba(0, 0, 0, 0.04) !important; }
+        .dark .CodeMirror-activeline-background { background: rgba(255, 255, 255, 0.05) !important; }
 
         /* Google Custom Scrollbars */
-        ::-webkit-scrollbar {
-            width: 14px;
-            height: 14px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-            background-clip: padding-box;
-            border: 4px solid transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background-color: rgba(0, 0, 0, 0.2);
-            background-clip: padding-box;
-            border: 4px solid transparent;
-            border-radius: 8px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background-color: rgba(0, 0, 0, 0.3);
-        }
-        .dark ::-webkit-scrollbar-thumb {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-        .dark ::-webkit-scrollbar-thumb:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-        }
+        ::-webkit-scrollbar { width: 14px; height: 14px; }
+        ::-webkit-scrollbar-track { background: transparent; background-clip: padding-box; border: 4px solid transparent; }
+        ::-webkit-scrollbar-thumb { background-color: rgba(0, 0, 0, 0.2); background-clip: padding-box; border: 4px solid transparent; border-radius: 8px; }
+        ::-webkit-scrollbar-thumb:hover { background-color: rgba(0, 0, 0, 0.3); }
+        .dark ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.2); }
+        .dark ::-webkit-scrollbar-thumb:hover { background-color: rgba(255, 255, 255, 0.3); }
 
         /* Tab Bar Hide Scrollbar natively */
-        #tab-bar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        #tab-bar::-webkit-scrollbar {
-            display: none;
-        }
+        #tab-bar { -ms-overflow-style: none; scrollbar-width: none; }
+        #tab-bar::-webkit-scrollbar { display: none; }
 
         /* Custom Search Highlights */
-        .cm-search-highlight {
-            background-color: rgba(251, 188, 4, 0.4);
-            border-radius: 2px;
-        }
-        .dark .cm-search-highlight {
-            background-color: rgba(251, 188, 4, 0.3);
-        }
-        .cm-search-active {
-            background-color: rgba(251, 188, 4, 0.9);
-            border: 1px solid #fbbc04;
-            border-radius: 2px;
-            box-shadow: 0 0 0 1px rgba(251, 188, 4, 0.5);
-        }
-        .dark .cm-search-active {
-            background-color: rgba(251, 188, 4, 0.7);
-            border-color: #fbbc04;
-        }
+        .cm-search-highlight { background-color: rgba(251, 188, 4, 0.4); border-radius: 2px; }
+        .dark .cm-search-highlight { background-color: rgba(251, 188, 4, 0.3); }
+        .cm-search-active { background-color: rgba(251, 188, 4, 0.9); border: 1px solid #fbbc04; border-radius: 2px; box-shadow: 0 0 0 1px rgba(251, 188, 4, 0.5); }
+        .dark .cm-search-active { background-color: rgba(251, 188, 4, 0.7); border-color: #fbbc04; }
 
         /* Google Docs-like Prose */
-        .prose {
-            color: #202124;
-            max-width: 816px;
-            margin: 0 auto;
-        }
+        .prose { color: #202124; max-width: 816px; margin: 0 auto; }
         .dark .prose { color: #e8eaed; }
         .prose h1, .prose h2, .prose h3, .prose h4 { font-weight: 500; color: #202124; }
         .dark .prose h1, .dark .prose h2, .dark .prose h3, .dark .prose h4 { color: #e8eaed; }
@@ -264,9 +197,10 @@
                 <button id="btn-menu-toggle" class="p-2.5 rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors" title="More Options">
                     <i data-lucide="more-vertical" class="w-[20px] h-[20px]"></i>
                 </button>
-                <div id="dropdown-menu" class="hidden absolute right-0 mt-1 w-[280px] bg-white dark:bg-google-bgElevatedDark border border-transparent dark:border-google-borderDark rounded-lg shadow-lg py-2 text-[14px] text-google-textLight dark:text-google-textDark z-50">
+                
+                <!-- Main Dropdown Menu -->
+                <div id="dropdown-menu" class="hidden absolute right-0 mt-1 w-[280px] bg-white dark:bg-google-bgElevatedDark border border-transparent dark:border-google-borderDark rounded-lg shadow-lg py-2 text-[14px] text-google-textLight dark:text-google-textDark z-50 overflow-y-auto max-h-[85vh]">
                     
-                    <!-- Update Available Button (Hidden by default) -->
                     <button id="btn-update-app" class="w-full flex items-center px-4 py-2 hover:bg-google-blueHover dark:hover:bg-[rgba(138,180,248,0.08)] transition-colors hidden">
                         <i data-lucide="refresh-cw" class="w-[18px] h-[18px] mr-4 text-google-blue dark:text-google-blueDark"></i> 
                         <div class="flex flex-col items-start leading-tight">
@@ -293,18 +227,27 @@
                     
                     <div class="border-t border-google-borderLight dark:border-google-borderDark my-1.5"></div>
                     
-                    <!-- Recently Closed Files Accordion -->
-                    <button id="btn-recent-toggle" class="w-full flex items-center justify-between px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
-                        <div class="flex items-center text-google-textLight dark:text-google-textDark">
-                            <i data-lucide="history" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i>
-                            <span>Recently closed</span>
-                        </div>
-                        <i data-lucide="chevron-down" id="recent-chevron" class="w-4 h-4 text-google-textMuted dark:text-google-textMutedDark transition-transform"></i>
+                    <!-- NEW: Developer Tools Section -->
+                    <div class="px-4 py-1 text-[11px] font-bold text-google-textMuted dark:text-google-textMutedDark uppercase tracking-wider">Developer Tools</div>
+                    <button id="btn-format-json" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
+                        <i data-lucide="file-json-2" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i> Format JSON
                     </button>
-                    <div id="recent-files-container" class="hidden max-h-[170px] overflow-y-auto bg-gray-50 dark:bg-[#1a1b1e] shadow-inner">
-                        <!-- Populated dynamically via JS -->
-                    </div>
-
+                    <button id="btn-minify-json" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
+                        <i data-lucide="minimize-2" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i> Minify JSON
+                    </button>
+                    <button id="btn-encode-b64" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
+                        <i data-lucide="hash" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i> Base64 Encode
+                    </button>
+                    <button id="btn-decode-b64" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
+                        <i data-lucide="file-code-2" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i> Base64 Decode
+                    </button>
+                    <button id="btn-encode-url" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
+                        <i data-lucide="link" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i> URL Encode
+                    </button>
+                    <button id="btn-decode-url" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
+                        <i data-lucide="link-2-off" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i> URL Decode
+                    </button>
+                    
                     <div class="border-t border-google-borderLight dark:border-google-borderDark my-1.5"></div>
 
                     <!-- Chrome-Style Zoom Row -->
@@ -354,7 +297,6 @@
             
             <!-- Custom Google-style Find/Replace Panel -->
             <div id="search-panel" class="hidden absolute top-4 right-6 w-[390px] bg-white dark:bg-google-bgElevatedDark shadow-[0_4px_6px_rgba(0,0,0,0.1),0_1px_3px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_6px_rgba(0,0,0,0.3)] rounded-lg border border-google-borderLight dark:border-google-borderDark z-40 flex flex-col text-[13px] transition-colors overflow-hidden p-2 space-y-2">
-                
                 <!-- Find Row -->
                 <div class="flex items-center space-x-2">
                     <div class="w-6 flex flex-shrink-0 items-center justify-center">
@@ -362,41 +304,26 @@
                             <i data-lucide="chevron-right" class="w-4 h-4 pointer-events-none"></i>
                         </button>
                     </div>
-                    
                     <div class="flex-grow flex items-center bg-google-bgGray dark:bg-google-bgDark border border-google-borderLight dark:border-google-borderDark rounded px-3 h-8 focus-within:border-google-blue focus-within:ring-1 focus-within:ring-google-blue transition-all">
                         <input type="text" id="find-input" class="w-full bg-transparent outline-none dark:text-google-textDark placeholder-google-textMuted dark:placeholder-google-textMutedDark text-[13px]" placeholder="Find in document">
                         <span id="search-count" class="text-xs text-google-textMuted dark:text-google-textMutedDark whitespace-nowrap ml-2 pointer-events-none font-mono">0/0</span>
                     </div>
-                    
                     <div class="w-[110px] flex items-center justify-end space-x-0.5 flex-shrink-0">
-                        <button id="btn-find-prev" class="w-7 h-7 flex items-center justify-center rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark disabled:opacity-30 disabled:hover:bg-transparent transition-colors" title="Previous match (Shift+Enter)">
-                            <i data-lucide="chevron-up" class="w-4 h-4"></i>
-                        </button>
-                        <button id="btn-find-next" class="w-7 h-7 flex items-center justify-center rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark disabled:opacity-30 disabled:hover:bg-transparent transition-colors" title="Next match (Enter)">
-                            <i data-lucide="chevron-down" class="w-4 h-4"></i>
-                        </button>
+                        <button id="btn-find-prev" class="w-7 h-7 flex items-center justify-center rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark disabled:opacity-30 disabled:hover:bg-transparent transition-colors" title="Previous match (Shift+Enter)"><i data-lucide="chevron-up" class="w-4 h-4"></i></button>
+                        <button id="btn-find-next" class="w-7 h-7 flex items-center justify-center rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark disabled:opacity-30 disabled:hover:bg-transparent transition-colors" title="Next match (Enter)"><i data-lucide="chevron-down" class="w-4 h-4"></i></button>
                         <div class="w-px h-4 bg-google-borderLight dark:bg-google-borderDark mx-1"></div>
-                        <button id="btn-close-search" class="w-7 h-7 flex items-center justify-center rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors" title="Close (Esc)">
-                            <i data-lucide="x" class="w-4 h-4"></i>
-                        </button>
+                        <button id="btn-close-search" class="w-7 h-7 flex items-center justify-center rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors" title="Close (Esc)"><i data-lucide="x" class="w-4 h-4"></i></button>
                     </div>
                 </div>
-                
                 <!-- Replace Row -->
                 <div id="replace-row" class="hidden flex items-center space-x-2">
                     <div class="w-6 flex flex-shrink-0"></div>
-                    
                     <div class="flex-grow flex items-center bg-google-bgGray dark:bg-google-bgDark border border-google-borderLight dark:border-google-borderDark rounded px-3 h-8 focus-within:border-google-blue focus-within:ring-1 focus-within:ring-google-blue transition-all">
                         <input type="text" id="replace-input" class="w-full bg-transparent outline-none dark:text-google-textDark placeholder-google-textMuted dark:placeholder-google-textMutedDark text-[13px]" placeholder="Replace with">
                     </div>
-                    
                     <div class="w-[110px] flex items-center justify-start space-x-1.5 flex-shrink-0 pl-1">
-                        <button id="btn-replace" class="h-7 px-2.5 text-[12px] font-medium bg-transparent text-google-textLight dark:text-google-textDark border border-google-borderLight dark:border-google-borderDark rounded hover:bg-google-bgGrayHover dark:hover:bg-[rgba(255,255,255,0.05)] transition-colors" title="Replace current">
-                            Replace
-                        </button>
-                        <button id="btn-replace-all" class="h-7 px-2.5 text-[12px] font-medium bg-transparent text-google-textLight dark:text-google-textDark border border-google-borderLight dark:border-google-borderDark rounded hover:bg-google-bgGrayHover dark:hover:bg-[rgba(255,255,255,0.05)] transition-colors" title="Replace all instances">
-                            All
-                        </button>
+                        <button id="btn-replace" class="h-7 px-2.5 text-[12px] font-medium bg-transparent text-google-textLight dark:text-google-textDark border border-google-borderLight dark:border-google-borderDark rounded hover:bg-google-bgGrayHover dark:hover:bg-[rgba(255,255,255,0.05)] transition-colors" title="Replace current">Replace</button>
+                        <button id="btn-replace-all" class="h-7 px-2.5 text-[12px] font-medium bg-transparent text-google-textLight dark:text-google-textDark border border-google-borderLight dark:border-google-borderDark rounded hover:bg-google-bgGrayHover dark:hover:bg-[rgba(255,255,255,0.05)] transition-colors" title="Replace all instances">All</button>
                     </div>
                 </div>
             </div>
@@ -405,14 +332,26 @@
         <div id="markdown-preview" class="hidden w-1/2 h-full border-l border-google-borderLight dark:border-google-borderDark bg-white dark:bg-google-bgDark p-8 overflow-y-auto prose prose-sm sm:prose-base dark:prose-invert max-w-none transition-all duration-300"></div>
     </main>
 
-    <!-- Status Bar -->
-    <footer class="bg-google-bgLight dark:bg-google-bgDark border-t border-google-borderLight dark:border-google-borderDark h-8 flex items-center justify-between px-4 text-[12px] text-google-textMuted dark:text-google-textMutedDark flex-shrink-0 select-none transition-colors duration-200 font-mono">
-        <div id="document-stats">Words: 0 | Chars: 0</div>
-        <div id="cursor-position">Ln 1, Col 1</div>
+    <!-- Status Bar (Updated with Language Selector) -->
+    <footer class="bg-google-bgLight dark:bg-google-bgDark border-t border-google-borderLight dark:border-google-borderDark h-8 flex items-center justify-between px-4 text-[12px] text-google-textMuted dark:text-google-textMutedDark flex-shrink-0 select-none transition-colors duration-200 font-mono relative">
+        <div class="flex items-center space-x-4">
+            <div id="document-stats">Words: 0 | Chars: 0</div>
+            <div id="cursor-position">Ln 1, Col 1</div>
+        </div>
+        
+        <div class="relative">
+            <button id="btn-language-select" class="hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark px-2 py-1 rounded transition-colors flex items-center">
+                <span id="language-label">Plain Text</span>
+                <i data-lucide="chevron-up" class="w-3.5 h-3.5 ml-1.5"></i>
+            </button>
+            <div id="language-dropdown" class="hidden absolute bottom-full right-0 mb-1 w-44 bg-white dark:bg-google-bgElevatedDark border border-google-borderLight dark:border-google-borderDark rounded shadow-lg py-1.5 z-50 max-h-64 overflow-y-auto">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </div>
     </footer>
 
     <!-- Material Snackbar (Toast) -->
-    <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-google-snackbar text-[#f1f3f4] px-6 py-3.5 rounded shadow-[0_3px_5px_-1px_rgba(0,0,0,0.2),0_6px_10px_0_rgba(0,0,0,0.14),0_1px_18px_0_rgba(0,0,0,0.12)] opacity-0 transition-opacity duration-300 pointer-events-none z-[100] text-[14px] flex items-center space-x-3">
+    <div id="toast" class="fixed bottom-12 left-1/2 transform -translate-x-1/2 bg-google-snackbar text-[#f1f3f4] px-6 py-3.5 rounded shadow-[0_3px_5px_-1px_rgba(0,0,0,0.2),0_6px_10px_0_rgba(0,0,0,0.14),0_1px_18px_0_rgba(0,0,0,0.12)] opacity-0 transition-opacity duration-300 pointer-events-none z-[100] text-[14px] flex items-center space-x-3">
         <span id="toast-msg">Message</span>
     </div>
 
@@ -428,42 +367,22 @@
         let isDark = false;
         let isRestoringSession = false;
         let draggedTabId = null;
-        let recentlyClosed = [];
 
-        // --- IndexedDB for Persistent Recently Closed Files ---
-        const dbPromise = new Promise((resolve, reject) => {
-            const request = indexedDB.open("STextDB", 1);
-            request.onupgradeneeded = (e) => {
-                const db = e.target.result;
-                if (!db.objectStoreNames.contains("handles")) {
-                    db.createObjectStore("handles", { keyPath: "id" });
-                }
-            };
-            request.onsuccess = (e) => resolve(e.target.result);
-            request.onerror = (e) => reject(e.target.error);
-        });
-
-        async function saveRecentToDB() {
-            try {
-                const db = await dbPromise;
-                const tx = db.transaction("handles", "readwrite");
-                tx.objectStore("handles").put({ id: "recentFiles", list: recentlyClosed });
-            } catch(e) { console.warn("Could not save recent files to DB", e); }
-        }
-
-        async function loadRecentFromDB() {
-            try {
-                const db = await dbPromise;
-                const tx = db.transaction("handles", "readonly");
-                const request = tx.objectStore("handles").get("recentFiles");
-                request.onsuccess = () => {
-                    if (request.result && request.result.list) {
-                        recentlyClosed = request.result.list;
-                    }
-                    updateRecentFilesMenu();
-                };
-            } catch(e) { console.warn("Could not load recent files from DB", e); }
-        }
+        // --- Supported Languages for Interactive Selector ---
+        const SUPPORTED_MODES = [
+            { id: 'text/plain', label: 'Plain Text' },
+            { id: 'application/json', label: 'JSON' },
+            { id: 'javascript', label: 'JavaScript' },
+            { id: 'htmlmixed', label: 'HTML' },
+            { id: 'css', label: 'CSS' },
+            { id: 'python', label: 'Python' },
+            { id: 'markdown', label: 'Markdown' },
+            { id: 'xml', label: 'XML' },
+            { id: 'clike', label: 'C/C++/Java/C#' },
+            { id: 'properties', label: 'Config / INI' },
+            { id: 'shell', label: 'Shell / Bash' },
+            { id: 'yaml', label: 'YAML' }
+        ];
 
         // --- Session Persistence Logic ---
         let sessionSaveTimeout;
@@ -471,24 +390,30 @@
             if (isRestoringSession) return;
             clearTimeout(sessionSaveTimeout);
             sessionSaveTimeout = setTimeout(() => {
-                const sessionData = {
-                    activeTabId,
-                    tabCounter,
-                    untitledCount,
-                    tabs: tabs.map(t => ({
-                        id: t.id,
-                        name: t.name,
-                        content: t.doc.getValue(),
-                        isUnsaved: t.isUnsaved,
-                        isRenamed: t.isRenamed
-                    }))
-                };
-                localStorage.setItem('stext-session-v4', JSON.stringify(sessionData));
+                try {
+                    const sessionData = {
+                        activeTabId,
+                        tabCounter,
+                        untitledCount,
+                        tabs: tabs.map(t => ({
+                            id: t.id,
+                            name: t.name,
+                            content: t.doc.getValue(),
+                            modeVal: t.modeVal,     // Store the manually selected language
+                            modeLabel: t.modeLabel,
+                            isUnsaved: t.isUnsaved,
+                            isRenamed: t.isRenamed
+                        }))
+                    };
+                    localStorage.setItem('stext-session-v5', JSON.stringify(sessionData));
+                } catch (e) {
+                    console.warn("Failed to save session (possibly too large for local storage):", e);
+                }
             }, 500);
         }
 
         function restoreSession() {
-            const dataStr = localStorage.getItem('stext-session-v4');
+            const dataStr = localStorage.getItem('stext-session-v5');
             if (dataStr) {
                 try {
                     isRestoringSession = true;
@@ -498,8 +423,12 @@
                     
                     if (data.tabs && data.tabs.length > 0) {
                         data.tabs.forEach(tData => {
-                            const mode = getModeFromExtension(tData.name);
-                            const doc = CodeMirror.Doc(tData.content, mode);
+                            // Backwards compatibility for older sessions
+                            const modeFallback = getModeInfo(tData.name);
+                            const modeVal = tData.modeVal || modeFallback.id;
+                            const modeLabel = tData.modeLabel || modeFallback.label;
+                            
+                            const doc = CodeMirror.Doc(tData.content, modeVal);
                             if (!tData.isUnsaved && !tData.isRenamed) doc.markClean();
                             
                             tabs.push({
@@ -507,6 +436,8 @@
                                 name: tData.name,
                                 handle: null,
                                 doc: doc,
+                                modeVal: modeVal,
+                                modeLabel: modeLabel,
                                 isUnsaved: tData.isUnsaved,
                                 isRenamed: tData.isRenamed
                             });
@@ -522,7 +453,7 @@
             createTab();
         }
 
-        // Initialize CodeMirror (Now with Folding Enabled)
+        // Initialize CodeMirror (Now with Linter Enabled)
         const editorTextArea = document.getElementById('editor');
         const editor = CodeMirror.fromTextArea(editorTextArea, {
             lineNumbers: true,
@@ -533,8 +464,75 @@
             autoCloseBrackets: true,
             styleActiveLine: true,
             foldGutter: true,
-            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+            lint: true, // Will automatically lint if mode is application/json
+            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"]
         });
+
+        // --- Developer Utility Functions (Formatters & Converters) ---
+        function getSelectedTextOrAll() {
+            const selection = editor.getSelection();
+            return selection ? { text: selection, isSelection: true } : { text: editor.getValue(), isSelection: false };
+        }
+
+        function replaceText(newText, isSelection) {
+            if (isSelection) editor.replaceSelection(newText);
+            else editor.setValue(newText);
+        }
+
+        function formatJSON() {
+            const { text, isSelection } = getSelectedTextOrAll();
+            if (!text.trim()) return;
+            try { 
+                replaceText(JSON.stringify(JSON.parse(text), null, 4), isSelection); 
+                showToast("JSON Formatted"); 
+                // Auto-switch to JSON highlighting for better UX
+                const tab = getActiveTab();
+                if (tab && tab.modeVal !== 'application/json') updateTabLanguage(tab, 'application/json', 'JSON');
+            } catch(e) { showToast("Invalid JSON: Cannot format"); }
+        }
+
+        function minifyJSON() {
+            const { text, isSelection } = getSelectedTextOrAll();
+            if (!text.trim()) return;
+            try { replaceText(JSON.stringify(JSON.parse(text)), isSelection); showToast("JSON Minified"); }
+            catch(e) { showToast("Invalid JSON: Cannot minify"); }
+        }
+
+        function encodeBase64() {
+            const { text, isSelection } = getSelectedTextOrAll();
+            if (!text) return;
+            try { replaceText(btoa(text), isSelection); showToast("Encoded to Base64"); } 
+            catch(e) { showToast("Base64 Encode failed (Invalid characters)"); }
+        }
+
+        function decodeBase64() {
+            const { text, isSelection } = getSelectedTextOrAll();
+            if (!text) return;
+            try { replaceText(atob(text), isSelection); showToast("Decoded from Base64"); } 
+            catch(e) { showToast("Invalid Base64 string"); }
+        }
+        
+        function encodeURL() {
+            const { text, isSelection } = getSelectedTextOrAll();
+            if (!text) return;
+            replaceText(encodeURIComponent(text), isSelection); showToast("URL Encoded");
+        }
+
+        function decodeURL() {
+            const { text, isSelection } = getSelectedTextOrAll();
+            if (!text) return;
+            try { replaceText(decodeURIComponent(text), isSelection); showToast("URL Decoded"); } 
+            catch(e) { showToast("Invalid URL Encoding"); }
+        }
+
+        // Setup Developer Tool Listeners
+        document.getElementById('btn-format-json').addEventListener('click', formatJSON);
+        document.getElementById('btn-minify-json').addEventListener('click', minifyJSON);
+        document.getElementById('btn-encode-b64').addEventListener('click', encodeBase64);
+        document.getElementById('btn-decode-b64').addEventListener('click', decodeBase64);
+        document.getElementById('btn-encode-url').addEventListener('click', encodeURL);
+        document.getElementById('btn-decode-url').addEventListener('click', decodeURL);
+
 
         // Search Panel Initialization and State
         const searchPanel = document.getElementById('search-panel');
@@ -555,11 +553,10 @@
         let currentSearchIndex = -1;
         let searchUpdateTimeout;
 
-        // CodeMirror Overrides for native Find commands
         CodeMirror.commands.find = function() { openSearchPanel(false); };
         CodeMirror.commands.replace = function() { openSearchPanel(true); };
         
-        // Editor Change Event (Integrated Search Update)
+        // Editor Change Event
         editor.on('change', (cm, changeObj) => {
             if (changeObj.origin !== 'setValue') {
                 const tab = getActiveTab();
@@ -575,14 +572,12 @@
             updateMarkdownPreview();
             saveSession();
 
-            // Re-run search if panel is open and document changes
             if (!searchPanel.classList.contains('hidden')) {
                 clearTimeout(searchUpdateTimeout);
                 searchUpdateTimeout = setTimeout(() => updateSearch(), 250);
             }
         });
 
-        // Toast Notification (Material Snackbar)
         function showToast(message) {
             const toast = document.getElementById('toast');
             document.getElementById('toast-msg').textContent = message;
@@ -590,28 +585,72 @@
             setTimeout(() => toast.classList.add('opacity-0'), 3500);
         }
 
-        // --- Tab Management ---
+        // --- Tab & Language Management ---
         function getActiveTab() { return tabs.find(t => t.id === activeTabId); }
-        function getModeFromExtension(filename) {
+        
+        function getModeInfo(filename) {
             const ext = filename.split('.').pop().toLowerCase();
             const modeMap = {
-                'js': 'javascript', 'json': 'javascript', 'html': 'htmlmixed', 'htm': 'htmlmixed',
+                'js': 'javascript', 'json': 'application/json', 'html': 'htmlmixed', 'htm': 'htmlmixed',
                 'css': 'css', 'py': 'python', 'md': 'markdown', 'xml': 'xml', 'svg': 'xml',
                 'c': 'clike', 'cpp': 'clike', 'java': 'clike', 'cs': 'clike',
                 'conf': 'properties', 'ini': 'properties', 'properties': 'properties',
                 'sh': 'shell', 'bash': 'shell',
                 'yaml': 'yaml', 'yml': 'yaml'
             };
-            return modeMap[ext] || "null";
+            const mappedId = modeMap[ext] || 'text/plain';
+            const supported = SUPPORTED_MODES.find(m => m.id === mappedId);
+            return supported || SUPPORTED_MODES[0];
         }
-        function updatePreviewVisibility(mode) {
+
+        function updateTabLanguage(tab, modeVal, modeLabel) {
+            tab.modeVal = modeVal;
+            tab.modeLabel = modeLabel;
+            if (activeTabId === tab.id) {
+                editor.setOption('mode', modeVal);
+                document.getElementById('language-label').textContent = modeLabel;
+                updatePreviewVisibility(modeVal);
+            }
+            saveSession();
+        }
+
+        function updatePreviewVisibility(modeVal) {
             const btnPreview = document.getElementById('btn-preview');
-            if (mode === 'markdown') btnPreview.classList.remove('hidden');
+            if (modeVal === 'markdown') btnPreview.classList.remove('hidden');
             else {
                 btnPreview.classList.add('hidden');
                 if (typeof isPreviewActive !== 'undefined' && isPreviewActive) togglePreview();
             }
         }
+
+        // Populate Language Selector Dropdown
+        const langDropdown = document.getElementById('language-dropdown');
+        SUPPORTED_MODES.forEach(mode => {
+            const btn = document.createElement('button');
+            btn.className = 'w-full text-left px-4 py-1.5 text-[13px] hover:bg-google-bgGrayHover dark:hover:bg-[rgba(255,255,255,0.05)] transition-colors';
+            btn.textContent = mode.label;
+            btn.onclick = (e) => {
+                e.stopPropagation();
+                const tab = getActiveTab();
+                if (tab) updateTabLanguage(tab, mode.id, mode.label);
+                langDropdown.classList.add('hidden');
+            };
+            langDropdown.appendChild(btn);
+        });
+
+        // Language Dropdown Toggles
+        const btnLangSelect = document.getElementById('btn-language-select');
+        btnLangSelect.addEventListener('click', (e) => {
+            e.stopPropagation();
+            langDropdown.classList.toggle('hidden');
+        });
+        document.addEventListener('click', (e) => {
+            if (!langDropdown.contains(e.target) && !btnLangSelect.contains(e.target)) {
+                langDropdown.classList.add('hidden');
+            }
+        });
+
+
         function createTab(name = null, content = '', handle = null) {
             if (!name) {
                 untitledCount++;
@@ -619,49 +658,44 @@
             }
             tabCounter++;
             const id = 'tab-' + tabCounter;
-            const doc = CodeMirror.Doc(content, getModeFromExtension(name));
+            
+            const modeInfo = getModeInfo(name);
+            const doc = CodeMirror.Doc(content, modeInfo.id);
             doc.markClean();
-            tabs.push({ id, name, handle, doc, isUnsaved: false, isRenamed: false });
+            
+            tabs.push({ id, name, handle, doc, modeVal: modeInfo.id, modeLabel: modeInfo.label, isUnsaved: false, isRenamed: false });
             switchTab(id);
         }
+
         function switchTab(id) {
             activeTabId = id;
             const tab = getActiveTab();
             if (tab) {
                 editor.swapDoc(tab.doc);
-                updatePreviewVisibility(getModeFromExtension(tab.name));
+                editor.setOption('mode', tab.modeVal);
+                document.getElementById('language-label').textContent = tab.modeLabel;
+                
+                updatePreviewVisibility(tab.modeVal);
                 updateCursorPosition();
                 updateDocumentStats();
                 updateMarkdownPreview();
                 renderTabs();
                 
-                // Update search if panel is open across tabs
                 if (!searchPanel.classList.contains('hidden')) updateSearch();
             }
         }
+
         function closeTab(id) {
             const tabIndex = tabs.findIndex(t => t.id === id);
             const tab = tabs[tabIndex];
             if (tab.isUnsaved && !confirm(`Save changes to "${tab.name}" before closing?\nClick OK to close and discard changes.`)) return;
-            
-            // Log to recently closed if it contains real data or has a handle
-            if (!tab.name.startsWith('Untitled') || tab.doc.getValue().trim() !== '') {
-                recentlyClosed = recentlyClosed.filter(f => f.name !== tab.name);
-                recentlyClosed.unshift({
-                    name: tab.name,
-                    handle: tab.handle,
-                    content: tab.handle ? null : tab.doc.getValue()
-                });
-                if (recentlyClosed.length > 20) recentlyClosed.pop();
-                updateRecentFilesMenu();
-                saveRecentToDB();
-            }
 
             tabs.splice(tabIndex, 1);
             if (tabs.length === 0) createTab();
             else if (activeTabId === id) switchTab(tabs[Math.max(0, tabIndex - 1)].id);
             else renderTabs();
         }
+
         function renderTabs() {
             const tabBar = document.getElementById('tab-bar');
             tabBar.innerHTML = '';
@@ -669,7 +703,6 @@
                 const isActive = tab.id === activeTabId;
                 const tabEl = document.createElement('div');
                 
-                // Chrome-style Tabs
                 const colorClass = tab.isUnsaved ? 'text-google-red font-medium' : (isActive ? 'text-google-blue dark:text-google-blueDark font-medium' : 'text-google-textMuted dark:text-google-textMutedDark hover:text-google-textLight dark:hover:text-google-textDark');
                 const bgClass = isActive ? 'bg-google-bgLight dark:bg-google-bgDark border-x border-t border-google-borderLight dark:border-google-borderDark border-b-0 rounded-t-lg z-10 -mb-[1px]' : 'bg-transparent hover:bg-google-bgLight dark:hover:bg-[rgba(255,255,255,0.05)] border-transparent rounded-t-lg';
                 
@@ -682,14 +715,12 @@
                 tabEl.addEventListener('dragstart', (e) => {
                     draggedTabId = tab.id;
                     e.dataTransfer.effectAllowed = 'move';
-                    // Timeout ensures the drag visual "ghost" looks normal before fading the original
                     setTimeout(() => tabEl.classList.add('opacity-40'), 0);
                 });
 
                 tabEl.addEventListener('dragover', (e) => {
-                    e.preventDefault(); // Necessary to allow a drop
+                    e.preventDefault(); 
                     if (draggedTabId && draggedTabId !== tab.id) {
-                        // Adds a nice Google-blue outline when hovering over a target tab
                         tabEl.classList.add('ring-2', 'ring-google-blue', 'ring-inset', 'rounded-t-lg');
                     }
                 });
@@ -708,10 +739,9 @@
                         const toIndex = tabs.findIndex(t => t.id === tab.id);
                         
                         if (fromIndex !== -1 && toIndex !== -1) {
-                            // Extract the tab from the old position and insert it at the new position
                             const [movedTab] = tabs.splice(fromIndex, 1);
                             tabs.splice(toIndex, 0, movedTab);
-                            renderTabs(); // Re-render visually updates and saves session
+                            renderTabs();
                         }
                     }
                     draggedTabId = null;
@@ -721,7 +751,6 @@
                     tabEl.classList.remove('opacity-40');
                     draggedTabId = null;
                 });
-                // ------------------------------------------
 
                 const nameSpan = document.createElement('span');
                 nameSpan.className = `text-[13px] mr-2 transition-colors ${colorClass}`;
@@ -745,6 +774,7 @@
             lucide.createIcons();
             saveSession();
         }
+
         function renameActiveTab() {
             const tab = getActiveTab();
             if(!tab) return;
@@ -752,8 +782,9 @@
             if (newName && newName.trim() !== "" && newName !== tab.name) {
                 if (confirm(`Are you sure you want to change the file name to "${newName}"?\nThis requires re-selecting a save location next time.`)) {
                     tab.name = newName.trim();
-                    editor.setOption("mode", getModeFromExtension(tab.name));
-                    updatePreviewVisibility(getModeFromExtension(tab.name));
+                    const newModeInfo = getModeInfo(tab.name);
+                    updateTabLanguage(tab, newModeInfo.id, newModeInfo.label);
+                    
                     tab.handle = null;
                     tab.isRenamed = true; 
                     tab.isUnsaved = true;
@@ -776,10 +807,12 @@
                     const tab = getActiveTab();
                     if (tab && tab.name.startsWith('Untitled') && !tab.isUnsaved && tab.doc.getValue() === '') {
                         tab.handle = null; tab.name = file.name;
-                        tab.doc = CodeMirror.Doc(contents, getModeFromExtension(file.name));
+                        const modeInfo = getModeInfo(file.name);
+                        
+                        tab.doc = CodeMirror.Doc(contents, modeInfo.id);
                         tab.doc.markClean(); tab.isRenamed = false;
+                        updateTabLanguage(tab, modeInfo.id, modeInfo.label);
                         editor.swapDoc(tab.doc);
-                        updatePreviewVisibility(getModeFromExtension(file.name));
                         renderTabs();
                     } else createTab(file.name, contents, null);
                     showToast(`Opened ${file.name}`);
@@ -802,8 +835,8 @@
             if (tab) {
                 tab.name = filename; tab.isUnsaved = false; tab.isRenamed = false;
                 tab.doc.markClean();
-                editor.setOption("mode", getModeFromExtension(filename));
-                updatePreviewVisibility(getModeFromExtension(filename));
+                const modeInfo = getModeInfo(filename);
+                updateTabLanguage(tab, modeInfo.id, modeInfo.label);
                 renderTabs();
             }
             showToast("File downloaded to device");
@@ -819,10 +852,12 @@
                 const tab = getActiveTab();
                 if (tab && tab.name.startsWith('Untitled') && !tab.isUnsaved && tab.doc.getValue() === '') {
                     tab.handle = handle; tab.name = file.name;
-                    tab.doc = CodeMirror.Doc(contents, getModeFromExtension(file.name));
+                    const modeInfo = getModeInfo(file.name);
+                    
+                    tab.doc = CodeMirror.Doc(contents, modeInfo.id);
                     tab.doc.markClean(); tab.isRenamed = false;
+                    updateTabLanguage(tab, modeInfo.id, modeInfo.label);
                     editor.swapDoc(tab.doc);
-                    updatePreviewVisibility(getModeFromExtension(file.name));
                     renderTabs();
                 } else createTab(file.name, contents, handle);
                 showToast(`Opened ${file.name}`);
@@ -854,8 +889,8 @@
                 await writable.close();
                 const file = await handle.getFile();
                 tab.handle = handle; tab.name = file.name;
-                editor.setOption("mode", getModeFromExtension(file.name));
-                updatePreviewVisibility(getModeFromExtension(file.name));
+                const modeInfo = getModeInfo(file.name);
+                updateTabLanguage(tab, modeInfo.id, modeInfo.label);
                 tab.isUnsaved = false; tab.isRenamed = false; tab.doc.markClean();
                 renderTabs(); showToast("File saved to Drive");
             } catch (err) {
@@ -917,7 +952,6 @@
             }
 
             if (searchMatches.length > 0) {
-                // Keep index bounds safe
                 if (currentSearchIndex < 0 || currentSearchIndex >= searchMatches.length) {
                     currentSearchIndex = 0;
                 }
@@ -930,7 +964,6 @@
         }
 
         function renderSearchMarks() {
-            // Remove old marks safely
             matchMarks.forEach(m => m.clear());
             matchMarks = [];
 
@@ -944,8 +977,6 @@
 
             if (currentSearchIndex >= 0 && currentSearchIndex < searchMatches.length) {
                 searchCount.textContent = `${currentSearchIndex + 1} of ${searchMatches.length}`;
-                
-                // Calculate padding to view
                 editor.scrollIntoView(searchMatches[currentSearchIndex], 50);
             }
         }
@@ -984,7 +1015,6 @@
             if (currentSearchIndex >= 0 && currentSearchIndex < searchMatches.length) {
                 const pos = searchMatches[currentSearchIndex];
                 editor.replaceRange(replaceInput.value, pos.from, pos.to);
-                // Synchronously run search to update index tracking correctly immediately
                 updateSearch();
             }
         }
@@ -992,7 +1022,6 @@
         function performReplaceAll() {
             if (searchMatches.length === 0) return;
             editor.operation(() => {
-                // Replace from bottom to top to preserve correct positional indices 
                 for (let i = searchMatches.length - 1; i >= 0; i--) {
                     const pos = searchMatches[i];
                     editor.replaceRange(replaceInput.value, pos.from, pos.to);
@@ -1061,8 +1090,6 @@
                 cmElement.style.fontSize = `${currentFontSize}px`; 
                 editor.refresh(); 
             }
-            
-            // Update the text in the new Chrome zoom row
             document.getElementById('zoom-level-text').textContent = `${percentage}%`;
         }
         
@@ -1111,84 +1138,6 @@
             }
         }
 
-        // --- Recently Closed Menu Helpers ---
-        function updateRecentFilesMenu() {
-            const container = document.getElementById('recent-files-container');
-            container.innerHTML = '';
-            
-            if (recentlyClosed.length === 0) {
-                const emptyEl = document.createElement('div');
-                emptyEl.className = 'px-4 py-3 text-[12px] text-google-textMuted dark:text-google-textMutedDark italic text-center';
-                emptyEl.textContent = 'No recently closed files';
-                container.appendChild(emptyEl);
-                return;
-            }
-
-            recentlyClosed.forEach((file, index) => {
-                const btn = document.createElement('button');
-                btn.className = 'w-full text-left px-4 py-2.5 text-[13px] text-google-textLight dark:text-google-textDark hover:bg-google-bgGrayHover dark:hover:bg-[rgba(255,255,255,0.05)] transition-colors truncate flex items-center';
-                
-                const iconHTML = `<i data-lucide="file-text" class="w-3.5 h-3.5 mr-3 text-google-textMuted dark:text-google-textMutedDark flex-shrink-0"></i>`;
-                btn.innerHTML = `${iconHTML} <span class="truncate">${file.name}</span>`;
-                
-                btn.onclick = async (e) => {
-                    e.stopPropagation();
-                    await restoreRecentFile(index);
-                    document.getElementById('dropdown-menu').classList.add('hidden');
-                    document.getElementById('recent-chevron').classList.remove('rotate-180');
-                    document.getElementById('recent-files-container').classList.add('hidden');
-                };
-                container.appendChild(btn);
-            });
-            lucide.createIcons();
-        }
-
-        async function restoreRecentFile(index) {
-            const file = recentlyClosed[index];
-            recentlyClosed.splice(index, 1); 
-            updateRecentFilesMenu();
-            saveRecentToDB();
-
-            try {
-                if (file.handle) {
-                    const opts = { mode: 'read' };
-                    if ((await file.handle.queryPermission(opts)) !== 'granted') {
-                        const permission = await file.handle.requestPermission(opts);
-                        if (permission !== 'granted') throw new Error("Permission denied by user");
-                    }
-                    const f = await file.handle.getFile();
-                    const contents = await f.text();
-                    
-                    const activeTab = getActiveTab();
-                    if (activeTab && activeTab.name.startsWith('Untitled') && !activeTab.isUnsaved && activeTab.doc.getValue() === '') {
-                        activeTab.handle = file.handle; activeTab.name = f.name;
-                        activeTab.doc = CodeMirror.Doc(contents, getModeFromExtension(f.name));
-                        activeTab.doc.markClean(); activeTab.isRenamed = false;
-                        editor.swapDoc(activeTab.doc); updatePreviewVisibility(getModeFromExtension(f.name)); renderTabs();
-                    } else createTab(f.name, contents, file.handle);
-                    
-                    showToast(`Restored ${f.name}`);
-                } else {
-                    const activeTab = getActiveTab();
-                    if (activeTab && activeTab.name.startsWith('Untitled') && !activeTab.isUnsaved && activeTab.doc.getValue() === '') {
-                        activeTab.name = file.name;
-                        activeTab.doc = CodeMirror.Doc(file.content || '', getModeFromExtension(file.name));
-                        activeTab.doc.markClean(); editor.swapDoc(activeTab.doc);
-                        updatePreviewVisibility(getModeFromExtension(file.name)); renderTabs();
-                    } else createTab(file.name, file.content || '');
-                    
-                    showToast(`Restored ${file.name}`);
-                }
-            } catch (err) {
-                console.error("Restore failed:", err);
-                showToast("Failed to restore file.");
-                recentlyClosed.unshift(file);
-                updateRecentFilesMenu();
-                saveRecentToDB();
-            }
-        }
-
-
         // Global Event Listeners
         document.getElementById('btn-new').addEventListener('click', () => createTab());
         document.getElementById('btn-open').addEventListener('click', openFile);
@@ -1206,7 +1155,7 @@
         document.getElementById('btn-preview').addEventListener('click', togglePreview);
         document.getElementById('btn-info').addEventListener('click', () => {
             const t = getActiveTab();
-            if(t) alert(`File Name: ${t.name}\n\nGoogle Workspace Mode Enabled.`);
+            if(t) alert(`File Name: ${t.name}\nLanguage: ${t.modeLabel}\n\nGoogle Workspace Mode Enabled.`);
         });
         document.getElementById('btn-rename').addEventListener('click', renameActiveTab);
 
@@ -1225,6 +1174,7 @@
             } else if (e.altKey) {
                 if (e.key.toLowerCase() === 'z') { e.preventDefault(); toggleWordWrap(); }
                 if (e.key.toLowerCase() === 'p' && !document.getElementById('btn-preview').classList.contains('hidden')) { e.preventDefault(); togglePreview(); }
+                if (e.key === 'F' || e.key === 'f') { e.preventDefault(); formatJSON(); } // Shift+Alt+F style fallback
             }
         });
 
@@ -1236,18 +1186,6 @@
             e.stopPropagation(); 
             dropdownMenu.classList.toggle('hidden'); 
         });
-
-        // Toggle Recent Files Accordion
-        document.getElementById('btn-recent-toggle').addEventListener('click', (e) => {
-            e.stopPropagation();
-            const container = document.getElementById('recent-files-container');
-            const chevron = document.getElementById('recent-chevron');
-            container.classList.toggle('hidden');
-            container.classList.toggle('flex');
-            
-            if (container.classList.contains('hidden')) chevron.classList.remove('rotate-180');
-            else chevron.classList.add('rotate-180');
-        });
         
         document.addEventListener('click', (e) => { 
             if (!dropdownMenu.contains(e.target) && !menuToggle.contains(e.target)) {
@@ -1255,9 +1193,9 @@
             }
         });
         
-        // ONLY close the dropdown if the clicked button IS NOT a zoom control or the recent toggle
+        // ONLY close the dropdown if the clicked button IS NOT a zoom control
         dropdownMenu.querySelectorAll('button').forEach(btn => {
-            if (!['btn-zoom-in', 'btn-zoom-out', 'btn-fullscreen', 'btn-recent-toggle'].includes(btn.id) && !btn.closest('#recent-files-container')) {
+            if (!['btn-zoom-in', 'btn-zoom-out', 'btn-fullscreen', 'btn-language-select'].includes(btn.id) && !btn.closest('#language-dropdown')) {
                 btn.addEventListener('click', () => dropdownMenu.classList.add('hidden'));
             }
         });
@@ -1277,18 +1215,14 @@
         // --- PWA Installation Logic ---
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevent Chrome from automatically showing the prompt over the UI
             e.preventDefault();
-            // Stash the event so it can be triggered later.
             deferredPrompt = e;
-            // Unhide our custom install button in the dropdown menu
             document.getElementById('btn-install').classList.remove('hidden');
             document.getElementById('install-divider').classList.remove('hidden');
         });
 
         document.getElementById('btn-install').addEventListener('click', async () => {
             if (deferredPrompt) {
-                // Show the native browser install prompt
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
                 if (outcome === 'accepted') {
@@ -1306,7 +1240,6 @@
             showToast("App installed successfully");
         });
 
-        // Prevent accidental closing with unsaved files
         window.addEventListener('beforeunload', (e) => {
             if (tabs.some(t => t.isUnsaved)) { e.preventDefault(); e.returnValue = ''; }
         });
@@ -1315,14 +1248,10 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js').then(registration => {
-                    // Force the browser to check for updates on load
                     registration.update();
-
-                    // Detect when a new service worker is fetched and installing
                     registration.addEventListener('updatefound', () => {
                         const newWorker = registration.installing;
                         newWorker.addEventListener('statechange', () => {
-                            // If installed AND there's an existing controller, it's a version update (not first install)
                             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                                 document.getElementById('btn-update-app').classList.remove('hidden');
                                 document.getElementById('update-divider').classList.remove('hidden');
@@ -1330,19 +1259,12 @@
                             }
                         });
                     });
-                }).catch(err => {
-                    console.log('ServiceWorker registration failed: ', err);
-                });
+                }).catch(err => console.log('ServiceWorker registration failed: ', err));
             });
 
-            // Handle the manual update click
             document.getElementById('btn-update-app').addEventListener('click', () => {
-                // Unregister the old service worker to force a clean network fetch
                 navigator.serviceWorker.getRegistrations().then(registrations => {
-                    for(let registration of registrations) {
-                        registration.unregister();
-                    }
-                    // Hard reload to pull new files from GitHub Pages
+                    for(let registration of registrations) registration.unregister();
                     window.location.reload(true);
                 });
             });
@@ -1351,12 +1273,10 @@
         // Initialize Preference & Start
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) toggleTheme();
         
-        // Restore Session & DB History
+        // Restore Session
         restoreSession();
-        loadRecentFromDB();
 
         // --- PWA File Handling Logic ---
-        // This intercepts files when a user double-clicks them in their OS file explorer
         if ('launchQueue' in window) {
             window.launchQueue.setConsumer(async (launchParams) => {
                 if (!launchParams.files || !launchParams.files.length) return;
@@ -1367,19 +1287,18 @@
                             const file = await handle.getFile();
                             const contents = await file.text();
                             
-                            // Check if the current tab is an empty "Untitled" document we can overwrite
                             const activeTab = getActiveTab();
                             if (activeTab && activeTab.name.startsWith('Untitled') && !activeTab.isUnsaved && activeTab.doc.getValue() === '') {
                                 activeTab.handle = handle;
                                 activeTab.name = file.name;
-                                activeTab.doc = CodeMirror.Doc(contents, getModeFromExtension(file.name));
+                                const modeInfo = getModeInfo(file.name);
+                                activeTab.doc = CodeMirror.Doc(contents, modeInfo.id);
                                 activeTab.doc.markClean();
                                 activeTab.isRenamed = false;
+                                updateTabLanguage(activeTab, modeInfo.id, modeInfo.label);
                                 editor.swapDoc(activeTab.doc);
-                                updatePreviewVisibility(getModeFromExtension(file.name));
                                 renderTabs();
                             } else {
-                                // Open in a new tab
                                 createTab(file.name, contents, handle);
                             }
                             showToast(`Opened ${file.name}`);
