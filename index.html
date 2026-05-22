@@ -26,7 +26,6 @@
                     },
                     colors: {
                         gemini: {
-                            // Light Mode
                             bgLight: '#F0F4F9',
                             surfaceLight: '#FFFFFF',
                             textLight: '#1F1F1F',
@@ -34,8 +33,7 @@
                             borderLight: '#E3E3E3',
                             hoverLight: '#E1E5EA',
                             primaryLight: '#0B57D0',
-                            
-                            // Dark Mode
+                            red: '#ea4335',
                             bgDark: '#131314',
                             surfaceDark: '#1E1F20',
                             surfaceElevatedDark: '#282A2C',
@@ -69,6 +67,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/properties/properties.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/shell/shell.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/yaml/yaml.min.js"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/foldgutter.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/foldcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/foldgutter.min.js"></script>
@@ -77,21 +76,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/indent-fold.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/markdown-fold.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/comment-fold.min.js"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsonlint/1.6.0/jsonlint.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/json-lint.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/search/searchcursor.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/closebrackets.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/selection/active-line.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
         body { font-family: 'Inter', sans-serif; }
         
-        /* Modernized CodeMirror Overrides */
         .CodeMirror { 
             height: 100%; 
             font-family: 'JetBrains Mono', monospace; 
@@ -115,7 +116,6 @@
         .CodeMirror-activeline-background { background: rgba(0, 0, 0, 0.03) !important; }
         .dark .CodeMirror-activeline-background { background: rgba(255, 255, 255, 0.03) !important; }
 
-        /* Smooth Custom Scrollbars */
         ::-webkit-scrollbar { width: 10px; height: 10px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background-color: rgba(150, 150, 150, 0.3); border-radius: 10px; border: 2px solid transparent; background-clip: padding-box; }
@@ -131,7 +131,6 @@
         .prose { color: #1F1F1F; max-width: 816px; margin: 0 auto; font-family: 'Inter', sans-serif;}
         .dark .prose { color: #E3E3E3; }
         
-        /* Gemini Gradient Utility */
         .bg-gemini-gradient { background: linear-gradient(135deg, #4285F4, #9B72CB, #D96570); }
     </style>
 </head>
@@ -167,11 +166,15 @@
                 </button>
                 
                 <div id="dropdown-menu" class="hidden absolute right-0 mt-3 w-72 bg-gemini-surfaceLight dark:bg-gemini-surfaceElevatedDark border border-gemini-borderLight/50 dark:border-gemini-borderDark/50 rounded-2xl shadow-m3 dark:shadow-m3-dark py-3 text-[14px] text-gemini-textLight dark:text-gemini-textDark z-50 overflow-y-auto max-h-[85vh]">
+                    
                     <button id="btn-update-app" class="w-full flex items-center px-5 py-2.5 hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors hidden">
                         <i data-lucide="refresh-cw" class="w-4 h-4 mr-4 text-gemini-primaryLight dark:text-gemini-primaryDark"></i> 
                         <div class="flex flex-col items-start leading-tight">
                             <span class="font-medium text-gemini-primaryLight dark:text-gemini-primaryDark">Update available</span>
                         </div>
+                    </button>
+                    <button id="btn-install" class="w-full flex items-center px-5 py-2.5 hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors hidden">
+                        <i data-lucide="monitor-down" class="w-4 h-4 mr-4 text-gemini-textMutedLight dark:text-gemini-textMutedDark"></i> Install app
                     </button>
                     
                     <button id="btn-search" class="w-full flex items-center px-5 py-2.5 hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors">
@@ -199,6 +202,12 @@
                     <button id="btn-decode-b64" class="w-full flex items-center px-5 py-2.5 hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors">
                         <i data-lucide="file-code-2" class="w-4 h-4 mr-4 text-gemini-textMutedLight dark:text-gemini-textMutedDark"></i> Base64 Decode
                     </button>
+                    <button id="btn-encode-url" class="w-full flex items-center px-5 py-2.5 hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors">
+                        <i data-lucide="link" class="w-4 h-4 mr-4 text-gemini-textMutedLight dark:text-gemini-textMutedDark"></i> URL Encode
+                    </button>
+                    <button id="btn-decode-url" class="w-full flex items-center px-5 py-2.5 hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors">
+                        <i data-lucide="link-2-off" class="w-4 h-4 mr-4 text-gemini-textMutedLight dark:text-gemini-textMutedDark"></i> URL Decode
+                    </button>
                     
                     <div class="border-t border-gemini-borderLight dark:border-gemini-borderDark my-2"></div>
 
@@ -208,9 +217,9 @@
                             <span>Zoom</span>
                         </div>
                         <div class="flex items-center bg-gemini-bgLight dark:bg-gemini-bgDark rounded-full p-0.5">
-                            <button id="btn-zoom-out" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors"><i data-lucide="minus" class="w-3.5 h-3.5"></i></button>
-                            <span id="zoom-level-text" class="w-10 text-center text-[12px] font-medium">100%</span>
-                            <button id="btn-zoom-in" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors"><i data-lucide="plus" class="w-3.5 h-3.5"></i></button>
+                            <button id="btn-zoom-out" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors"><i data-lucide="minus" class="w-3.5 h-3.5 pointer-events-none"></i></button>
+                            <span id="zoom-level-text" class="w-10 text-center text-[12px] font-medium cursor-default">100%</span>
+                            <button id="btn-zoom-in" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors"><i data-lucide="plus" class="w-3.5 h-3.5 pointer-events-none"></i></button>
                         </div>
                     </div>
 
@@ -218,6 +227,12 @@
                     
                     <button id="btn-theme" class="w-full flex items-center px-5 py-2.5 hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors">
                         <i data-lucide="moon" class="w-4 h-4 mr-4 text-gemini-textMutedLight dark:text-gemini-textMutedDark" id="theme-icon"></i> Toggle dark mode
+                    </button>
+                    <button id="btn-rename" class="w-full flex items-center px-5 py-2.5 hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors">
+                        <i data-lucide="edit-3" class="w-4 h-4 mr-4 text-gemini-textMutedLight dark:text-gemini-textMutedDark"></i> Rename file
+                    </button>
+                    <button id="btn-info" class="w-full flex items-center px-5 py-2.5 hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors">
+                        <i data-lucide="info" class="w-4 h-4 mr-4 text-gemini-textMutedLight dark:text-gemini-textMutedDark"></i> File details
                     </button>
                 </div>
             </div>
@@ -233,16 +248,16 @@
             <div id="search-panel" class="hidden absolute top-4 right-6 w-[400px] bg-gemini-surfaceLight dark:bg-gemini-surfaceElevatedDark shadow-m3 dark:shadow-m3-dark rounded-2xl border border-gemini-borderLight/50 dark:border-gemini-borderDark z-40 flex flex-col p-3 space-y-2">
                 <div class="flex items-center space-x-2">
                     <button id="btn-toggle-replace" class="p-1.5 rounded-full text-gemini-textMutedLight dark:text-gemini-textMutedDark hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors">
-                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        <i data-lucide="chevron-right" class="w-4 h-4 pointer-events-none"></i>
                     </button>
                     <div class="flex-grow flex items-center bg-gemini-bgLight dark:bg-gemini-bgDark rounded-full px-4 h-9">
                         <input type="text" id="find-input" class="w-full bg-transparent outline-none text-[13px] placeholder-gemini-textMutedLight" placeholder="Find in document">
                         <span id="search-count" class="text-xs text-gemini-textMutedLight ml-2 font-mono">0/0</span>
                     </div>
                     <div class="flex items-center space-x-1">
-                        <button id="btn-find-prev" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark"><i data-lucide="chevron-up" class="w-4 h-4"></i></button>
-                        <button id="btn-find-next" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark"><i data-lucide="chevron-down" class="w-4 h-4"></i></button>
-                        <button id="btn-close-search" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gemini-red/10 text-red-500"><i data-lucide="x" class="w-4 h-4"></i></button>
+                        <button id="btn-find-prev" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark disabled:opacity-30"><i data-lucide="chevron-up" class="w-4 h-4"></i></button>
+                        <button id="btn-find-next" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark disabled:opacity-30"><i data-lucide="chevron-down" class="w-4 h-4"></i></button>
+                        <button id="btn-close-search" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-500/10 text-red-500"><i data-lucide="x" class="w-4 h-4"></i></button>
                     </div>
                 </div>
                 <div id="replace-row" class="hidden flex items-center pl-8 space-x-2">
@@ -282,6 +297,8 @@
 
     <script>
         lucide.createIcons();
+
+        // --- Core App State ---
         let tabs = [], activeTabId = null, tabCounter = 0, untitledCount = 0, isDark = false, isRestoringSession = false, draggedTabId = null;
 
         const SUPPORTED_MODES = [
@@ -291,22 +308,23 @@
             { id: 'properties', label: 'Config / INI' }, { id: 'shell', label: 'Shell / Bash' }, { id: 'yaml', label: 'YAML' }
         ];
 
+        // --- Session Persistence ---
         let sessionSaveTimeout;
         function saveSession() {
             if (isRestoringSession) return;
             clearTimeout(sessionSaveTimeout);
             sessionSaveTimeout = setTimeout(() => {
                 try {
-                    localStorage.setItem('stext-session-v6', JSON.stringify({
+                    localStorage.setItem('stext-session-v7', JSON.stringify({
                         activeTabId, tabCounter, untitledCount,
-                        tabs: tabs.map(t => ({ id: t.id, name: t.name, content: t.doc.getValue(), modeVal: t.modeVal, modeLabel: t.modeLabel, isUnsaved: t.isUnsaved }))
+                        tabs: tabs.map(t => ({ id: t.id, name: t.name, content: t.doc.getValue(), modeVal: t.modeVal, modeLabel: t.modeLabel, isUnsaved: t.isUnsaved, isRenamed: t.isRenamed }))
                     }));
-                } catch(e) {}
+                } catch(e) { console.warn("Session save failed:", e); }
             }, 500);
         }
 
         function restoreSession() {
-            const dataStr = localStorage.getItem('stext-session-v6');
+            const dataStr = localStorage.getItem('stext-session-v7');
             if (dataStr) {
                 try {
                     isRestoringSession = true;
@@ -315,17 +333,18 @@
                     if (data.tabs && data.tabs.length > 0) {
                         data.tabs.forEach(tData => {
                             const doc = CodeMirror.Doc(tData.content, tData.modeVal);
-                            if (!tData.isUnsaved) doc.markClean();
-                            tabs.push({ id: tData.id, name: tData.name, doc: doc, modeVal: tData.modeVal, modeLabel: tData.modeLabel, isUnsaved: tData.isUnsaved });
+                            if (!tData.isUnsaved && !tData.isRenamed) doc.markClean();
+                            tabs.push({ id: tData.id, name: tData.name, handle: null, doc: doc, modeVal: tData.modeVal, modeLabel: tData.modeLabel, isUnsaved: tData.isUnsaved, isRenamed: tData.isRenamed });
                         });
                         isRestoringSession = false;
                         switchTab(data.activeTabId || tabs[0].id); return;
                     }
-                } catch(e) {} finally { isRestoringSession = false; }
+                } catch(e) { console.error("Restore failed", e); } finally { isRestoringSession = false; }
             }
             createTab();
         }
 
+        // --- CodeMirror Initialization ---
         const editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
             lineNumbers: true, mode: "null", theme: "default", indentUnit: 4, matchBrackets: true, autoCloseBrackets: true,
             styleActiveLine: true, foldGutter: true, lint: true, gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"]
@@ -334,9 +353,13 @@
         editor.on('change', (cm, changeObj) => {
             if (changeObj.origin !== 'setValue') {
                 const tab = getActiveTab();
-                if (tab && tab.isUnsaved !== !tab.doc.isClean()) { tab.isUnsaved = !tab.doc.isClean(); renderTabs(); }
+                if (tab) {
+                    const currentlyUnsaved = !tab.doc.isClean() || tab.isRenamed;
+                    if (tab.isUnsaved !== currentlyUnsaved) { tab.isUnsaved = currentlyUnsaved; renderTabs(); }
+                }
             }
             updateDocumentStats(); updateMarkdownPreview(); saveSession();
+            if (!searchPanel.classList.contains('hidden')) { clearTimeout(searchUpdateTimeout); searchUpdateTimeout = setTimeout(updateSearch, 250); }
         });
 
         function showToast(msg) {
@@ -344,17 +367,28 @@
             t.classList.remove('opacity-0'); setTimeout(() => t.classList.add('opacity-0'), 3000);
         }
 
+        // --- Tab & Language Management ---
         function getActiveTab() { return tabs.find(t => t.id === activeTabId); }
         function getModeInfo(filename) {
             const ext = filename.split('.').pop().toLowerCase();
-            const map = {'js':'javascript','json':'application/json','html':'htmlmixed','css':'css','py':'python','md':'markdown'};
+            const map = {'js':'javascript','json':'application/json','html':'htmlmixed','htm':'htmlmixed','css':'css','py':'python','md':'markdown','xml':'xml','svg':'xml','c':'clike','cpp':'clike','java':'clike','cs':'clike','conf':'properties','ini':'properties','properties':'properties','sh':'shell','bash':'shell','yaml':'yaml','yml':'yaml'};
             return SUPPORTED_MODES.find(m => m.id === (map[ext] || 'text/plain')) || SUPPORTED_MODES[0];
         }
 
         function updateTabLanguage(tab, id, label) {
             tab.modeVal = id; tab.modeLabel = label;
-            if (activeTabId === tab.id) { editor.setOption('mode', id); document.getElementById('language-label').textContent = label; }
+            if (activeTabId === tab.id) { 
+                editor.setOption('mode', id); 
+                document.getElementById('language-label').textContent = label; 
+                updatePreviewVisibility(id);
+            }
             saveSession();
+        }
+
+        function updatePreviewVisibility(modeVal) {
+            const btnPreview = document.getElementById('btn-preview');
+            if (modeVal === 'markdown') btnPreview.classList.remove('hidden');
+            else { btnPreview.classList.add('hidden'); if (isPreviewActive) togglePreview(); }
         }
 
         const langDropdown = document.getElementById('language-dropdown');
@@ -367,13 +401,12 @@
         });
 
         document.getElementById('btn-language-select').onclick = (e) => { e.stopPropagation(); langDropdown.classList.toggle('hidden'); };
-        document.addEventListener('click', (e) => { if (!e.target.closest('#btn-language-select')) langDropdown.classList.add('hidden'); });
-
-        function createTab(name = null, content = '') {
+        
+        function createTab(name = null, content = '', handle = null) {
             if (!name) name = `Untitled-${++untitledCount}.txt`;
             const id = 'tab-' + (++tabCounter);
             const m = getModeInfo(name); const doc = CodeMirror.Doc(content, m.id); doc.markClean();
-            tabs.push({ id, name, doc, modeVal: m.id, modeLabel: m.label, isUnsaved: false });
+            tabs.push({ id, name, handle, doc, modeVal: m.id, modeLabel: m.label, isUnsaved: false, isRenamed: false });
             switchTab(id);
         }
 
@@ -382,15 +415,28 @@
             if (tab) {
                 editor.swapDoc(tab.doc); editor.setOption('mode', tab.modeVal);
                 document.getElementById('language-label').textContent = tab.modeLabel;
-                updateDocumentStats(); renderTabs();
+                updatePreviewVisibility(tab.modeVal); updateDocumentStats(); renderTabs();
+                if (!searchPanel.classList.contains('hidden')) updateSearch();
             }
         }
 
         function closeTab(id) {
             const idx = tabs.findIndex(t => t.id === id); const tab = tabs[idx];
-            if (tab.isUnsaved && !confirm(`Discard changes to "${tab.name}"?`)) return;
+            if (tab.isUnsaved && !confirm(`Save changes to "${tab.name}" before closing?\nClick OK to close and discard changes.`)) return;
             tabs.splice(idx, 1);
             if (!tabs.length) createTab(); else if (activeTabId === id) switchTab(tabs[Math.max(0, idx - 1)].id); else renderTabs();
+        }
+
+        function renameActiveTab() {
+            const tab = getActiveTab(); if(!tab) return;
+            const newName = prompt("Enter new file name (including extension):", tab.name);
+            if (newName && newName.trim() !== "" && newName !== tab.name) {
+                if (confirm(`Are you sure you want to change the file name to "${newName}"?\nThis requires re-selecting a save location next time.`)) {
+                    tab.name = newName.trim(); const newModeInfo = getModeInfo(tab.name);
+                    updateTabLanguage(tab, newModeInfo.id, newModeInfo.label);
+                    tab.handle = null; tab.isRenamed = true; tab.isUnsaved = true; renderTabs();
+                }
+            }
         }
 
         function renderTabs() {
@@ -399,19 +445,34 @@
                 const isActive = tab.id === activeTabId;
                 const el = document.createElement('div');
                 
-                // M3 Pill Tab styling
                 const bg = isActive ? 'bg-gemini-surfaceLight dark:bg-gemini-surfaceElevatedDark shadow-sm border border-gemini-borderLight/40 dark:border-gemini-borderDark' : 'bg-transparent hover:bg-gemini-surfaceLight/50 dark:hover:bg-gemini-surfaceElevatedDark/50';
-                const text = isActive ? 'text-gemini-primaryLight dark:text-gemini-primaryDark font-medium' : 'text-gemini-textMutedLight dark:text-gemini-textMutedDark';
+                const text = tab.isUnsaved ? 'text-gemini-red font-medium' : (isActive ? 'text-gemini-primaryLight dark:text-gemini-primaryDark font-medium' : 'text-gemini-textMutedLight dark:text-gemini-textMutedDark');
                 
                 el.className = `group flex items-center px-4 py-1.5 rounded-full cursor-pointer min-w-max select-none transition-all duration-200 ${bg}`;
                 el.onclick = () => switchTab(tab.id);
 
+                el.draggable = true;
+                el.ondragstart = (e) => { draggedTabId = tab.id; e.dataTransfer.effectAllowed = 'move'; setTimeout(() => el.classList.add('opacity-40'), 0); };
+                el.ondragover = (e) => { e.preventDefault(); if (draggedTabId && draggedTabId !== tab.id) el.classList.add('ring-2', 'ring-gemini-primaryLight'); };
+                el.ondragleave = () => el.classList.remove('ring-2', 'ring-gemini-primaryLight');
+                el.ondrop = (e) => {
+                    e.preventDefault(); e.stopPropagation(); el.classList.remove('ring-2', 'ring-gemini-primaryLight');
+                    if (draggedTabId && draggedTabId !== tab.id) {
+                        const fromIdx = tabs.findIndex(t => t.id === draggedTabId);
+                        const toIdx = tabs.findIndex(t => t.id === tab.id);
+                        if (fromIdx !== -1 && toIdx !== -1) { const [moved] = tabs.splice(fromIdx, 1); tabs.splice(toIdx, 0, moved); renderTabs(); }
+                    }
+                    draggedTabId = null;
+                };
+                el.ondragend = () => { el.classList.remove('opacity-40'); draggedTabId = null; };
+
                 const nameSpan = document.createElement('span');
-                nameSpan.className = `text-[13px] mr-2 ${text}`;
+                nameSpan.className = `text-[13px] mr-2 transition-colors ${text}`;
                 nameSpan.textContent = tab.name + (tab.isUnsaved ? ' *' : '');
+                nameSpan.ondblclick = (e) => { e.stopPropagation(); if(!isActive) switchTab(tab.id); renameActiveTab(); };
 
                 const closeBtn = document.createElement('button');
-                closeBtn.className = `p-1 rounded-full hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark opacity-0 group-hover:opacity-100 ${isActive ? 'opacity-100' : ''}`;
+                closeBtn.className = `p-1 rounded-full hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark text-gemini-textMutedLight dark:text-gemini-textMutedDark opacity-0 group-hover:opacity-100 ${isActive ? 'opacity-100' : ''}`;
                 closeBtn.innerHTML = '<i data-lucide="x" class="w-3 h-3"></i>';
                 closeBtn.onclick = (e) => { e.stopPropagation(); closeTab(tab.id); };
 
@@ -420,37 +481,237 @@
             lucide.createIcons(); saveSession();
         }
 
-        // Feature functions (Zoom, Theme, Dev Tools)
+        // --- File System Operations ---
+        function fallbackOpenFile() {
+            const input = document.createElement('input'); input.type = 'file';
+            input.accept = '.txt,.html,.css,.js,.json,.py,.md,.csv,.xml,.c,.cpp,.java,.conf,.ini,.sh,.yaml,.yml';
+            input.onchange = (e) => {
+                const file = e.target.files[0]; if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const contents = event.target.result; const tab = getActiveTab();
+                    if (tab && tab.name.startsWith('Untitled') && !tab.isUnsaved && tab.doc.getValue() === '') {
+                        tab.handle = null; tab.name = file.name; const modeInfo = getModeInfo(file.name);
+                        tab.doc = CodeMirror.Doc(contents, modeInfo.id); tab.doc.markClean(); tab.isRenamed = false;
+                        updateTabLanguage(tab, modeInfo.id, modeInfo.label); editor.swapDoc(tab.doc); renderTabs();
+                    } else createTab(file.name, contents, null);
+                    showToast(`Opened ${file.name}`);
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        function fallbackSaveFile(content, defaultFilename) {
+            const filename = prompt("Enter file name to save:", defaultFilename); if (!filename) return; 
+            const blob = new Blob([content], { type: 'text/plain' }); const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = filename; a.click(); URL.revokeObjectURL(url);
+            const tab = getActiveTab();
+            if (tab) {
+                tab.name = filename; tab.isUnsaved = false; tab.isRenamed = false; tab.doc.markClean();
+                const modeInfo = getModeInfo(filename); updateTabLanguage(tab, modeInfo.id, modeInfo.label); renderTabs();
+            }
+            showToast("File downloaded to device");
+        }
+
+        async function openFile() {
+            try {
+                const [handle] = await window.showOpenFilePicker({ types: [{ description: 'Text/Code Files', accept: {'text/*': ['.txt', '.html', '.css', '.js', '.json', '.py', '.md', '.csv', '.xml', '.c', '.cpp', '.java', '.conf', '.ini', '.sh', '.yaml', '.yml']} }] });
+                const file = await handle.getFile(); const contents = await file.text(); const tab = getActiveTab();
+                if (tab && tab.name.startsWith('Untitled') && !tab.isUnsaved && tab.doc.getValue() === '') {
+                    tab.handle = handle; tab.name = file.name; const modeInfo = getModeInfo(file.name);
+                    tab.doc = CodeMirror.Doc(contents, modeInfo.id); tab.doc.markClean(); tab.isRenamed = false;
+                    updateTabLanguage(tab, modeInfo.id, modeInfo.label); editor.swapDoc(tab.doc); renderTabs();
+                } else createTab(file.name, contents, handle);
+                showToast(`Opened ${file.name}`);
+            } catch (err) { if (err.name === 'SecurityError' || err.message.includes('cross origin')) fallbackOpenFile(); }
+        }
+
+        async function saveFile() {
+            const tab = getActiveTab(); if (!tab) return;
+            if (!tab.handle) return saveFileAs();
+            try {
+                const writable = await tab.handle.createWritable(); await writable.write(tab.doc.getValue()); await writable.close();
+                tab.isUnsaved = false; tab.isRenamed = false; tab.doc.markClean(); renderTabs(); showToast("File saved to Drive");
+            } catch (err) { console.error(err); showToast("Failed to save file"); }
+        }
+
+        async function saveFileAs() {
+            const tab = getActiveTab(); if (!tab) return;
+            try {
+                const handle = await window.showSaveFilePicker({ suggestedName: tab.name, types: [{ description: 'Text/Code File', accept: {'text/plain': ['.txt', '.html', '.css', '.js', '.json', '.py', '.md', '.conf', '.ini', '.sh', '.yaml', '.yml']} }] });
+                const writable = await handle.createWritable(); await writable.write(tab.doc.getValue()); await writable.close();
+                const file = await handle.getFile(); tab.handle = handle; tab.name = file.name;
+                const modeInfo = getModeInfo(file.name); updateTabLanguage(tab, modeInfo.id, modeInfo.label);
+                tab.isUnsaved = false; tab.isRenamed = false; tab.doc.markClean(); renderTabs(); showToast("File saved to Drive");
+            } catch (err) { if (err.name === 'SecurityError' || err.message.includes('cross origin')) fallbackSaveFile(tab.doc.getValue(), tab.name); }
+        }
+
+        // --- Features (Zoom, Theme, Word Wrap, Preview) ---
+        let currentFontSize = 14;
+        function updateFontSize() {
+            const cmElement = document.querySelector('.CodeMirror');
+            const percentage = Math.round((currentFontSize / 14) * 100);
+            if (cmElement) { cmElement.style.fontSize = `${currentFontSize}px`; editor.refresh(); }
+            document.getElementById('zoom-level-text').textContent = `${percentage}%`;
+        }
+        function zoomIn() { if (currentFontSize < 40) { currentFontSize++; updateFontSize(); } }
+        function zoomOut() { if (currentFontSize > 8) { currentFontSize--; updateFontSize(); } }
+
         function toggleTheme() {
-            isDark = !isDark;
-            document.documentElement.classList.toggle('dark', isDark);
+            isDark = !isDark; document.documentElement.classList.toggle('dark', isDark);
             editor.setOption("theme", isDark ? "material-darker" : "default");
             document.getElementById('theme-icon').setAttribute('data-lucide', isDark ? 'sun' : 'moon');
             document.getElementById('meta-theme-color').setAttribute('content', isDark ? '#131314' : '#F0F4F9');
             lucide.createIcons(); renderTabs();
         }
 
+        let isWordWrap = false;
+        function toggleWordWrap() {
+            isWordWrap = !isWordWrap; editor.setOption("lineWrapping", isWordWrap);
+            document.getElementById('wrap-icon').classList.toggle('text-gemini-primaryLight', isWordWrap);
+            document.getElementById('wrap-icon').classList.toggle('dark:text-gemini-primaryDark', isWordWrap);
+            showToast(isWordWrap ? "Word Wrap enabled" : "Word Wrap disabled");
+        }
+
+        let isPreviewActive = false;
+        function togglePreview() {
+            isPreviewActive = !isPreviewActive;
+            const wrapper = document.getElementById('editor-wrapper'), preview = document.getElementById('markdown-preview');
+            wrapper.classList.toggle('w-full', !isPreviewActive); wrapper.classList.toggle('w-1/2', isPreviewActive);
+            preview.classList.toggle('hidden', !isPreviewActive);
+            document.getElementById('preview-icon').classList.toggle('text-gemini-primaryLight', isPreviewActive);
+            document.getElementById('preview-icon').classList.toggle('dark:text-gemini-primaryDark', isPreviewActive);
+            if (isPreviewActive) updateMarkdownPreview(); setTimeout(() => editor.refresh(), 300);
+            showToast(isPreviewActive ? "Markdown Preview enabled" : "Markdown Preview disabled");
+        }
+        function updateMarkdownPreview() { if (isPreviewActive && typeof marked !== 'undefined') document.getElementById('markdown-preview').innerHTML = marked.parse(editor.getValue()); }
+
+        // --- Developer Utilities ---
+        function getSelectedTextOrAll() {
+            const selection = editor.getSelection(); return selection ? { text: selection, isSelection: true } : { text: editor.getValue(), isSelection: false };
+        }
+        function replaceText(newText, isSelection) { if (isSelection) editor.replaceSelection(newText); else editor.setValue(newText); }
+
+        document.getElementById('btn-format-json').onclick = () => {
+            const { text, isSelection } = getSelectedTextOrAll(); if (!text.trim()) return;
+            try { replaceText(JSON.stringify(JSON.parse(text), null, 4), isSelection); showToast("JSON Formatted"); 
+                const tab = getActiveTab(); if (tab && tab.modeVal !== 'application/json') updateTabLanguage(tab, 'application/json', 'JSON');
+            } catch(e) { showToast("Invalid JSON"); }
+        };
+        document.getElementById('btn-minify-json').onclick = () => {
+            const { text, isSelection } = getSelectedTextOrAll(); if (!text.trim()) return;
+            try { replaceText(JSON.stringify(JSON.parse(text)), isSelection); showToast("JSON Minified"); } catch(e) { showToast("Invalid JSON"); }
+        };
+        document.getElementById('btn-encode-b64').onclick = () => { const { text, isSel } = getSelectedTextOrAll(); if(text) { try{ replaceText(btoa(text), isSel); showToast("Base64 Encoded"); } catch(e){ showToast("Invalid characters"); } } };
+        document.getElementById('btn-decode-b64').onclick = () => { const { text, isSel } = getSelectedTextOrAll(); if(text) { try{ replaceText(atob(text), isSel); showToast("Base64 Decoded"); } catch(e){ showToast("Invalid Base64"); } } };
+        document.getElementById('btn-encode-url').onclick = () => { const { text, isSel } = getSelectedTextOrAll(); if(text) { replaceText(encodeURIComponent(text), isSel); showToast("URL Encoded"); } };
+        document.getElementById('btn-decode-url').onclick = () => { const { text, isSel } = getSelectedTextOrAll(); if(text) { try{ replaceText(decodeURIComponent(text), isSel); showToast("URL Decoded"); } catch(e){ showToast("Invalid URL Encoding"); } } };
+
+        // --- Search & Replace Logic ---
+        const searchPanel = document.getElementById('search-panel'), findInput = document.getElementById('find-input'), replaceInput = document.getElementById('replace-input'), replaceRow = document.getElementById('replace-row'), searchCount = document.getElementById('search-count'), btnPrev = document.getElementById('btn-find-prev'), btnNext = document.getElementById('btn-find-next'), btnToggleReplace = document.getElementById('btn-toggle-replace'), btnReplace = document.getElementById('btn-replace'), btnReplaceAll = document.getElementById('btn-replace-all'), btnCloseSearch = document.getElementById('btn-close-search');
+        let isReplaceOpen = false, searchMatches = [], matchMarks = [], currentSearchIndex = -1, searchUpdateTimeout;
+
+        CodeMirror.commands.find = () => openSearchPanel(false); CodeMirror.commands.replace = () => openSearchPanel(true);
+
+        function openSearchPanel(withReplace = false) {
+            searchPanel.classList.remove('hidden');
+            if (withReplace && !isReplaceOpen) toggleReplaceRow(); else if (!withReplace && isReplaceOpen) toggleReplaceRow();
+            findInput.focus();
+            const selection = editor.getSelection(); if (selection && selection.indexOf('\n') === -1) findInput.value = selection; else findInput.select();
+            updateSearch();
+        }
+        function closeSearchPanel() { searchPanel.classList.add('hidden'); clearSearchMarks(); editor.focus(); }
+        function toggleReplaceRow() {
+            isReplaceOpen = !isReplaceOpen; replaceRow.classList.toggle('hidden', !isReplaceOpen);
+            btnToggleReplace.innerHTML = isReplaceOpen ? '<i data-lucide="chevron-down" class="w-4 h-4 pointer-events-none"></i>' : '<i data-lucide="chevron-right" class="w-4 h-4 pointer-events-none"></i>'; lucide.createIcons();
+        }
+        function clearSearchMarks() { matchMarks.forEach(m => m.clear()); matchMarks = []; searchMatches = []; }
+
+        function updateSearch() {
+            clearSearchMarks(); const query = findInput.value;
+            if (!query) { searchCount.textContent = '0/0'; currentSearchIndex = -1; updateSearchButtons(); return; }
+            const cursor = editor.getSearchCursor(query, {line: 0, ch: 0});
+            while (cursor.findNext()) searchMatches.push({ from: cursor.from(), to: cursor.to() });
+            if (searchMatches.length > 0) {
+                if (currentSearchIndex < 0 || currentSearchIndex >= searchMatches.length) currentSearchIndex = 0;
+                renderSearchMarks();
+            } else { currentSearchIndex = -1; searchCount.textContent = '0/0'; }
+            updateSearchButtons();
+        }
+
+        function renderSearchMarks() {
+            matchMarks.forEach(m => m.clear()); matchMarks = [];
+            searchMatches.forEach((pos, idx) => { matchMarks.push(editor.markText(pos.from, pos.to, { className: (idx === currentSearchIndex) ? 'cm-search-active' : 'cm-search-highlight' })); });
+            if (currentSearchIndex >= 0 && currentSearchIndex < searchMatches.length) {
+                searchCount.textContent = `${currentSearchIndex + 1} of ${searchMatches.length}`; editor.scrollIntoView(searchMatches[currentSearchIndex], 50);
+            }
+        }
+        function updateSearchButtons() {
+            const disableNav = searchMatches.length <= 1; btnPrev.disabled = disableNav; btnNext.disabled = disableNav;
+            const disableReplace = searchMatches.length === 0; btnReplace.disabled = disableReplace; btnReplaceAll.disabled = disableReplace;
+            [btnReplace, btnReplaceAll].forEach(btn => btn.classList.toggle('opacity-40', disableReplace));
+        }
+
+        function findNext() { if (searchMatches.length <= 1) return; currentSearchIndex = (currentSearchIndex + 1) % searchMatches.length; renderSearchMarks(); }
+        function findPrev() { if (searchMatches.length <= 1) return; currentSearchIndex = (currentSearchIndex - 1 + searchMatches.length) % searchMatches.length; renderSearchMarks(); }
+        function performReplace() { if (currentSearchIndex >= 0 && currentSearchIndex < searchMatches.length) { editor.replaceRange(replaceInput.value, searchMatches[currentSearchIndex].from, searchMatches[currentSearchIndex].to); updateSearch(); } }
+        function performReplaceAll() { if (searchMatches.length === 0) return; editor.operation(() => { for (let i = searchMatches.length - 1; i >= 0; i--) { const pos = searchMatches[i]; editor.replaceRange(replaceInput.value, pos.from, pos.to); } }); updateSearch(); }
+
+        findInput.addEventListener('input', () => { clearTimeout(searchUpdateTimeout); searchUpdateTimeout = setTimeout(updateSearch, 200); });
+        findInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); e.shiftKey ? findPrev() : findNext(); } else if (e.key === 'Escape') closeSearchPanel(); });
+        replaceInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); e.shiftKey ? performReplaceAll() : performReplace(); } else if (e.key === 'Escape') closeSearchPanel(); });
+        btnToggleReplace.addEventListener('click', toggleReplaceRow); btnPrev.addEventListener('click', findPrev); btnNext.addEventListener('click', findNext);
+        btnCloseSearch.addEventListener('click', closeSearchPanel); btnReplace.addEventListener('click', performReplace); btnReplaceAll.addEventListener('click', performReplaceAll);
+
+        // --- Event Listeners ---
+        document.getElementById('btn-new').onclick = () => createTab();
+        document.getElementById('btn-open').onclick = openFile;
+        document.getElementById('btn-save').onclick = saveFile;
+        document.getElementById('btn-saveas').onclick = saveFileAs;
+        document.getElementById('btn-theme').onclick = toggleTheme;
+        document.getElementById('btn-wrap').onclick = toggleWordWrap;
+        document.getElementById('btn-search').onclick = () => openSearchPanel();
+        document.getElementById('btn-preview').onclick = togglePreview;
+        document.getElementById('btn-rename').onclick = renameActiveTab;
+        document.getElementById('btn-info').onclick = () => { const t = getActiveTab(); if(t) alert(`File Name: ${t.name}\nLanguage: ${t.modeLabel}`); };
+        document.getElementById('btn-zoom-in').onclick = (e) => { e.stopPropagation(); zoomIn(); };
+        document.getElementById('btn-zoom-out').onclick = (e) => { e.stopPropagation(); zoomOut(); };
+        
+        const menuToggle = document.getElementById('btn-menu-toggle'); const dropdownMenu = document.getElementById('dropdown-menu');
+        menuToggle.addEventListener('click', (e) => { e.stopPropagation(); dropdownMenu.classList.toggle('hidden'); });
+        document.addEventListener('click', (e) => { if (!dropdownMenu.contains(e.target) && !menuToggle.contains(e.target)) dropdownMenu.classList.add('hidden'); });
+        dropdownMenu.querySelectorAll('button').forEach(btn => { if (!['btn-zoom-in', 'btn-zoom-out', 'btn-language-select'].includes(btn.id) && !btn.closest('#language-dropdown')) btn.addEventListener('click', () => dropdownMenu.classList.add('hidden')); });
+
+        window.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                switch (e.key.toLowerCase()) {
+                    case 's': e.preventDefault(); e.shiftKey ? saveFileAs() : saveFile(); break;
+                    case 'o': e.preventDefault(); openFile(); break;
+                    case 'm': e.preventDefault(); createTab(); break;
+                    case 'f': e.preventDefault(); openSearchPanel(); break;
+                    case 'h': e.preventDefault(); openSearchPanel(true); break;
+                    case '=': case '+': e.preventDefault(); zoomIn(); break;
+                    case '-': e.preventDefault(); zoomOut(); break;
+                }
+            } else if (e.altKey) {
+                if (e.key.toLowerCase() === 'z') { e.preventDefault(); toggleWordWrap(); }
+                if (e.key.toLowerCase() === 'p' && !document.getElementById('btn-preview').classList.contains('hidden')) { e.preventDefault(); togglePreview(); }
+            }
+        });
+
         function updateDocumentStats() {
             const val = editor.getValue();
             document.getElementById('document-stats').textContent = `Words: ${val.trim() ? val.trim().split(/\s+/).length : 0} | Chars: ${val.length}`;
-            const pos = editor.getCursor();
-            document.getElementById('cursor-position').textContent = `Ln ${pos.line + 1}, Col ${pos.ch + 1}`;
+            const pos = editor.getCursor(); document.getElementById('cursor-position').textContent = `Ln ${pos.line + 1}, Col ${pos.ch + 1}`;
         }
         editor.on('cursorActivity', updateDocumentStats);
 
-        // Simple Dev Tools hook
-        document.getElementById('btn-format-json').onclick = () => {
-            try { editor.setValue(JSON.stringify(JSON.parse(editor.getValue()), null, 4)); showToast("JSON Formatted"); } catch(e) { showToast("Invalid JSON"); }
-        };
-
-        // File handling
-        document.getElementById('btn-new').onclick = () => createTab();
-        document.getElementById('btn-theme').onclick = toggleTheme;
-        document.getElementById('btn-menu-toggle').onclick = (e) => { e.stopPropagation(); document.getElementById('dropdown-menu').classList.toggle('hidden'); };
-        document.addEventListener('click', (e) => { if (!e.target.closest('#btn-menu-toggle') && !e.target.closest('#dropdown-menu')) document.getElementById('dropdown-menu').classList.add('hidden'); });
+        window.addEventListener('beforeunload', (e) => { if (tabs.some(t => t.isUnsaved)) { e.preventDefault(); e.returnValue = ''; } });
 
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) toggleTheme();
         restoreSession();
+
     </script>
 </body>
 </html>
