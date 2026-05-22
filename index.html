@@ -123,6 +123,7 @@
         .cm-search-highlight { background-color: rgba(251, 188, 4, 0.3); border-radius: 4px; }
         .cm-search-active { background-color: rgba(251, 188, 4, 0.6); border-radius: 4px; }
 
+        /* Custom Markdown Styling */
         .markdown-body { color: #1F1F1F; font-family: 'Inter', sans-serif; font-size: 14.5px; line-height: 1.6; }
         .dark .markdown-body { color: #E3E3E3; }
         
@@ -176,9 +177,12 @@
         }
         .dark #graph-tooltip { background: #E3E3E3; color: #1F1F1F; border-color: rgba(0,0,0,0.1); }
 
+        /* Mermaid Graph Styling Optimization */
         .mermaid {
-            width: 100%; min-height: 40vh; margin: 24px 0;
-            display: flex; justify-content: center; align-items: center;
+            width: 100%; 
+            height: 85vh; /* Massive canvas taking up 95% of preview area */
+            margin: 16px 0;
+            position: relative;
         }
         .mermaid svg {
             width: 100% !important; height: 100% !important; max-width: none !important; 
@@ -332,7 +336,7 @@
             </div>
         </div>
         
-        <div id="markdown-preview" class="hidden w-1/2 h-full border-l border-gemini-borderLight dark:border-gemini-borderDark bg-gemini-surfaceLight dark:bg-gemini-surfaceDark p-8 overflow-y-auto markdown-body max-w-none transition-all duration-300"></div>
+        <div id="markdown-preview" class="hidden w-1/2 h-full border-l border-gemini-borderLight dark:border-gemini-borderDark bg-gemini-surfaceLight dark:bg-gemini-surfaceDark p-4 overflow-y-auto markdown-body max-w-none transition-all duration-300"></div>
     </main>
 
     <footer class="bg-gemini-bgLight dark:bg-gemini-bgDark h-10 flex items-center justify-between px-6 text-[12px] text-gemini-textMutedLight dark:text-gemini-textMutedDark flex-shrink-0 font-mono">
@@ -718,16 +722,26 @@
             }
         }
 
+        // Modified: Added timeout to ensure SVG Pan Zoom correctly calculates the 95% space
         function applyGraphEnhancements(tooltip) {
             const svgs = document.querySelectorAll('.mermaid svg');
             svgs.forEach((svg, index) => {
                 if (!svg.id) svg.id = 'mermaid-graph-enhanced-' + index;
+                
                 svg.removeAttribute('height');
                 svg.removeAttribute('width');
-                svgPanZoom(svg, {
+                svg.style.maxWidth = 'none';
+
+                const pz = svgPanZoom(svg, {
                     zoomEnabled: true, controlIconsEnabled: true, fit: true,
                     center: true, minZoom: 0.1, maxZoom: 10
                 });
+
+                setTimeout(() => {
+                    pz.resize();
+                    pz.fit();
+                    pz.center();
+                }, 50);
 
                 const interactiveElements = svg.querySelectorAll('.node, .actor');
                 interactiveElements.forEach(el => {
@@ -868,7 +882,6 @@
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) toggleTheme();
         restoreSession();
 
-        // --- PWA Installation & Updating Logic ---
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -915,7 +928,6 @@
             };
         }
 
-        // --- ChromeOS File Handler API Logic ---
         if ('launchQueue' in window) {
             window.launchQueue.setConsumer(async (launchParams) => {
                 if (!launchParams.files || !launchParams.files.length) return;
