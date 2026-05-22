@@ -3,20 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#ffffff" id="meta-theme-color">
+    <meta name="theme-color" content="#F0F4F9" id="meta-theme-color">
     <title>S-Text Editor</title>
     
-    <!-- Google Fonts: Roboto & Roboto Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    <!-- Standardized Favicons and PWA Manifest -->
     <link rel="icon" type="image/svg+xml" href="icon.svg">
     <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="manifest" href="manifest.json">
 
-    <!-- Tailwind CSS with Google Workspace Color Palette -->
     <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <script>
         tailwind.config = {
@@ -24,44 +21,44 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Roboto', 'sans-serif'],
-                        mono: ['"Roboto Mono"', 'monospace'],
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
                     },
                     colors: {
-                        google: {
-                            blue: '#1a73e8',
-                            blueDark: '#8ab4f8',
-                            blueHover: '#e8f0fe',
-                            blueHoverDark: '#3c4043',
-                            red: '#ea4335',
-                            yellow: '#fbbc04',
-                            green: '#34a853',
-                            bgLight: '#ffffff',
-                            bgGray: '#f8f9fa',
-                            bgGrayHover: '#f1f3f4',
-                            bgDark: '#202124',
-                            bgGrayDark: '#282a2d',
-                            bgElevatedDark: '#303134',
-                            textLight: '#202124',
-                            textDark: '#e8eaed',
-                            textMuted: '#5f6368',
-                            textMutedDark: '#9aa0a6',
-                            borderLight: '#dadce0',
-                            borderDark: '#5f6368',
-                            snackbar: '#323232'
+                        gemini: {
+                            // Light Mode
+                            bgLight: '#F0F4F9',
+                            surfaceLight: '#FFFFFF',
+                            textLight: '#1F1F1F',
+                            textMutedLight: '#444746',
+                            borderLight: '#E3E3E3',
+                            hoverLight: '#E1E5EA',
+                            primaryLight: '#0B57D0',
+                            
+                            // Dark Mode
+                            bgDark: '#131314',
+                            surfaceDark: '#1E1F20',
+                            surfaceElevatedDark: '#282A2C',
+                            textDark: '#E3E3E3',
+                            textMutedDark: '#C4C7C5',
+                            borderDark: '#444746',
+                            hoverDark: '#333538',
+                            primaryDark: '#A8C7FA',
                         }
+                    },
+                    boxShadow: {
+                        'm3': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                        'm3-dark': '0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3)',
                     }
                 }
             }
         }
     </script>
 
-    <!-- CodeMirror Core & Theme -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/material-darker.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
     
-    <!-- CodeMirror Language Modes -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/xml/xml.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/css/css.min.js"></script>
@@ -72,8 +69,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/properties/properties.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/shell/shell.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/yaml/yaml.min.js"></script>
-
-    <!-- CodeMirror Fold Addons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/foldgutter.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/foldcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/foldgutter.min.js"></script>
@@ -82,1234 +77,380 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/indent-fold.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/markdown-fold.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/comment-fold.min.js"></script>
-
-    <!-- CodeMirror Linter Addons (JSON Linting) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsonlint/1.6.0/jsonlint.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/json-lint.min.js"></script>
-
-    <!-- Developer Comforts Addons -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/search/searchcursor.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/closebrackets.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/selection/active-line.min.js"></script>
 
-    <!-- Live Markdown Preview Addon -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        body { font-family: 'Roboto', sans-serif; }
+        body { font-family: 'Inter', sans-serif; }
         
-        /* Material CodeMirror Overrides */
+        /* Modernized CodeMirror Overrides */
         .CodeMirror { 
             height: 100%; 
-            font-family: 'Roboto Mono', monospace; 
+            font-family: 'JetBrains Mono', monospace; 
             font-size: 14px; 
             background-color: transparent;
-            line-height: 1.5;
+            line-height: 1.6;
         }
         .CodeMirror-gutters {
             border-right: 1px solid transparent;
             background-color: transparent;
         }
         
-        /* Code Folding Gutter Customization */
         .CodeMirror-foldgutter { width: 16px; background: transparent; }
         .CodeMirror-foldgutter-open,
         .CodeMirror-foldgutter-folded {
-            color: #5f6368; cursor: pointer; display: flex; align-items: center; justify-content: center; height: 100%;
+            color: #C4C7C5; cursor: pointer; display: flex; align-items: center; justify-content: center; height: 100%;
         }
-        .dark .CodeMirror-foldgutter-open, .dark .CodeMirror-foldgutter-folded { color: #9aa0a6; }
         .CodeMirror-foldgutter-open:after { content: "\2212"; font-weight: 500; font-size: 14px; }
         .CodeMirror-foldgutter-folded:after { content: "\002B"; font-weight: 500; font-size: 14px; }
-        .CodeMirror-foldmarker {
-            color: #1a73e8; text-shadow: none; font-family: 'Roboto', sans-serif; background: rgba(26, 115, 232, 0.1); border: 1px solid rgba(26, 115, 232, 0.3); border-radius: 4px; padding: 0 4px; margin: 0 2px; cursor: pointer;
-        }
-        .dark .CodeMirror-foldmarker { color: #8ab4f8; background: rgba(138, 180, 248, 0.15); border-color: rgba(138, 180, 248, 0.3); }
-
-        /* Linter UI Customization */
-        .CodeMirror-lint-marker-error, .CodeMirror-lint-marker-warning { background-image: none; display: flex; align-items: center; justify-content: center; }
-        .CodeMirror-lint-marker-error:after { content: "\2715"; color: #ea4335; font-size: 12px; font-weight: bold; }
         
-        /* Active Line Styling */
-        .CodeMirror-activeline-background { background: rgba(0, 0, 0, 0.04) !important; }
-        .dark .CodeMirror-activeline-background { background: rgba(255, 255, 255, 0.05) !important; }
+        .CodeMirror-activeline-background { background: rgba(0, 0, 0, 0.03) !important; }
+        .dark .CodeMirror-activeline-background { background: rgba(255, 255, 255, 0.03) !important; }
 
-        /* Google Custom Scrollbars */
-        ::-webkit-scrollbar { width: 14px; height: 14px; }
-        ::-webkit-scrollbar-track { background: transparent; background-clip: padding-box; border: 4px solid transparent; }
-        ::-webkit-scrollbar-thumb { background-color: rgba(0, 0, 0, 0.2); background-clip: padding-box; border: 4px solid transparent; border-radius: 8px; }
-        ::-webkit-scrollbar-thumb:hover { background-color: rgba(0, 0, 0, 0.3); }
+        /* Smooth Custom Scrollbars */
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background-color: rgba(150, 150, 150, 0.3); border-radius: 10px; border: 2px solid transparent; background-clip: padding-box; }
+        ::-webkit-scrollbar-thumb:hover { background-color: rgba(150, 150, 150, 0.5); }
         .dark ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.2); }
-        .dark ::-webkit-scrollbar-thumb:hover { background-color: rgba(255, 255, 255, 0.3); }
 
-        /* Tab Bar Hide Scrollbar natively */
         #tab-bar { -ms-overflow-style: none; scrollbar-width: none; }
         #tab-bar::-webkit-scrollbar { display: none; }
 
-        /* Custom Search Highlights */
-        .cm-search-highlight { background-color: rgba(251, 188, 4, 0.4); border-radius: 2px; }
-        .dark .cm-search-highlight { background-color: rgba(251, 188, 4, 0.3); }
-        .cm-search-active { background-color: rgba(251, 188, 4, 0.9); border: 1px solid #fbbc04; border-radius: 2px; box-shadow: 0 0 0 1px rgba(251, 188, 4, 0.5); }
-        .dark .cm-search-active { background-color: rgba(251, 188, 4, 0.7); border-color: #fbbc04; }
+        .cm-search-highlight { background-color: rgba(251, 188, 4, 0.3); border-radius: 4px; }
+        .cm-search-active { background-color: rgba(251, 188, 4, 0.6); border-radius: 4px; }
 
-        /* Google Docs-like Prose */
-        .prose { color: #202124; max-width: 816px; margin: 0 auto; }
-        .dark .prose { color: #e8eaed; }
-        .prose h1, .prose h2, .prose h3, .prose h4 { font-weight: 500; color: #202124; }
-        .dark .prose h1, .dark .prose h2, .dark .prose h3, .dark .prose h4 { color: #e8eaed; }
-        .prose a { color: #1a73e8; text-decoration: none; }
-        .prose a:hover { text-decoration: underline; }
-        .dark .prose a { color: #8ab4f8; }
+        .prose { color: #1F1F1F; max-width: 816px; margin: 0 auto; font-family: 'Inter', sans-serif;}
+        .dark .prose { color: #E3E3E3; }
+        
+        /* Gemini Gradient Utility */
+        .bg-gemini-gradient { background: linear-gradient(135deg, #4285F4, #9B72CB, #D96570); }
     </style>
 </head>
-<body class="bg-google-bgLight dark:bg-google-bgDark h-screen flex flex-col overflow-hidden text-google-textLight dark:text-google-textDark transition-colors duration-200">
+<body class="bg-gemini-bgLight dark:bg-gemini-bgDark h-screen flex flex-col overflow-hidden text-gemini-textLight dark:text-gemini-textDark transition-colors duration-300">
     
-    <!-- Google Workspace Style Title/Action Bar -->
-    <header class="bg-google-bgLight dark:bg-google-bgDark h-14 border-b border-google-borderLight dark:border-google-borderDark flex items-center justify-between px-4 flex-shrink-0 select-none">
+    <header class="bg-gemini-bgLight dark:bg-gemini-bgDark h-16 flex items-center justify-between px-5 flex-shrink-0 select-none">
         <div class="flex items-center space-x-3">
-            <div class="w-9 h-9 bg-google-blue rounded flex items-center justify-center text-white shadow-sm">
-                <i data-lucide="file-edit" class="w-5 h-5"></i>
+            <div class="w-10 h-10 bg-gemini-gradient rounded-xl flex items-center justify-center text-white shadow-sm">
+                <i data-lucide="sparkles" class="w-5 h-5"></i>
             </div>
-            <span class="font-medium text-[18px] tracking-tight hidden sm:inline-block text-google-textMuted dark:text-google-textMutedDark">S-Text Editor</span>
+            <span class="font-semibold text-[18px] tracking-tight hidden sm:inline-block bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-500 dark:from-gray-100 dark:to-gray-400">S-Text</span>
         </div>
 
-        <div class="flex items-center space-x-1 sm:space-x-1">
-            <button id="btn-new" class="p-2.5 rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors" title="New File (Ctrl+M)">
-                <i data-lucide="file-plus" class="w-[20px] h-[20px]"></i>
+        <div class="flex items-center space-x-1.5 bg-gemini-surfaceLight dark:bg-gemini-surfaceDark p-1.5 rounded-full shadow-sm border border-gemini-borderLight/50 dark:border-gemini-borderDark/30">
+            <button id="btn-new" class="p-2 rounded-full text-gemini-textMutedLight dark:text-gemini-textMutedDark hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-all duration-200" title="New File (Ctrl+M)">
+                <i data-lucide="file-plus" class="w-5 h-5"></i>
             </button>
-            <button id="btn-open" class="p-2.5 rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors" title="Open File (Ctrl+O)">
-                <i data-lucide="folder-open" class="w-[20px] h-[20px]"></i>
+            <button id="btn-open" class="p-2 rounded-full text-gemini-textMutedLight dark:text-gemini-textMutedDark hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-all duration-200" title="Open File (Ctrl+O)">
+                <i data-lucide="folder-open" class="w-5 h-5"></i>
             </button>
-            <button id="btn-save" class="p-2.5 rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors" title="Save (Ctrl+S)">
-                <i data-lucide="save" class="w-[20px] h-[20px]"></i>
+            <button id="btn-save" class="p-2 rounded-full text-gemini-textMutedLight dark:text-gemini-textMutedDark hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-all duration-200" title="Save (Ctrl+S)">
+                <i data-lucide="save" class="w-5 h-5"></i>
             </button>
-            <button id="btn-saveas" class="p-2.5 rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors" title="Save As (Ctrl+Shift+S)">
-                <i data-lucide="download" class="w-[20px] h-[20px]"></i>
+            <button id="btn-saveas" class="p-2 rounded-full text-gemini-textMutedLight dark:text-gemini-textMutedDark hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-all duration-200" title="Save As (Ctrl+Shift+S)">
+                <i data-lucide="download" class="w-5 h-5"></i>
             </button>
             
-            <div class="w-px h-5 bg-google-borderLight dark:bg-google-borderDark mx-2"></div>
+            <div class="w-[1px] h-6 bg-gemini-borderLight dark:bg-gemini-borderDark mx-1"></div>
             
             <div class="relative z-50">
-                <button id="btn-menu-toggle" class="p-2.5 rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors" title="More Options">
-                    <i data-lucide="more-vertical" class="w-[20px] h-[20px]"></i>
+                <button id="btn-menu-toggle" class="p-2 rounded-full text-gemini-textMutedLight dark:text-gemini-textMutedDark hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-all duration-200" title="More Options">
+                    <i data-lucide="more-vertical" class="w-5 h-5"></i>
                 </button>
                 
-                <!-- Main Dropdown Menu -->
-                <div id="dropdown-menu" class="hidden absolute right-0 mt-1 w-[280px] bg-white dark:bg-google-bgElevatedDark border border-transparent dark:border-google-borderDark rounded-lg shadow-lg py-2 text-[14px] text-google-textLight dark:text-google-textDark z-50 overflow-y-auto max-h-[85vh]">
-                    
-                    <button id="btn-update-app" class="w-full flex items-center px-4 py-2 hover:bg-google-blueHover dark:hover:bg-[rgba(138,180,248,0.08)] transition-colors hidden">
-                        <i data-lucide="refresh-cw" class="w-[18px] h-[18px] mr-4 text-google-blue dark:text-google-blueDark"></i> 
+                <div id="dropdown-menu" class="hidden absolute right-0 mt-3 w-72 bg-gemini-surfaceLight dark:bg-gemini-surfaceElevatedDark border border-gemini-borderLight/50 dark:border-gemini-borderDark/50 rounded-2xl shadow-m3 dark:shadow-m3-dark py-3 text-[14px] text-gemini-textLight dark:text-gemini-textDark z-50 overflow-y-auto max-h-[85vh]">
+                    <button id="btn-update-app" class="w-full flex items-center px-5 py-2.5 hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors hidden">
+                        <i data-lucide="refresh-cw" class="w-4 h-4 mr-4 text-gemini-primaryLight dark:text-gemini-primaryDark"></i> 
                         <div class="flex flex-col items-start leading-tight">
-                            <span class="font-medium text-google-blue dark:text-google-blueDark">Update available</span>
-                            <span class="text-[11px] text-google-textMuted dark:text-google-textMutedDark mt-0.5">Click to reload app</span>
+                            <span class="font-medium text-gemini-primaryLight dark:text-gemini-primaryDark">Update available</span>
                         </div>
                     </button>
-                    <div id="update-divider" class="border-t border-google-borderLight dark:border-google-borderDark my-1.5 hidden"></div>
+                    
+                    <button id="btn-search" class="w-full flex items-center px-5 py-2.5 hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors">
+                        <i data-lucide="search" class="w-4 h-4 mr-4 text-gemini-textMutedLight dark:text-gemini-textMutedDark"></i> Find and replace
+                    </button>
+                    <button id="btn-wrap" class="w-full flex items-center px-5 py-2.5 hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors">
+                        <i data-lucide="wrap-text" class="w-4 h-4 mr-4 text-gemini-textMutedLight dark:text-gemini-textMutedDark" id="wrap-icon"></i> Word wrap
+                    </button>
+                    <button id="btn-preview" class="w-full flex items-center px-5 py-2.5 hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors hidden">
+                        <i data-lucide="eye" class="w-4 h-4 mr-4 text-gemini-textMutedLight dark:text-gemini-textMutedDark" id="preview-icon"></i> Markdown preview
+                    </button>
+                    
+                    <div class="border-t border-gemini-borderLight dark:border-gemini-borderDark my-2"></div>
+                    
+                    <div class="px-5 py-1.5 text-[11px] font-semibold text-gemini-textMutedLight dark:text-gemini-textMutedDark uppercase tracking-widest">Developer Tools</div>
+                    <button id="btn-format-json" class="w-full flex items-center px-5 py-2.5 hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors">
+                        <i data-lucide="file-json-2" class="w-4 h-4 mr-4 text-gemini-textMutedLight dark:text-gemini-textMutedDark"></i> Format JSON
+                    </button>
+                    <button id="btn-minify-json" class="w-full flex items-center px-5 py-2.5 hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors">
+                        <i data-lucide="minimize-2" class="w-4 h-4 mr-4 text-gemini-textMutedLight dark:text-gemini-textMutedDark"></i> Minify JSON
+                    </button>
+                    <button id="btn-encode-b64" class="w-full flex items-center px-5 py-2.5 hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors">
+                        <i data-lucide="hash" class="w-4 h-4 mr-4 text-gemini-textMutedLight dark:text-gemini-textMutedDark"></i> Base64 Encode
+                    </button>
+                    <button id="btn-decode-b64" class="w-full flex items-center px-5 py-2.5 hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors">
+                        <i data-lucide="file-code-2" class="w-4 h-4 mr-4 text-gemini-textMutedLight dark:text-gemini-textMutedDark"></i> Base64 Decode
+                    </button>
+                    
+                    <div class="border-t border-gemini-borderLight dark:border-gemini-borderDark my-2"></div>
 
-                    <button id="btn-install" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors hidden">
-                        <i data-lucide="monitor-down" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i> Install app
-                    </button>
-                    <div id="install-divider" class="border-t border-google-borderLight dark:border-google-borderDark my-1.5 hidden"></div>
-                    
-                    <button id="btn-search" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
-                        <i data-lucide="search" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i> Find and replace
-                    </button>
-                    <button id="btn-wrap" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
-                        <i data-lucide="wrap-text" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark" id="wrap-icon"></i> Word wrap
-                    </button>
-                    <button id="btn-preview" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors hidden">
-                        <i data-lucide="eye" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark" id="preview-icon"></i> Markdown preview
-                    </button>
-                    
-                    <div class="border-t border-google-borderLight dark:border-google-borderDark my-1.5"></div>
-                    
-                    <!-- NEW: Developer Tools Section -->
-                    <div class="px-4 py-1 text-[11px] font-bold text-google-textMuted dark:text-google-textMutedDark uppercase tracking-wider">Developer Tools</div>
-                    <button id="btn-format-json" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
-                        <i data-lucide="file-json-2" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i> Format JSON
-                    </button>
-                    <button id="btn-minify-json" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
-                        <i data-lucide="minimize-2" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i> Minify JSON
-                    </button>
-                    <button id="btn-encode-b64" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
-                        <i data-lucide="hash" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i> Base64 Encode
-                    </button>
-                    <button id="btn-decode-b64" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
-                        <i data-lucide="file-code-2" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i> Base64 Decode
-                    </button>
-                    <button id="btn-encode-url" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
-                        <i data-lucide="link" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i> URL Encode
-                    </button>
-                    <button id="btn-decode-url" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
-                        <i data-lucide="link-2-off" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i> URL Decode
-                    </button>
-                    
-                    <div class="border-t border-google-borderLight dark:border-google-borderDark my-1.5"></div>
-
-                    <!-- Chrome-Style Zoom Row -->
-                    <div class="flex items-center justify-between px-4 py-1.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
-                        <div class="flex items-center text-google-textLight dark:text-google-textDark cursor-default select-none">
-                            <i data-lucide="zoom-in" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i>
+                    <div class="flex items-center justify-between px-5 py-2 hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors">
+                        <div class="flex items-center">
+                            <i data-lucide="zoom-in" class="w-4 h-4 mr-4 text-gemini-textMutedLight dark:text-gemini-textMutedDark"></i>
                             <span>Zoom</span>
                         </div>
-                        <div class="flex items-center">
-                            <button id="btn-zoom-out" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-google-textLight dark:text-google-textDark" title="Zoom out">
-                                <i data-lucide="minus" class="w-4 h-4 pointer-events-none"></i>
-                            </button>
-                            <span id="zoom-level-text" class="w-12 text-center text-[13px] font-medium text-google-textLight dark:text-google-textDark cursor-default select-none">100%</span>
-                            <button id="btn-zoom-in" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-google-textLight dark:text-google-textDark" title="Zoom in">
-                                <i data-lucide="plus" class="w-4 h-4 pointer-events-none"></i>
-                            </button>
-                            <div class="w-px h-4 bg-google-borderLight dark:bg-google-borderDark mx-1.5"></div>
-                            <button id="btn-fullscreen" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-google-textLight dark:text-google-textDark" title="Full screen">
-                                <i data-lucide="maximize" class="w-3.5 h-3.5 pointer-events-none" id="fullscreen-icon"></i>
-                            </button>
+                        <div class="flex items-center bg-gemini-bgLight dark:bg-gemini-bgDark rounded-full p-0.5">
+                            <button id="btn-zoom-out" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors"><i data-lucide="minus" class="w-3.5 h-3.5"></i></button>
+                            <span id="zoom-level-text" class="w-10 text-center text-[12px] font-medium">100%</span>
+                            <button id="btn-zoom-in" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors"><i data-lucide="plus" class="w-3.5 h-3.5"></i></button>
                         </div>
                     </div>
 
-                    <div class="border-t border-google-borderLight dark:border-google-borderDark my-1.5"></div>
+                    <div class="border-t border-gemini-borderLight dark:border-gemini-borderDark my-2"></div>
                     
-                    <button id="btn-theme" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
-                        <i data-lucide="moon" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark" id="theme-icon"></i> Toggle dark mode
-                    </button>
-                    <button id="btn-rename" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
-                        <i data-lucide="edit-3" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i> Rename file
-                    </button>
-                    <button id="btn-info" class="w-full flex items-center px-4 py-2.5 hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors">
-                        <i data-lucide="info" class="w-[18px] h-[18px] mr-4 text-google-textMuted dark:text-google-textMutedDark"></i> File details
+                    <button id="btn-theme" class="w-full flex items-center px-5 py-2.5 hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors">
+                        <i data-lucide="moon" class="w-4 h-4 mr-4 text-gemini-textMutedLight dark:text-gemini-textMutedDark" id="theme-icon"></i> Toggle dark mode
                     </button>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Tab Bar (Chrome Style) -->
-    <div id="tab-bar" class="flex overflow-x-auto bg-google-bgGray dark:bg-google-bgGrayDark border-b border-google-borderLight dark:border-google-borderDark h-9 flex-shrink-0 pt-1 px-2 space-x-1"></div>
+    <div id="tab-bar" class="flex overflow-x-auto h-12 flex-shrink-0 px-4 space-x-2 items-center bg-transparent"></div>
 
-    <!-- Main Editor Area -->
-    <main class="flex-grow relative overflow-hidden flex">
-        <div id="editor-wrapper" class="w-full h-full relative transition-all duration-300">
+    <main class="flex-grow relative overflow-hidden flex bg-gemini-surfaceLight dark:bg-gemini-surfaceDark rounded-t-3xl mx-2 shadow-sm border border-gemini-borderLight/30 dark:border-gemini-borderDark/20 transition-colors">
+        <div id="editor-wrapper" class="w-full h-full relative transition-all duration-300 pt-2 pl-2">
             <textarea id="editor"></textarea>
             
-            <!-- Custom Google-style Find/Replace Panel -->
-            <div id="search-panel" class="hidden absolute top-4 right-6 w-[390px] bg-white dark:bg-google-bgElevatedDark shadow-[0_4px_6px_rgba(0,0,0,0.1),0_1px_3px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_6px_rgba(0,0,0,0.3)] rounded-lg border border-google-borderLight dark:border-google-borderDark z-40 flex flex-col text-[13px] transition-colors overflow-hidden p-2 space-y-2">
-                <!-- Find Row -->
+            <div id="search-panel" class="hidden absolute top-4 right-6 w-[400px] bg-gemini-surfaceLight dark:bg-gemini-surfaceElevatedDark shadow-m3 dark:shadow-m3-dark rounded-2xl border border-gemini-borderLight/50 dark:border-gemini-borderDark z-40 flex flex-col p-3 space-y-2">
                 <div class="flex items-center space-x-2">
-                    <div class="w-6 flex flex-shrink-0 items-center justify-center">
-                        <button id="btn-toggle-replace" class="p-1 rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors" title="Toggle Replace">
-                            <i data-lucide="chevron-right" class="w-4 h-4 pointer-events-none"></i>
-                        </button>
+                    <button id="btn-toggle-replace" class="p-1.5 rounded-full text-gemini-textMutedLight dark:text-gemini-textMutedDark hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors">
+                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </button>
+                    <div class="flex-grow flex items-center bg-gemini-bgLight dark:bg-gemini-bgDark rounded-full px-4 h-9">
+                        <input type="text" id="find-input" class="w-full bg-transparent outline-none text-[13px] placeholder-gemini-textMutedLight" placeholder="Find in document">
+                        <span id="search-count" class="text-xs text-gemini-textMutedLight ml-2 font-mono">0/0</span>
                     </div>
-                    <div class="flex-grow flex items-center bg-google-bgGray dark:bg-google-bgDark border border-google-borderLight dark:border-google-borderDark rounded px-3 h-8 focus-within:border-google-blue focus-within:ring-1 focus-within:ring-google-blue transition-all">
-                        <input type="text" id="find-input" class="w-full bg-transparent outline-none dark:text-google-textDark placeholder-google-textMuted dark:placeholder-google-textMutedDark text-[13px]" placeholder="Find in document">
-                        <span id="search-count" class="text-xs text-google-textMuted dark:text-google-textMutedDark whitespace-nowrap ml-2 pointer-events-none font-mono">0/0</span>
-                    </div>
-                    <div class="w-[110px] flex items-center justify-end space-x-0.5 flex-shrink-0">
-                        <button id="btn-find-prev" class="w-7 h-7 flex items-center justify-center rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark disabled:opacity-30 disabled:hover:bg-transparent transition-colors" title="Previous match (Shift+Enter)"><i data-lucide="chevron-up" class="w-4 h-4"></i></button>
-                        <button id="btn-find-next" class="w-7 h-7 flex items-center justify-center rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark disabled:opacity-30 disabled:hover:bg-transparent transition-colors" title="Next match (Enter)"><i data-lucide="chevron-down" class="w-4 h-4"></i></button>
-                        <div class="w-px h-4 bg-google-borderLight dark:bg-google-borderDark mx-1"></div>
-                        <button id="btn-close-search" class="w-7 h-7 flex items-center justify-center rounded-full text-google-textMuted dark:text-google-textMutedDark hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark transition-colors" title="Close (Esc)"><i data-lucide="x" class="w-4 h-4"></i></button>
+                    <div class="flex items-center space-x-1">
+                        <button id="btn-find-prev" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark"><i data-lucide="chevron-up" class="w-4 h-4"></i></button>
+                        <button id="btn-find-next" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark"><i data-lucide="chevron-down" class="w-4 h-4"></i></button>
+                        <button id="btn-close-search" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gemini-red/10 text-red-500"><i data-lucide="x" class="w-4 h-4"></i></button>
                     </div>
                 </div>
-                <!-- Replace Row -->
-                <div id="replace-row" class="hidden flex items-center space-x-2">
-                    <div class="w-6 flex flex-shrink-0"></div>
-                    <div class="flex-grow flex items-center bg-google-bgGray dark:bg-google-bgDark border border-google-borderLight dark:border-google-borderDark rounded px-3 h-8 focus-within:border-google-blue focus-within:ring-1 focus-within:ring-google-blue transition-all">
-                        <input type="text" id="replace-input" class="w-full bg-transparent outline-none dark:text-google-textDark placeholder-google-textMuted dark:placeholder-google-textMutedDark text-[13px]" placeholder="Replace with">
+                <div id="replace-row" class="hidden flex items-center pl-8 space-x-2">
+                    <div class="flex-grow flex items-center bg-gemini-bgLight dark:bg-gemini-bgDark rounded-full px-4 h-9">
+                        <input type="text" id="replace-input" class="w-full bg-transparent outline-none text-[13px]" placeholder="Replace with">
                     </div>
-                    <div class="w-[110px] flex items-center justify-start space-x-1.5 flex-shrink-0 pl-1">
-                        <button id="btn-replace" class="h-7 px-2.5 text-[12px] font-medium bg-transparent text-google-textLight dark:text-google-textDark border border-google-borderLight dark:border-google-borderDark rounded hover:bg-google-bgGrayHover dark:hover:bg-[rgba(255,255,255,0.05)] transition-colors" title="Replace current">Replace</button>
-                        <button id="btn-replace-all" class="h-7 px-2.5 text-[12px] font-medium bg-transparent text-google-textLight dark:text-google-textDark border border-google-borderLight dark:border-google-borderDark rounded hover:bg-google-bgGrayHover dark:hover:bg-[rgba(255,255,255,0.05)] transition-colors" title="Replace all instances">All</button>
+                    <div class="flex items-center space-x-2">
+                        <button id="btn-replace" class="h-8 px-3 text-xs font-medium bg-gemini-bgLight dark:bg-gemini-bgDark rounded-full hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark">Replace</button>
+                        <button id="btn-replace-all" class="h-8 px-3 text-xs font-medium bg-gemini-bgLight dark:bg-gemini-bgDark rounded-full hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark">All</button>
                     </div>
                 </div>
             </div>
-
         </div>
-        <div id="markdown-preview" class="hidden w-1/2 h-full border-l border-google-borderLight dark:border-google-borderDark bg-white dark:bg-google-bgDark p-8 overflow-y-auto prose prose-sm sm:prose-base dark:prose-invert max-w-none transition-all duration-300"></div>
+        
+        <div id="markdown-preview" class="hidden w-1/2 h-full border-l border-gemini-borderLight dark:border-gemini-borderDark bg-gemini-surfaceLight dark:bg-gemini-surfaceDark p-8 overflow-y-auto prose prose-sm dark:prose-invert max-w-none transition-all duration-300"></div>
     </main>
 
-    <!-- Status Bar (Updated with Language Selector) -->
-    <footer class="bg-google-bgLight dark:bg-google-bgDark border-t border-google-borderLight dark:border-google-borderDark h-8 flex items-center justify-between px-4 text-[12px] text-google-textMuted dark:text-google-textMutedDark flex-shrink-0 select-none transition-colors duration-200 font-mono relative">
-        <div class="flex items-center space-x-4">
+    <footer class="bg-gemini-bgLight dark:bg-gemini-bgDark h-10 flex items-center justify-between px-6 text-[12px] text-gemini-textMutedLight dark:text-gemini-textMutedDark flex-shrink-0 font-mono">
+        <div class="flex items-center space-x-6">
             <div id="document-stats">Words: 0 | Chars: 0</div>
             <div id="cursor-position">Ln 1, Col 1</div>
         </div>
         
         <div class="relative">
-            <button id="btn-language-select" class="hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark px-2 py-1 rounded transition-colors flex items-center">
+            <button id="btn-language-select" class="hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark px-3 py-1.5 rounded-full transition-colors flex items-center font-sans font-medium">
                 <span id="language-label">Plain Text</span>
-                <i data-lucide="chevron-up" class="w-3.5 h-3.5 ml-1.5"></i>
+                <i data-lucide="chevron-up" class="w-3.5 h-3.5 ml-2"></i>
             </button>
-            <div id="language-dropdown" class="hidden absolute bottom-full right-0 mb-1 w-44 bg-white dark:bg-google-bgElevatedDark border border-google-borderLight dark:border-google-borderDark rounded shadow-lg py-1.5 z-50 max-h-64 overflow-y-auto">
-                <!-- Populated dynamically via JS -->
-            </div>
+            <div id="language-dropdown" class="hidden absolute bottom-full right-0 mb-2 w-48 bg-gemini-surfaceLight dark:bg-gemini-surfaceElevatedDark rounded-2xl shadow-m3 py-2 z-50 max-h-64 overflow-y-auto border border-gemini-borderLight/30 dark:border-gemini-borderDark">
+                </div>
         </div>
     </footer>
 
-    <!-- Material Snackbar (Toast) -->
-    <div id="toast" class="fixed bottom-12 left-1/2 transform -translate-x-1/2 bg-google-snackbar text-[#f1f3f4] px-6 py-3.5 rounded shadow-[0_3px_5px_-1px_rgba(0,0,0,0.2),0_6px_10px_0_rgba(0,0,0,0.14),0_1px_18px_0_rgba(0,0,0,0.12)] opacity-0 transition-opacity duration-300 pointer-events-none z-[100] text-[14px] flex items-center space-x-3">
+    <div id="toast" class="fixed bottom-16 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300 pointer-events-none z-[100] text-[14px] font-medium">
         <span id="toast-msg">Message</span>
     </div>
 
     <script>
-        // Initialize Icons
         lucide.createIcons();
+        let tabs = [], activeTabId = null, tabCounter = 0, untitledCount = 0, isDark = false, isRestoringSession = false, draggedTabId = null;
 
-        // --- App & Tab State ---
-        let tabs = [];
-        let activeTabId = null;
-        let tabCounter = 0;
-        let untitledCount = 0;
-        let isDark = false;
-        let isRestoringSession = false;
-        let draggedTabId = null;
-
-        // --- Supported Languages for Interactive Selector ---
         const SUPPORTED_MODES = [
-            { id: 'text/plain', label: 'Plain Text' },
-            { id: 'application/json', label: 'JSON' },
-            { id: 'javascript', label: 'JavaScript' },
-            { id: 'htmlmixed', label: 'HTML' },
-            { id: 'css', label: 'CSS' },
-            { id: 'python', label: 'Python' },
-            { id: 'markdown', label: 'Markdown' },
-            { id: 'xml', label: 'XML' },
-            { id: 'clike', label: 'C/C++/Java/C#' },
-            { id: 'properties', label: 'Config / INI' },
-            { id: 'shell', label: 'Shell / Bash' },
-            { id: 'yaml', label: 'YAML' }
+            { id: 'text/plain', label: 'Plain Text' }, { id: 'application/json', label: 'JSON' }, { id: 'javascript', label: 'JavaScript' },
+            { id: 'htmlmixed', label: 'HTML' }, { id: 'css', label: 'CSS' }, { id: 'python', label: 'Python' },
+            { id: 'markdown', label: 'Markdown' }, { id: 'xml', label: 'XML' }, { id: 'clike', label: 'C/C++/Java/C#' },
+            { id: 'properties', label: 'Config / INI' }, { id: 'shell', label: 'Shell / Bash' }, { id: 'yaml', label: 'YAML' }
         ];
 
-        // --- Session Persistence Logic ---
         let sessionSaveTimeout;
         function saveSession() {
             if (isRestoringSession) return;
             clearTimeout(sessionSaveTimeout);
             sessionSaveTimeout = setTimeout(() => {
                 try {
-                    const sessionData = {
-                        activeTabId,
-                        tabCounter,
-                        untitledCount,
-                        tabs: tabs.map(t => ({
-                            id: t.id,
-                            name: t.name,
-                            content: t.doc.getValue(),
-                            modeVal: t.modeVal,     // Store the manually selected language
-                            modeLabel: t.modeLabel,
-                            isUnsaved: t.isUnsaved,
-                            isRenamed: t.isRenamed
-                        }))
-                    };
-                    localStorage.setItem('stext-session-v5', JSON.stringify(sessionData));
-                } catch (e) {
-                    console.warn("Failed to save session (possibly too large for local storage):", e);
-                }
+                    localStorage.setItem('stext-session-v6', JSON.stringify({
+                        activeTabId, tabCounter, untitledCount,
+                        tabs: tabs.map(t => ({ id: t.id, name: t.name, content: t.doc.getValue(), modeVal: t.modeVal, modeLabel: t.modeLabel, isUnsaved: t.isUnsaved }))
+                    }));
+                } catch(e) {}
             }, 500);
         }
 
         function restoreSession() {
-            const dataStr = localStorage.getItem('stext-session-v5');
+            const dataStr = localStorage.getItem('stext-session-v6');
             if (dataStr) {
                 try {
                     isRestoringSession = true;
                     const data = JSON.parse(dataStr);
-                    tabCounter = data.tabCounter || 0;
-                    untitledCount = data.untitledCount || 0;
-                    
+                    tabCounter = data.tabCounter || 0; untitledCount = data.untitledCount || 0;
                     if (data.tabs && data.tabs.length > 0) {
                         data.tabs.forEach(tData => {
-                            // Backwards compatibility for older sessions
-                            const modeFallback = getModeInfo(tData.name);
-                            const modeVal = tData.modeVal || modeFallback.id;
-                            const modeLabel = tData.modeLabel || modeFallback.label;
-                            
-                            const doc = CodeMirror.Doc(tData.content, modeVal);
-                            if (!tData.isUnsaved && !tData.isRenamed) doc.markClean();
-                            
-                            tabs.push({
-                                id: tData.id,
-                                name: tData.name,
-                                handle: null,
-                                doc: doc,
-                                modeVal: modeVal,
-                                modeLabel: modeLabel,
-                                isUnsaved: tData.isUnsaved,
-                                isRenamed: tData.isRenamed
-                            });
+                            const doc = CodeMirror.Doc(tData.content, tData.modeVal);
+                            if (!tData.isUnsaved) doc.markClean();
+                            tabs.push({ id: tData.id, name: tData.name, doc: doc, modeVal: tData.modeVal, modeLabel: tData.modeLabel, isUnsaved: tData.isUnsaved });
                         });
                         isRestoringSession = false;
-                        const targetTabId = data.activeTabId && tabs.some(t => t.id === data.activeTabId) ? data.activeTabId : tabs[0].id;
-                        switchTab(targetTabId);
-                        return; 
+                        switchTab(data.activeTabId || tabs[0].id); return;
                     }
-                } catch (e) { console.error("Session restore failed", e); }
-                finally { isRestoringSession = false; }
+                } catch(e) {} finally { isRestoringSession = false; }
             }
             createTab();
         }
 
-        // Initialize CodeMirror (Now with Linter Enabled)
-        const editorTextArea = document.getElementById('editor');
-        const editor = CodeMirror.fromTextArea(editorTextArea, {
-            lineNumbers: true,
-            mode: "null", 
-            theme: "default",
-            indentUnit: 4,
-            matchBrackets: true,
-            autoCloseBrackets: true,
-            styleActiveLine: true,
-            foldGutter: true,
-            lint: true, // Will automatically lint if mode is application/json
-            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"]
+        const editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
+            lineNumbers: true, mode: "null", theme: "default", indentUnit: 4, matchBrackets: true, autoCloseBrackets: true,
+            styleActiveLine: true, foldGutter: true, lint: true, gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"]
         });
 
-        // --- Developer Utility Functions (Formatters & Converters) ---
-        function getSelectedTextOrAll() {
-            const selection = editor.getSelection();
-            return selection ? { text: selection, isSelection: true } : { text: editor.getValue(), isSelection: false };
-        }
-
-        function replaceText(newText, isSelection) {
-            if (isSelection) editor.replaceSelection(newText);
-            else editor.setValue(newText);
-        }
-
-        function formatJSON() {
-            const { text, isSelection } = getSelectedTextOrAll();
-            if (!text.trim()) return;
-            try { 
-                replaceText(JSON.stringify(JSON.parse(text), null, 4), isSelection); 
-                showToast("JSON Formatted"); 
-                // Auto-switch to JSON highlighting for better UX
-                const tab = getActiveTab();
-                if (tab && tab.modeVal !== 'application/json') updateTabLanguage(tab, 'application/json', 'JSON');
-            } catch(e) { showToast("Invalid JSON: Cannot format"); }
-        }
-
-        function minifyJSON() {
-            const { text, isSelection } = getSelectedTextOrAll();
-            if (!text.trim()) return;
-            try { replaceText(JSON.stringify(JSON.parse(text)), isSelection); showToast("JSON Minified"); }
-            catch(e) { showToast("Invalid JSON: Cannot minify"); }
-        }
-
-        function encodeBase64() {
-            const { text, isSelection } = getSelectedTextOrAll();
-            if (!text) return;
-            try { replaceText(btoa(text), isSelection); showToast("Encoded to Base64"); } 
-            catch(e) { showToast("Base64 Encode failed (Invalid characters)"); }
-        }
-
-        function decodeBase64() {
-            const { text, isSelection } = getSelectedTextOrAll();
-            if (!text) return;
-            try { replaceText(atob(text), isSelection); showToast("Decoded from Base64"); } 
-            catch(e) { showToast("Invalid Base64 string"); }
-        }
-        
-        function encodeURL() {
-            const { text, isSelection } = getSelectedTextOrAll();
-            if (!text) return;
-            replaceText(encodeURIComponent(text), isSelection); showToast("URL Encoded");
-        }
-
-        function decodeURL() {
-            const { text, isSelection } = getSelectedTextOrAll();
-            if (!text) return;
-            try { replaceText(decodeURIComponent(text), isSelection); showToast("URL Decoded"); } 
-            catch(e) { showToast("Invalid URL Encoding"); }
-        }
-
-        // Setup Developer Tool Listeners
-        document.getElementById('btn-format-json').addEventListener('click', formatJSON);
-        document.getElementById('btn-minify-json').addEventListener('click', minifyJSON);
-        document.getElementById('btn-encode-b64').addEventListener('click', encodeBase64);
-        document.getElementById('btn-decode-b64').addEventListener('click', decodeBase64);
-        document.getElementById('btn-encode-url').addEventListener('click', encodeURL);
-        document.getElementById('btn-decode-url').addEventListener('click', decodeURL);
-
-
-        // Search Panel Initialization and State
-        const searchPanel = document.getElementById('search-panel');
-        const findInput = document.getElementById('find-input');
-        const replaceInput = document.getElementById('replace-input');
-        const replaceRow = document.getElementById('replace-row');
-        const searchCount = document.getElementById('search-count');
-        const btnPrev = document.getElementById('btn-find-prev');
-        const btnNext = document.getElementById('btn-find-next');
-        const btnToggleReplace = document.getElementById('btn-toggle-replace');
-        const btnReplace = document.getElementById('btn-replace');
-        const btnReplaceAll = document.getElementById('btn-replace-all');
-        const btnCloseSearch = document.getElementById('btn-close-search');
-
-        let isReplaceOpen = false;
-        let searchMatches = []; // Array of {from, to}
-        let matchMarks = [];
-        let currentSearchIndex = -1;
-        let searchUpdateTimeout;
-
-        CodeMirror.commands.find = function() { openSearchPanel(false); };
-        CodeMirror.commands.replace = function() { openSearchPanel(true); };
-        
-        // Editor Change Event
         editor.on('change', (cm, changeObj) => {
             if (changeObj.origin !== 'setValue') {
                 const tab = getActiveTab();
-                if (tab) {
-                    const currentlyUnsaved = !tab.doc.isClean() || tab.isRenamed;
-                    if (tab.isUnsaved !== currentlyUnsaved) {
-                        tab.isUnsaved = currentlyUnsaved;
-                        renderTabs();
-                    }
-                }
+                if (tab && tab.isUnsaved !== !tab.doc.isClean()) { tab.isUnsaved = !tab.doc.isClean(); renderTabs(); }
             }
-            updateDocumentStats();
-            updateMarkdownPreview();
-            saveSession();
-
-            if (!searchPanel.classList.contains('hidden')) {
-                clearTimeout(searchUpdateTimeout);
-                searchUpdateTimeout = setTimeout(() => updateSearch(), 250);
-            }
+            updateDocumentStats(); updateMarkdownPreview(); saveSession();
         });
 
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-msg').textContent = message;
-            toast.classList.remove('opacity-0');
-            setTimeout(() => toast.classList.add('opacity-0'), 3500);
+        function showToast(msg) {
+            const t = document.getElementById('toast'); document.getElementById('toast-msg').textContent = msg;
+            t.classList.remove('opacity-0'); setTimeout(() => t.classList.add('opacity-0'), 3000);
         }
 
-        // --- Tab & Language Management ---
         function getActiveTab() { return tabs.find(t => t.id === activeTabId); }
-        
         function getModeInfo(filename) {
             const ext = filename.split('.').pop().toLowerCase();
-            const modeMap = {
-                'js': 'javascript', 'json': 'application/json', 'html': 'htmlmixed', 'htm': 'htmlmixed',
-                'css': 'css', 'py': 'python', 'md': 'markdown', 'xml': 'xml', 'svg': 'xml',
-                'c': 'clike', 'cpp': 'clike', 'java': 'clike', 'cs': 'clike',
-                'conf': 'properties', 'ini': 'properties', 'properties': 'properties',
-                'sh': 'shell', 'bash': 'shell',
-                'yaml': 'yaml', 'yml': 'yaml'
-            };
-            const mappedId = modeMap[ext] || 'text/plain';
-            const supported = SUPPORTED_MODES.find(m => m.id === mappedId);
-            return supported || SUPPORTED_MODES[0];
+            const map = {'js':'javascript','json':'application/json','html':'htmlmixed','css':'css','py':'python','md':'markdown'};
+            return SUPPORTED_MODES.find(m => m.id === (map[ext] || 'text/plain')) || SUPPORTED_MODES[0];
         }
 
-        function updateTabLanguage(tab, modeVal, modeLabel) {
-            tab.modeVal = modeVal;
-            tab.modeLabel = modeLabel;
-            if (activeTabId === tab.id) {
-                editor.setOption('mode', modeVal);
-                document.getElementById('language-label').textContent = modeLabel;
-                updatePreviewVisibility(modeVal);
-            }
+        function updateTabLanguage(tab, id, label) {
+            tab.modeVal = id; tab.modeLabel = label;
+            if (activeTabId === tab.id) { editor.setOption('mode', id); document.getElementById('language-label').textContent = label; }
             saveSession();
         }
 
-        function updatePreviewVisibility(modeVal) {
-            const btnPreview = document.getElementById('btn-preview');
-            if (modeVal === 'markdown') btnPreview.classList.remove('hidden');
-            else {
-                btnPreview.classList.add('hidden');
-                if (typeof isPreviewActive !== 'undefined' && isPreviewActive) togglePreview();
-            }
-        }
-
-        // Populate Language Selector Dropdown
         const langDropdown = document.getElementById('language-dropdown');
         SUPPORTED_MODES.forEach(mode => {
             const btn = document.createElement('button');
-            btn.className = 'w-full text-left px-4 py-1.5 text-[13px] hover:bg-google-bgGrayHover dark:hover:bg-[rgba(255,255,255,0.05)] transition-colors';
+            btn.className = 'w-full text-left px-5 py-2 text-[13px] hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark transition-colors font-medium';
             btn.textContent = mode.label;
-            btn.onclick = (e) => {
-                e.stopPropagation();
-                const tab = getActiveTab();
-                if (tab) updateTabLanguage(tab, mode.id, mode.label);
-                langDropdown.classList.add('hidden');
-            };
+            btn.onclick = () => { const t = getActiveTab(); if(t) updateTabLanguage(t, mode.id, mode.label); langDropdown.classList.add('hidden'); };
             langDropdown.appendChild(btn);
         });
 
-        // Language Dropdown Toggles
-        const btnLangSelect = document.getElementById('btn-language-select');
-        btnLangSelect.addEventListener('click', (e) => {
-            e.stopPropagation();
-            langDropdown.classList.toggle('hidden');
-        });
-        document.addEventListener('click', (e) => {
-            if (!langDropdown.contains(e.target) && !btnLangSelect.contains(e.target)) {
-                langDropdown.classList.add('hidden');
-            }
-        });
+        document.getElementById('btn-language-select').onclick = (e) => { e.stopPropagation(); langDropdown.classList.toggle('hidden'); };
+        document.addEventListener('click', (e) => { if (!e.target.closest('#btn-language-select')) langDropdown.classList.add('hidden'); });
 
-
-        function createTab(name = null, content = '', handle = null) {
-            if (!name) {
-                untitledCount++;
-                name = untitledCount === 1 ? 'Untitled.txt' : `Untitled-${untitledCount}.txt`;
-            }
-            tabCounter++;
-            const id = 'tab-' + tabCounter;
-            
-            const modeInfo = getModeInfo(name);
-            const doc = CodeMirror.Doc(content, modeInfo.id);
-            doc.markClean();
-            
-            tabs.push({ id, name, handle, doc, modeVal: modeInfo.id, modeLabel: modeInfo.label, isUnsaved: false, isRenamed: false });
+        function createTab(name = null, content = '') {
+            if (!name) name = `Untitled-${++untitledCount}.txt`;
+            const id = 'tab-' + (++tabCounter);
+            const m = getModeInfo(name); const doc = CodeMirror.Doc(content, m.id); doc.markClean();
+            tabs.push({ id, name, doc, modeVal: m.id, modeLabel: m.label, isUnsaved: false });
             switchTab(id);
         }
 
         function switchTab(id) {
-            activeTabId = id;
-            const tab = getActiveTab();
+            activeTabId = id; const tab = getActiveTab();
             if (tab) {
-                editor.swapDoc(tab.doc);
-                editor.setOption('mode', tab.modeVal);
+                editor.swapDoc(tab.doc); editor.setOption('mode', tab.modeVal);
                 document.getElementById('language-label').textContent = tab.modeLabel;
-                
-                updatePreviewVisibility(tab.modeVal);
-                updateCursorPosition();
-                updateDocumentStats();
-                updateMarkdownPreview();
-                renderTabs();
-                
-                if (!searchPanel.classList.contains('hidden')) updateSearch();
+                updateDocumentStats(); renderTabs();
             }
         }
 
         function closeTab(id) {
-            const tabIndex = tabs.findIndex(t => t.id === id);
-            const tab = tabs[tabIndex];
-            if (tab.isUnsaved && !confirm(`Save changes to "${tab.name}" before closing?\nClick OK to close and discard changes.`)) return;
-
-            tabs.splice(tabIndex, 1);
-            if (tabs.length === 0) createTab();
-            else if (activeTabId === id) switchTab(tabs[Math.max(0, tabIndex - 1)].id);
-            else renderTabs();
+            const idx = tabs.findIndex(t => t.id === id); const tab = tabs[idx];
+            if (tab.isUnsaved && !confirm(`Discard changes to "${tab.name}"?`)) return;
+            tabs.splice(idx, 1);
+            if (!tabs.length) createTab(); else if (activeTabId === id) switchTab(tabs[Math.max(0, idx - 1)].id); else renderTabs();
         }
 
         function renderTabs() {
-            const tabBar = document.getElementById('tab-bar');
-            tabBar.innerHTML = '';
+            const bar = document.getElementById('tab-bar'); bar.innerHTML = '';
             tabs.forEach(tab => {
                 const isActive = tab.id === activeTabId;
-                const tabEl = document.createElement('div');
+                const el = document.createElement('div');
                 
-                const colorClass = tab.isUnsaved ? 'text-google-red font-medium' : (isActive ? 'text-google-blue dark:text-google-blueDark font-medium' : 'text-google-textMuted dark:text-google-textMutedDark hover:text-google-textLight dark:hover:text-google-textDark');
-                const bgClass = isActive ? 'bg-google-bgLight dark:bg-google-bgDark border-x border-t border-google-borderLight dark:border-google-borderDark border-b-0 rounded-t-lg z-10 -mb-[1px]' : 'bg-transparent hover:bg-google-bgLight dark:hover:bg-[rgba(255,255,255,0.05)] border-transparent rounded-t-lg';
+                // M3 Pill Tab styling
+                const bg = isActive ? 'bg-gemini-surfaceLight dark:bg-gemini-surfaceElevatedDark shadow-sm border border-gemini-borderLight/40 dark:border-gemini-borderDark' : 'bg-transparent hover:bg-gemini-surfaceLight/50 dark:hover:bg-gemini-surfaceElevatedDark/50';
+                const text = isActive ? 'text-gemini-primaryLight dark:text-gemini-primaryDark font-medium' : 'text-gemini-textMutedLight dark:text-gemini-textMutedDark';
                 
-                tabEl.className = `group flex items-center px-3 py-1.5 cursor-pointer min-w-max select-none transition-colors relative ${bgClass}`;
-                tabEl.onclick = () => switchTab(tab.id);
-
-                // --- Drag and Drop Tab Reordering Logic ---
-                tabEl.draggable = true;
-                
-                tabEl.addEventListener('dragstart', (e) => {
-                    draggedTabId = tab.id;
-                    e.dataTransfer.effectAllowed = 'move';
-                    setTimeout(() => tabEl.classList.add('opacity-40'), 0);
-                });
-
-                tabEl.addEventListener('dragover', (e) => {
-                    e.preventDefault(); 
-                    if (draggedTabId && draggedTabId !== tab.id) {
-                        tabEl.classList.add('ring-2', 'ring-google-blue', 'ring-inset', 'rounded-t-lg');
-                    }
-                });
-
-                tabEl.addEventListener('dragleave', () => {
-                    tabEl.classList.remove('ring-2', 'ring-google-blue', 'ring-inset', 'rounded-t-lg');
-                });
-
-                tabEl.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    tabEl.classList.remove('ring-2', 'ring-google-blue', 'ring-inset', 'rounded-t-lg');
-                    
-                    if (draggedTabId && draggedTabId !== tab.id) {
-                        const fromIndex = tabs.findIndex(t => t.id === draggedTabId);
-                        const toIndex = tabs.findIndex(t => t.id === tab.id);
-                        
-                        if (fromIndex !== -1 && toIndex !== -1) {
-                            const [movedTab] = tabs.splice(fromIndex, 1);
-                            tabs.splice(toIndex, 0, movedTab);
-                            renderTabs();
-                        }
-                    }
-                    draggedTabId = null;
-                });
-
-                tabEl.addEventListener('dragend', () => {
-                    tabEl.classList.remove('opacity-40');
-                    draggedTabId = null;
-                });
+                el.className = `group flex items-center px-4 py-1.5 rounded-full cursor-pointer min-w-max select-none transition-all duration-200 ${bg}`;
+                el.onclick = () => switchTab(tab.id);
 
                 const nameSpan = document.createElement('span');
-                nameSpan.className = `text-[13px] mr-2 transition-colors ${colorClass}`;
-                nameSpan.textContent = tab.name;
-                nameSpan.ondblclick = (e) => { e.stopPropagation(); if(!isActive) switchTab(tab.id); renameActiveTab(); };
-
-                const unsavedMark = document.createElement('span');
-                unsavedMark.className = `text-[16px] leading-none mr-1.5 transition-colors ${tab.isUnsaved ? 'text-google-red' : 'opacity-0 w-0 mr-0 overflow-hidden'}`;
-                unsavedMark.innerHTML = '&ast;';
+                nameSpan.className = `text-[13px] mr-2 ${text}`;
+                nameSpan.textContent = tab.name + (tab.isUnsaved ? ' *' : '');
 
                 const closeBtn = document.createElement('button');
-                closeBtn.className = `p-[3px] rounded-full flex items-center justify-center hover:bg-google-bgGrayHover dark:hover:bg-google-blueHoverDark text-google-textMuted dark:text-google-textMutedDark transition-colors opacity-0 group-hover:opacity-100 ${isActive ? 'opacity-100' : ''}`;
-                closeBtn.innerHTML = '<i data-lucide="x" class="w-3.5 h-3.5"></i>';
+                closeBtn.className = `p-1 rounded-full hover:bg-gemini-hoverLight dark:hover:bg-gemini-hoverDark opacity-0 group-hover:opacity-100 ${isActive ? 'opacity-100' : ''}`;
+                closeBtn.innerHTML = '<i data-lucide="x" class="w-3 h-3"></i>';
                 closeBtn.onclick = (e) => { e.stopPropagation(); closeTab(tab.id); };
 
-                tabEl.appendChild(nameSpan);
-                tabEl.appendChild(unsavedMark);
-                tabEl.appendChild(closeBtn);
-                tabBar.appendChild(tabEl);
+                el.append(nameSpan, closeBtn); bar.appendChild(el);
             });
-            lucide.createIcons();
-            saveSession();
+            lucide.createIcons(); saveSession();
         }
 
-        function renameActiveTab() {
-            const tab = getActiveTab();
-            if(!tab) return;
-            const newName = prompt("Enter new file name (including extension):", tab.name);
-            if (newName && newName.trim() !== "" && newName !== tab.name) {
-                if (confirm(`Are you sure you want to change the file name to "${newName}"?\nThis requires re-selecting a save location next time.`)) {
-                    tab.name = newName.trim();
-                    const newModeInfo = getModeInfo(tab.name);
-                    updateTabLanguage(tab, newModeInfo.id, newModeInfo.label);
-                    
-                    tab.handle = null;
-                    tab.isRenamed = true; 
-                    tab.isUnsaved = true;
-                    renderTabs();
-                }
-            }
-        }
-
-        // --- File System Operations ---
-        function fallbackOpenFile() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.txt,.html,.css,.js,.json,.py,.md,.csv,.xml,.c,.cpp,.java,.conf,.ini,.sh,.yaml,.yml';
-            input.onchange = (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    const contents = event.target.result;
-                    const tab = getActiveTab();
-                    if (tab && tab.name.startsWith('Untitled') && !tab.isUnsaved && tab.doc.getValue() === '') {
-                        tab.handle = null; tab.name = file.name;
-                        const modeInfo = getModeInfo(file.name);
-                        
-                        tab.doc = CodeMirror.Doc(contents, modeInfo.id);
-                        tab.doc.markClean(); tab.isRenamed = false;
-                        updateTabLanguage(tab, modeInfo.id, modeInfo.label);
-                        editor.swapDoc(tab.doc);
-                        renderTabs();
-                    } else createTab(file.name, contents, null);
-                    showToast(`Opened ${file.name}`);
-                };
-                reader.readAsText(file);
-            };
-            input.click();
-        }
-
-        function fallbackSaveFile(content, defaultFilename) {
-            const filename = prompt("Enter file name to save:", defaultFilename);
-            if (!filename) return; 
-            const blob = new Blob([content], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url; a.download = filename; a.click();
-            URL.revokeObjectURL(url);
-            
-            const tab = getActiveTab();
-            if (tab) {
-                tab.name = filename; tab.isUnsaved = false; tab.isRenamed = false;
-                tab.doc.markClean();
-                const modeInfo = getModeInfo(filename);
-                updateTabLanguage(tab, modeInfo.id, modeInfo.label);
-                renderTabs();
-            }
-            showToast("File downloaded to device");
-        }
-
-        async function openFile() {
-            try {
-                const [handle] = await window.showOpenFilePicker({
-                    types: [{ description: 'Text/Code Files', accept: {'text/*': ['.txt', '.html', '.css', '.js', '.json', '.py', '.md', '.csv', '.xml', '.c', '.cpp', '.java', '.conf', '.ini', '.sh', '.yaml', '.yml']} }]
-                });
-                const file = await handle.getFile();
-                const contents = await file.text();
-                const tab = getActiveTab();
-                if (tab && tab.name.startsWith('Untitled') && !tab.isUnsaved && tab.doc.getValue() === '') {
-                    tab.handle = handle; tab.name = file.name;
-                    const modeInfo = getModeInfo(file.name);
-                    
-                    tab.doc = CodeMirror.Doc(contents, modeInfo.id);
-                    tab.doc.markClean(); tab.isRenamed = false;
-                    updateTabLanguage(tab, modeInfo.id, modeInfo.label);
-                    editor.swapDoc(tab.doc);
-                    renderTabs();
-                } else createTab(file.name, contents, handle);
-                showToast(`Opened ${file.name}`);
-            } catch (err) {
-                if (err.name === 'SecurityError' || err.message.includes('cross origin')) fallbackOpenFile();
-            }
-        }
-
-        async function saveFile() {
-            const tab = getActiveTab();
-            if (!tab) return;
-            if (!tab.handle) return saveFileAs();
-            try {
-                const writable = await tab.handle.createWritable();
-                await writable.write(tab.doc.getValue());
-                await writable.close();
-                tab.isUnsaved = false; tab.isRenamed = false; tab.doc.markClean();
-                renderTabs(); showToast("File saved to Drive");
-            } catch (err) { console.error(err); showToast("Failed to save file"); }
-        }
-
-        async function saveFileAs() {
-            const tab = getActiveTab();
-            if (!tab) return;
-            try {
-                const handle = await window.showSaveFilePicker({ suggestedName: tab.name, types: [{ description: 'Text/Code File', accept: {'text/plain': ['.txt', '.html', '.css', '.js', '.json', '.py', '.md', '.conf', '.ini', '.sh', '.yaml', '.yml']} }] });
-                const writable = await handle.createWritable();
-                await writable.write(tab.doc.getValue());
-                await writable.close();
-                const file = await handle.getFile();
-                tab.handle = handle; tab.name = file.name;
-                const modeInfo = getModeInfo(file.name);
-                updateTabLanguage(tab, modeInfo.id, modeInfo.label);
-                tab.isUnsaved = false; tab.isRenamed = false; tab.doc.markClean();
-                renderTabs(); showToast("File saved to Drive");
-            } catch (err) {
-                if (err.name === 'SecurityError' || err.message.includes('cross origin')) fallbackSaveFile(tab.doc.getValue(), tab.name);
-            }
-        }
-
-        // --- Advanced Find & Replace Features ---
-        function openSearchPanel(withReplace = false) {
-            searchPanel.classList.remove('hidden');
-            if (withReplace && !isReplaceOpen) toggleReplaceRow();
-            else if (!withReplace && isReplaceOpen) toggleReplaceRow();
-            
-            findInput.focus();
-            const selection = editor.getSelection();
-            if (selection && selection.indexOf('\n') === -1) {
-                findInput.value = selection;
-            } else {
-                findInput.select();
-            }
-            updateSearch();
-        }
-
-        function closeSearchPanel() {
-            searchPanel.classList.add('hidden');
-            clearSearchMarks();
-            editor.focus();
-        }
-
-        function toggleReplaceRow() {
-            isReplaceOpen = !isReplaceOpen;
-            replaceRow.classList.toggle('hidden', !isReplaceOpen);
-            btnToggleReplace.innerHTML = isReplaceOpen 
-                ? '<i data-lucide="chevron-down" class="w-4 h-4"></i>' 
-                : '<i data-lucide="chevron-right" class="w-4 h-4"></i>';
-            lucide.createIcons();
-        }
-
-        function clearSearchMarks() {
-            matchMarks.forEach(m => m.clear());
-            matchMarks = [];
-            searchMatches = [];
-        }
-
-        function updateSearch() {
-            clearSearchMarks();
-            const query = findInput.value;
-            
-            if (!query) {
-                searchCount.textContent = '0/0';
-                currentSearchIndex = -1;
-                updateSearchButtons();
-                return;
-            }
-
-            const cursor = editor.getSearchCursor(query, {line: 0, ch: 0});
-            while (cursor.findNext()) {
-                searchMatches.push({ from: cursor.from(), to: cursor.to() });
-            }
-
-            if (searchMatches.length > 0) {
-                if (currentSearchIndex < 0 || currentSearchIndex >= searchMatches.length) {
-                    currentSearchIndex = 0;
-                }
-                renderSearchMarks();
-            } else {
-                currentSearchIndex = -1;
-                searchCount.textContent = '0/0';
-            }
-            updateSearchButtons();
-        }
-
-        function renderSearchMarks() {
-            matchMarks.forEach(m => m.clear());
-            matchMarks = [];
-
-            searchMatches.forEach((pos, idx) => {
-                const isActive = (idx === currentSearchIndex);
-                const mark = editor.markText(pos.from, pos.to, {
-                    className: isActive ? 'cm-search-active' : 'cm-search-highlight'
-                });
-                matchMarks.push(mark);
-            });
-
-            if (currentSearchIndex >= 0 && currentSearchIndex < searchMatches.length) {
-                searchCount.textContent = `${currentSearchIndex + 1} of ${searchMatches.length}`;
-                editor.scrollIntoView(searchMatches[currentSearchIndex], 50);
-            }
-        }
-
-        function updateSearchButtons() {
-            const disableNav = searchMatches.length <= 1;
-            btnPrev.disabled = disableNav;
-            btnNext.disabled = disableNav;
-            
-            const disableReplace = searchMatches.length === 0;
-            btnReplace.disabled = disableReplace;
-            btnReplaceAll.disabled = disableReplace;
-            
-            if (disableReplace) {
-                btnReplace.classList.add('opacity-40', 'pointer-events-none');
-                btnReplaceAll.classList.add('opacity-40', 'pointer-events-none');
-            } else {
-                btnReplace.classList.remove('opacity-40', 'pointer-events-none');
-                btnReplaceAll.classList.remove('opacity-40', 'pointer-events-none');
-            }
-        }
-
-        function findNext() {
-            if (searchMatches.length <= 1) return;
-            currentSearchIndex = (currentSearchIndex + 1) % searchMatches.length;
-            renderSearchMarks();
-        }
-
-        function findPrev() {
-            if (searchMatches.length <= 1) return;
-            currentSearchIndex = (currentSearchIndex - 1 + searchMatches.length) % searchMatches.length;
-            renderSearchMarks();
-        }
-
-        function performReplace() {
-            if (currentSearchIndex >= 0 && currentSearchIndex < searchMatches.length) {
-                const pos = searchMatches[currentSearchIndex];
-                editor.replaceRange(replaceInput.value, pos.from, pos.to);
-                updateSearch();
-            }
-        }
-
-        function performReplaceAll() {
-            if (searchMatches.length === 0) return;
-            editor.operation(() => {
-                for (let i = searchMatches.length - 1; i >= 0; i--) {
-                    const pos = searchMatches[i];
-                    editor.replaceRange(replaceInput.value, pos.from, pos.to);
-                }
-            });
-            updateSearch();
-        }
-
-        // Search Listeners
-        findInput.addEventListener('input', () => {
-            clearTimeout(searchUpdateTimeout);
-            searchUpdateTimeout = setTimeout(updateSearch, 200);
-        });
-        findInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') { e.preventDefault(); e.shiftKey ? findPrev() : findNext(); }
-            else if (e.key === 'Escape') closeSearchPanel();
-        });
-        replaceInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') { e.preventDefault(); e.shiftKey ? performReplaceAll() : performReplace(); }
-            else if (e.key === 'Escape') closeSearchPanel();
-        });
-        btnToggleReplace.addEventListener('click', toggleReplaceRow);
-        btnPrev.addEventListener('click', findPrev);
-        btnNext.addEventListener('click', findNext);
-        btnCloseSearch.addEventListener('click', closeSearchPanel);
-        btnReplace.addEventListener('click', performReplace);
-        btnReplaceAll.addEventListener('click', performReplaceAll);
-
-        // General Features
+        // Feature functions (Zoom, Theme, Dev Tools)
         function toggleTheme() {
             isDark = !isDark;
-            const htmlElement = document.documentElement;
-            const themeIcon = document.getElementById('theme-icon');
-            const metaThemeColor = document.getElementById('meta-theme-color');
-            
-            if (isDark) {
-                htmlElement.classList.add('dark');
-                editor.setOption("theme", "material-darker"); 
-                themeIcon.setAttribute('data-lucide', 'sun');
-                metaThemeColor.setAttribute('content', '#202124');
-            } else {
-                htmlElement.classList.remove('dark');
-                editor.setOption("theme", "default"); 
-                themeIcon.setAttribute('data-lucide', 'moon');
-                metaThemeColor.setAttribute('content', '#ffffff');
-            }
-            lucide.createIcons();
-            renderTabs();
+            document.documentElement.classList.toggle('dark', isDark);
+            editor.setOption("theme", isDark ? "material-darker" : "default");
+            document.getElementById('theme-icon').setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+            document.getElementById('meta-theme-color').setAttribute('content', isDark ? '#131314' : '#F0F4F9');
+            lucide.createIcons(); renderTabs();
         }
 
-        let isWordWrap = false;
-        function toggleWordWrap() {
-            isWordWrap = !isWordWrap;
-            editor.setOption("lineWrapping", isWordWrap);
-            document.getElementById('wrap-icon').classList.toggle('text-google-blue', isWordWrap);
-            document.getElementById('wrap-icon').classList.toggle('dark:text-google-blueDark', isWordWrap);
-            showToast(isWordWrap ? "Word Wrap enabled" : "Word Wrap disabled");
-        }
-
-        let currentFontSize = 14;
-        function updateFontSize() {
-            const cmElement = document.querySelector('.CodeMirror');
-            const percentage = Math.round((currentFontSize / 14) * 100);
-            
-            if (cmElement) { 
-                cmElement.style.fontSize = `${currentFontSize}px`; 
-                editor.refresh(); 
-            }
-            document.getElementById('zoom-level-text').textContent = `${percentage}%`;
-        }
-        
-        function zoomIn() { if (currentFontSize < 40) { currentFontSize++; updateFontSize(); } }
-        function zoomOut() { if (currentFontSize > 8) { currentFontSize--; updateFontSize(); } }
-
-        // Fullscreen Logic
-        function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => console.log(err));
-            } else {
-                if (document.exitFullscreen) document.exitFullscreen();
-            }
-        }
-
-        document.addEventListener('fullscreenchange', () => {
-            const icon = document.getElementById('fullscreen-icon');
-            if (document.fullscreenElement) {
-                icon.setAttribute('data-lucide', 'minimize');
-                document.getElementById('dropdown-menu').classList.add('hidden'); // Close menu on enter
-            } else {
-                icon.setAttribute('data-lucide', 'maximize');
-            }
-            lucide.createIcons();
-        });
-
-        let isPreviewActive = false;
-        function togglePreview() {
-            isPreviewActive = !isPreviewActive;
-            const wrapper = document.getElementById('editor-wrapper');
-            const preview = document.getElementById('markdown-preview');
-            
-            wrapper.classList.toggle('w-full', !isPreviewActive);
-            wrapper.classList.toggle('w-1/2', isPreviewActive);
-            preview.classList.toggle('hidden', !isPreviewActive);
-            document.getElementById('preview-icon').classList.toggle('text-google-blue', isPreviewActive);
-            document.getElementById('preview-icon').classList.toggle('dark:text-google-blueDark', isPreviewActive);
-            
-            if (isPreviewActive) updateMarkdownPreview();
-            setTimeout(() => editor.refresh(), 300);
-            showToast(isPreviewActive ? "Markdown Preview enabled" : "Markdown Preview disabled");
-        }
-        function updateMarkdownPreview() {
-            if (isPreviewActive && typeof marked !== 'undefined') {
-                document.getElementById('markdown-preview').innerHTML = marked.parse(editor.getValue());
-            }
-        }
-
-        // Global Event Listeners
-        document.getElementById('btn-new').addEventListener('click', () => createTab());
-        document.getElementById('btn-open').addEventListener('click', openFile);
-        document.getElementById('btn-save').addEventListener('click', saveFile);
-        document.getElementById('btn-saveas').addEventListener('click', saveFileAs);
-        document.getElementById('btn-theme').addEventListener('click', toggleTheme);
-        document.getElementById('btn-wrap').addEventListener('click', toggleWordWrap);
-        document.getElementById('btn-search').addEventListener('click', () => openSearchPanel());
-        
-        // Setup Zoom & Fullscreen Event Listeners
-        document.getElementById('btn-zoom-in').addEventListener('click', (e) => { e.stopPropagation(); zoomIn(); });
-        document.getElementById('btn-zoom-out').addEventListener('click', (e) => { e.stopPropagation(); zoomOut(); });
-        document.getElementById('btn-fullscreen').addEventListener('click', (e) => { e.stopPropagation(); toggleFullscreen(); });
-        
-        document.getElementById('btn-preview').addEventListener('click', togglePreview);
-        document.getElementById('btn-info').addEventListener('click', () => {
-            const t = getActiveTab();
-            if(t) alert(`File Name: ${t.name}\nLanguage: ${t.modeLabel}\n\nGoogle Workspace Mode Enabled.`);
-        });
-        document.getElementById('btn-rename').addEventListener('click', renameActiveTab);
-
-        // Keyboard Shortcuts
-        window.addEventListener('keydown', (e) => {
-            if (e.ctrlKey || e.metaKey) {
-                switch (e.key.toLowerCase()) {
-                    case 's': e.preventDefault(); e.shiftKey ? saveFileAs() : saveFile(); break;
-                    case 'o': e.preventDefault(); openFile(); break;
-                    case 'm': e.preventDefault(); createTab(); break;
-                    case 'f': e.preventDefault(); openSearchPanel(); break;
-                    case 'h': e.preventDefault(); openSearchPanel(true); break;
-                    case '=': case '+': e.preventDefault(); zoomIn(); break;
-                    case '-': e.preventDefault(); zoomOut(); break;
-                }
-            } else if (e.altKey) {
-                if (e.key.toLowerCase() === 'z') { e.preventDefault(); toggleWordWrap(); }
-                if (e.key.toLowerCase() === 'p' && !document.getElementById('btn-preview').classList.contains('hidden')) { e.preventDefault(); togglePreview(); }
-                if (e.key === 'F' || e.key === 'f') { e.preventDefault(); formatJSON(); } // Shift+Alt+F style fallback
-            }
-        });
-
-        // Setup Dropdown Menu
-        const menuToggle = document.getElementById('btn-menu-toggle');
-        const dropdownMenu = document.getElementById('dropdown-menu');
-        
-        menuToggle.addEventListener('click', (e) => { 
-            e.stopPropagation(); 
-            dropdownMenu.classList.toggle('hidden'); 
-        });
-        
-        document.addEventListener('click', (e) => { 
-            if (!dropdownMenu.contains(e.target) && !menuToggle.contains(e.target)) {
-                dropdownMenu.classList.add('hidden'); 
-            }
-        });
-        
-        // ONLY close the dropdown if the clicked button IS NOT a zoom control
-        dropdownMenu.querySelectorAll('button').forEach(btn => {
-            if (!['btn-zoom-in', 'btn-zoom-out', 'btn-fullscreen', 'btn-language-select'].includes(btn.id) && !btn.closest('#language-dropdown')) {
-                btn.addEventListener('click', () => dropdownMenu.classList.add('hidden'));
-            }
-        });
-
-        // Status Bar
-        function updateCursorPosition() {
+        function updateDocumentStats() {
+            const val = editor.getValue();
+            document.getElementById('document-stats').textContent = `Words: ${val.trim() ? val.trim().split(/\s+/).length : 0} | Chars: ${val.length}`;
             const pos = editor.getCursor();
             document.getElementById('cursor-position').textContent = `Ln ${pos.line + 1}, Col ${pos.ch + 1}`;
         }
-        function updateDocumentStats() {
-            const text = editor.getValue();
-            const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-            document.getElementById('document-stats').textContent = `Words: ${words} | Chars: ${text.length}`;
-        }
-        editor.on('cursorActivity', updateCursorPosition);
-        
-        // --- PWA Installation Logic ---
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            document.getElementById('btn-install').classList.remove('hidden');
-            document.getElementById('install-divider').classList.remove('hidden');
-        });
+        editor.on('cursorActivity', updateDocumentStats);
 
-        document.getElementById('btn-install').addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    document.getElementById('btn-install').classList.add('hidden');
-                    document.getElementById('install-divider').classList.add('hidden');
-                }
-                deferredPrompt = null;
-            }
-        });
+        // Simple Dev Tools hook
+        document.getElementById('btn-format-json').onclick = () => {
+            try { editor.setValue(JSON.stringify(JSON.parse(editor.getValue()), null, 4)); showToast("JSON Formatted"); } catch(e) { showToast("Invalid JSON"); }
+        };
 
-        window.addEventListener('appinstalled', () => {
-            deferredPrompt = null;
-            document.getElementById('btn-install').classList.add('hidden');
-            document.getElementById('install-divider').classList.add('hidden');
-            showToast("App installed successfully");
-        });
+        // File handling
+        document.getElementById('btn-new').onclick = () => createTab();
+        document.getElementById('btn-theme').onclick = toggleTheme;
+        document.getElementById('btn-menu-toggle').onclick = (e) => { e.stopPropagation(); document.getElementById('dropdown-menu').classList.toggle('hidden'); };
+        document.addEventListener('click', (e) => { if (!e.target.closest('#btn-menu-toggle') && !e.target.closest('#dropdown-menu')) document.getElementById('dropdown-menu').classList.add('hidden'); });
 
-        window.addEventListener('beforeunload', (e) => {
-            if (tabs.some(t => t.isUnsaved)) { e.preventDefault(); e.returnValue = ''; }
-        });
-
-        // Register Service Worker for Offline Support & Reliable PWA Installability
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').then(registration => {
-                    registration.update();
-                    registration.addEventListener('updatefound', () => {
-                        const newWorker = registration.installing;
-                        newWorker.addEventListener('statechange', () => {
-                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                document.getElementById('btn-update-app').classList.remove('hidden');
-                                document.getElementById('update-divider').classList.remove('hidden');
-                                showToast("New version available. Open menu to reload.");
-                            }
-                        });
-                    });
-                }).catch(err => console.log('ServiceWorker registration failed: ', err));
-            });
-
-            document.getElementById('btn-update-app').addEventListener('click', () => {
-                navigator.serviceWorker.getRegistrations().then(registrations => {
-                    for(let registration of registrations) registration.unregister();
-                    window.location.reload(true);
-                });
-            });
-        }
-
-        // Initialize Preference & Start
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) toggleTheme();
-        
-        // Restore Session
         restoreSession();
-
-        // --- PWA File Handling Logic ---
-        if ('launchQueue' in window) {
-            window.launchQueue.setConsumer(async (launchParams) => {
-                if (!launchParams.files || !launchParams.files.length) return;
-                
-                for (const handle of launchParams.files) {
-                    if (handle.kind === 'file') {
-                        try {
-                            const file = await handle.getFile();
-                            const contents = await file.text();
-                            
-                            const activeTab = getActiveTab();
-                            if (activeTab && activeTab.name.startsWith('Untitled') && !activeTab.isUnsaved && activeTab.doc.getValue() === '') {
-                                activeTab.handle = handle;
-                                activeTab.name = file.name;
-                                const modeInfo = getModeInfo(file.name);
-                                activeTab.doc = CodeMirror.Doc(contents, modeInfo.id);
-                                activeTab.doc.markClean();
-                                activeTab.isRenamed = false;
-                                updateTabLanguage(activeTab, modeInfo.id, modeInfo.label);
-                                editor.swapDoc(activeTab.doc);
-                                renderTabs();
-                            } else {
-                                createTab(file.name, contents, handle);
-                            }
-                            showToast(`Opened ${file.name}`);
-                        } catch (err) {
-                            console.error("Error opening file from OS:", err);
-                            showToast("Failed to open file from OS");
-                        }
-                    }
-                }
-            });
-        }
     </script>
 </body>
 </html>
